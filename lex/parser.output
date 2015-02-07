@@ -1,243 +1,304 @@
-Terminals unused in grammar
-
-   TRUE
-   FALSE
-   INT
-   CHAR
-   FLOAT
-   DOUBLE
-   CB
-   OB
-
-
-State 6 conflicts: 11 shift/reduce
-State 18 conflicts: 12 shift/reduce
-State 81 conflicts: 11 shift/reduce
-State 83 conflicts: 15 shift/reduce
-State 86 conflicts: 16 shift/reduce
-State 87 conflicts: 11 shift/reduce
-State 93 conflicts: 34 shift/reduce
-State 101 conflicts: 15 shift/reduce
-State 110 conflicts: 11 shift/reduce
+State 13 conflicts: 11 shift/reduce
+State 28 conflicts: 17 shift/reduce
+State 31 conflicts: 1 shift/reduce
+State 42 conflicts: 1 shift/reduce
+State 44 conflicts: 23 shift/reduce
+State 46 conflicts: 16 shift/reduce
+State 106 conflicts: 16 shift/reduce
+State 108 conflicts: 23 shift/reduce
+State 112 conflicts: 24 shift/reduce
+State 113 conflicts: 24 shift/reduce
+State 114 conflicts: 16 shift/reduce
+State 115 conflicts: 16 shift/reduce
+State 130 conflicts: 34 shift/reduce
+State 137 conflicts: 17 shift/reduce
+State 151 conflicts: 23 shift/reduce
+State 152 conflicts: 23 shift/reduce
+State 176 conflicts: 16 shift/reduce
 
 
 Grammar
 
     0 $accept: term_block $end
 
-    1 arith_bi_op: ADD
-    2            | SUB
-    3            | MULT
-    4            | DIV
-    5            | MOD
-    6            | EXP
+    1 data_type: INT
+    2          | LONG
+    3          | CHAR
+    4          | FLOAT
+    5          | DOUBLE
+    6          | LONG LONG
+    7          | LONG FLOAT
+    8          | LONG DOUBLE
 
-    7 arith_un_op: INC
-    8            | DEC
+    9 arith_bi_op: ADD
+   10            | SUB
+   11            | MULT
+   12            | DIV
+   13            | MOD
+   14            | EXP
 
-    9 logic_bi_op: EQ
-   10            | NOTEQ
-   11            | GT
-   12            | LT
-   13            | GE
-   14            | LE
-   15            | AND
-   16            | OR
+   15 arith_un_op: INC
+   16            | DEC
 
-   17 logic_un_op: NOT
+   17 logic_bi_op: EQ
+   18            | NOTEQ
+   19            | GT
+   20            | LT
+   21            | GE
+   22            | LE
+   23            | AND
+   24            | OR
 
-   18 bit_un_op: BIN_NOT
+   25 logic_un_op: NOT
 
-   19 bit_bi_op: BIN_AND
-   20          | BIN_OR
-   21          | BIN_XOR
-   22          | BIN_LEFT
-   23          | BIN_RIGHT
+   26 bit_un_op: BIN_NOT
 
-   24 assign_op: ASSIGN
-   25          | ADD_ASSIGN
-   26          | SUB_ASSIGN
-   27          | MULT_ASSIGN
-   28          | DIV_ASSIGN
-   29          | MOD_ASSIGN
-   30          | LEFT_ASSIGN
-   31          | RIGHT_ASSIGN
-   32          | BIN_AND_ASSIGN
-   33          | BIN_XOR_ASSIGN
-   34          | BIN_IOR_ASSIGN
+   27 bit_bi_op: BIN_AND
+   28          | BIN_OR
+   29          | BIN_XOR
+   30          | BIN_LEFT
+   31          | BIN_RIGHT
 
-   35 op: arith_bi_op
-   36   | arith_un_op
-   37   | logic_bi_op
-   38   | logic_un_op
-   39   | bit_un_op
-   40   | bit_bi_op
-   41   | assign_op
+   32 assign_op: ASSIGN
+   33          | ADD_ASSIGN
+   34          | SUB_ASSIGN
+   35          | MULT_ASSIGN
+   36          | DIV_ASSIGN
+   37          | MOD_ASSIGN
+   38          | LEFT_ASSIGN
+   39          | RIGHT_ASSIGN
+   40          | BIN_AND_ASSIGN
+   41          | BIN_XOR_ASSIGN
+   42          | BIN_IOR_ASSIGN
 
-   42 expr: expr op expr
-   43     | OP expr CP
-   44     | IDENT
-   45     | NUM
+   43 op: arith_bi_op
+   44   | arith_un_op
+   45   | logic_bi_op
+   46   | logic_un_op
+   47   | bit_un_op
+   48   | bit_bi_op
+   49   | assign_op
 
-   46 assignment: IDENT assign_op expr
-   47           | WHITESPACE
+   50 expr: condition
+   51     | OP expr CP
+   52     | term
+   53     | function_block
+   54     | function_block OB expr CB
 
-   48 block: assignment
-   49      | block block
-   50      | OCB term_block CCB
-   51      | if_block
-   52      | while_block
-   53      | for_block
-   54      | comment_block
-   55      | multi_comment_block
-   56      | def_block
+   55 term: IDENT
+   56     | NUM
 
-   57 term_block: block
-   58           | term_block term_block
-   59           | block TERMINATOR
-   60           | do_while_block
-   61           | ternary_block
-   62           | condition TERMINATOR
-   63           | TERMINATOR
+   57 assignment: IDENT assign_op expr
+   58           | WHITESPACE
 
-   64 condition: expr
+   59 block: assignment
+   60      | block block
+   61      | OCB term_block CCB
+   62      | if_block
+   63      | while_block
+   64      | for_block
+   65      | comment_block
+   66      | multi_comment_block
+   67      | def_block
+   68      | data_def_block
 
-   65 ternary_block: condition QUES block COLON block TERMINATOR
-   66              | condition QUES expr COLON expr
+   69 data_def_block: data_type arr_elem_block TERMINATOR
+   70               | data_type arr_elem_block ASSIGN expr TERMINATOR
 
-   67 def_block: DEFINE
-   68          | IFDEF
-   69          | IFNDEF
+   71 ident_block: IDENT
+   72            | ident_block COMMA IDENT
 
-   70 if_block: IF condition term_block
-   71         | IF condition term_block ELSE term_block
+   73 arr_elem: IDENT OB expr CB
+   74         | IDENT
 
-   72 while_block: WHILE condition block
+   75 arr_elem_block: arr_elem
+   76               | arr_elem COMMA arr_elem_block
 
-   73 do_while_block: DO block WHILE condition TERMINATOR
+   77 term_block: block
+   78           | term_block term_block
+   79           | block TERMINATOR
+   80           | do_while_block
+   81           | ternary_block
+   82           | condition TERMINATOR
+   83           | TERMINATOR
+   84           | function_def_block
 
-   74 for_block: FOR OP assignment TERMINATOR condition TERMINATOR assignment CP block
+   85 condition: expr op expr
+   86          | TRUE
+   87          | FALSE
 
-   75 comment_block: COMMENT
+   88 function_block: IDENT OP ident_block CP
 
-   76 multi_comment_block: MULTI_COMMENT
+   89 function_def_block: FUNCTION IDENT OP arg_def_block CP OCB term_block CCB
+
+   90 arg_def_block: data_type IDENT COMMA arg_def_block
+   91              | data_type IDENT
+
+   92 ternary_block: condition QUES block COLON block TERMINATOR
+   93              | expr QUES block COLON block TERMINATOR
+   94              | condition QUES expr COLON expr
+   95              | expr QUES expr COLON expr
+
+   96 def_block: DEFINE
+   97          | IFDEF
+   98          | IFNDEF
+
+   99 if_block: IF condition term_block
+  100         | IF expr term_block
+  101         | IF condition term_block ELSE term_block
+  102         | IF expr term_block ELSE term_block
+
+  103 while_block: WHILE condition block
+  104            | WHILE expr block
+
+  105 do_while_block: DO block WHILE condition TERMINATOR
+  106               | DO block WHILE expr TERMINATOR
+
+  107 for_block: FOR OP assignment TERMINATOR condition TERMINATOR assignment CP block
+
+  108 comment_block: COMMENT
+
+  109 multi_comment_block: MULTI_COMMENT
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-IF (258) 70 71
-ELSE (259) 71
-WHILE (260) 72 73
-DO (261) 73
-FOR (262) 74
-AND (263) 15
-OR (264) 16
-NOT (265) 17
-TRUE (266)
-FALSE (267)
-INT (268)
-CHAR (269)
-FLOAT (270)
-DOUBLE (271)
-ADD (272) 1
-SUB (273) 2
-MULT (274) 3
-DIV (275) 4
-EXP (276) 6
-MOD (277) 5
-INC (278) 7
-DEC (279) 8
-QUES (280) 65 66
-BIN_NOT (281) 18
-BIN_AND (282) 19
-BIN_OR (283) 20
-BIN_XOR (284) 21
-BIN_LEFT (285) 22
-BIN_RIGHT (286) 23
-BIN_AND_ASSIGN (287) 32
-BIN_IOR_ASSIGN (288) 34
-BIN_XOR_ASSIGN (289) 33
-ADD_ASSIGN (290) 25
-SUB_ASSIGN (291) 26
-MULT_ASSIGN (292) 27
-DIV_ASSIGN (293) 28
-MOD_ASSIGN (294) 29
-LEFT_ASSIGN (295) 30
-RIGHT_ASSIGN (296) 31
-NUM (297) 45
-IDENT (298) 44 46
-ASSIGN (299) 24
-TERMINATOR (300) 59 62 63 65 73 74
-COLON (301) 65 66
-OP (302) 43 74
-CP (303) 43 74
-CB (304)
-OB (305)
-OCB (306) 50
-CCB (307) 50
-EQ (308) 9
-NOTEQ (309) 10
-GT (310) 11
-LT (311) 12
-GE (312) 13
-LE (313) 14
-COMMENT (314) 75
-MULTI_COMMENT (315) 76
-WHITESPACE (316) 47
-DEFINE (317) 67
-IFDEF (318) 68
-IFNDEF (319) 69
+IF (258) 99 100 101 102
+ELSE (259) 101 102
+WHILE (260) 103 104 105 106
+DO (261) 105 106
+FOR (262) 107
+AND (263) 23
+OR (264) 24
+NOT (265) 25
+TRUE (266) 86
+FALSE (267) 87
+INT (268) 1
+LONG (269) 2 6 7 8
+CHAR (270) 3
+FLOAT (271) 4 7
+DOUBLE (272) 5 8
+ADD (273) 9
+SUB (274) 10
+MULT (275) 11
+DIV (276) 12
+EXP (277) 14
+MOD (278) 13
+INC (279) 15
+DEC (280) 16
+QUES (281) 92 93 94 95
+BIN_NOT (282) 26
+BIN_AND (283) 27
+BIN_OR (284) 28
+BIN_XOR (285) 29
+BIN_LEFT (286) 30
+BIN_RIGHT (287) 31
+BIN_AND_ASSIGN (288) 40
+BIN_IOR_ASSIGN (289) 42
+BIN_XOR_ASSIGN (290) 41
+ADD_ASSIGN (291) 33
+SUB_ASSIGN (292) 34
+MULT_ASSIGN (293) 35
+DIV_ASSIGN (294) 36
+MOD_ASSIGN (295) 37
+LEFT_ASSIGN (296) 38
+RIGHT_ASSIGN (297) 39
+NUM (298) 56
+IDENT (299) 55 57 71 72 73 74 88 89 90 91
+ASSIGN (300) 32 70
+TERMINATOR (301) 69 70 79 82 83 92 93 105 106 107
+COLON (302) 92 93 94 95
+OP (303) 51 88 89 107
+CP (304) 51 88 89 107
+CB (305) 54 73
+OB (306) 54 73
+OCB (307) 61 89
+CCB (308) 61 89
+EQ (309) 17
+NOTEQ (310) 18
+GT (311) 19
+LT (312) 20
+GE (313) 21
+LE (314) 22
+COMMENT (315) 108
+MULTI_COMMENT (316) 109
+WHITESPACE (317) 58
+DEFINE (318) 96
+IFDEF (319) 97
+IFNDEF (320) 98
+FUNCTION (321) 89
+COMMA (322) 72 76 90
 
 
 Nonterminals, with rules where they appear
 
-$accept (65)
+$accept (68)
     on left: 0
-arith_bi_op (66)
-    on left: 1 2 3 4 5 6, on right: 35
-arith_un_op (67)
-    on left: 7 8, on right: 36
-logic_bi_op (68)
-    on left: 9 10 11 12 13 14 15 16, on right: 37
-logic_un_op (69)
-    on left: 17, on right: 38
-bit_un_op (70)
-    on left: 18, on right: 39
-bit_bi_op (71)
-    on left: 19 20 21 22 23, on right: 40
-assign_op (72)
-    on left: 24 25 26 27 28 29 30 31 32 33 34, on right: 41 46
-op (73)
-    on left: 35 36 37 38 39 40 41, on right: 42
-expr (74)
-    on left: 42 43 44 45, on right: 42 43 46 64 66
-assignment (75)
-    on left: 46 47, on right: 48 74
-block (76)
-    on left: 48 49 50 51 52 53 54 55 56, on right: 49 57 59 65 72 73
-    74
-term_block (77)
-    on left: 57 58 59 60 61 62 63, on right: 0 50 58 70 71
-condition (78)
-    on left: 64, on right: 62 65 66 70 71 72 73 74
-ternary_block (79)
-    on left: 65 66, on right: 61
-def_block (80)
-    on left: 67 68 69, on right: 56
-if_block (81)
-    on left: 70 71, on right: 51
-while_block (82)
-    on left: 72, on right: 52
-do_while_block (83)
-    on left: 73, on right: 60
-for_block (84)
-    on left: 74, on right: 53
-comment_block (85)
-    on left: 75, on right: 54
-multi_comment_block (86)
-    on left: 76, on right: 55
+data_type (69)
+    on left: 1 2 3 4 5 6 7 8, on right: 69 70 90 91
+arith_bi_op (70)
+    on left: 9 10 11 12 13 14, on right: 43
+arith_un_op (71)
+    on left: 15 16, on right: 44
+logic_bi_op (72)
+    on left: 17 18 19 20 21 22 23 24, on right: 45
+logic_un_op (73)
+    on left: 25, on right: 46
+bit_un_op (74)
+    on left: 26, on right: 47
+bit_bi_op (75)
+    on left: 27 28 29 30 31, on right: 48
+assign_op (76)
+    on left: 32 33 34 35 36 37 38 39 40 41 42, on right: 49 57
+op (77)
+    on left: 43 44 45 46 47 48 49, on right: 85
+expr (78)
+    on left: 50 51 52 53 54, on right: 51 54 57 70 73 85 93 94 95 100
+    102 104 106
+term (79)
+    on left: 55 56, on right: 52
+assignment (80)
+    on left: 57 58, on right: 59 107
+block (81)
+    on left: 59 60 61 62 63 64 65 66 67 68, on right: 60 77 79 92 93
+    103 104 105 106 107
+data_def_block (82)
+    on left: 69 70, on right: 68
+ident_block (83)
+    on left: 71 72, on right: 72 88
+arr_elem (84)
+    on left: 73 74, on right: 75 76
+arr_elem_block (85)
+    on left: 75 76, on right: 69 70 76
+term_block (86)
+    on left: 77 78 79 80 81 82 83 84, on right: 0 61 78 89 99 100 101
+    102
+condition (87)
+    on left: 85 86 87, on right: 50 82 92 94 99 101 103 105 107
+function_block (88)
+    on left: 88, on right: 53 54
+function_def_block (89)
+    on left: 89, on right: 84
+arg_def_block (90)
+    on left: 90 91, on right: 89 90
+ternary_block (91)
+    on left: 92 93 94 95, on right: 81
+def_block (92)
+    on left: 96 97 98, on right: 67
+if_block (93)
+    on left: 99 100 101 102, on right: 62
+while_block (94)
+    on left: 103 104, on right: 63
+do_while_block (95)
+    on left: 105 106, on right: 80
+for_block (96)
+    on left: 107, on right: 64
+comment_block (97)
+    on left: 108, on right: 65
+multi_comment_block (98)
+    on left: 109, on right: 66
 
 
 State 0
@@ -248,1788 +309,3623 @@ State 0
     WHILE          shift, and go to state 2
     DO             shift, and go to state 3
     FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
 
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 19
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 30
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
 
 
 State 1
 
-   70 if_block: IF . condition term_block
-   71         | IF . condition term_block ELSE term_block
+   99 if_block: IF . condition term_block
+  100         | IF . expr term_block
+  101         | IF . condition term_block ELSE term_block
+  102         | IF . expr term_block ELSE term_block
 
-    NUM    shift, and go to state 5
-    IDENT  shift, and go to state 29
-    OP     shift, and go to state 8
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
 
-    expr       go to state 16
-    condition  go to state 30
+    expr            go to state 43
+    term            go to state 26
+    condition       go to state 44
+    function_block  go to state 32
 
 
 State 2
 
-   72 while_block: WHILE . condition block
+  103 while_block: WHILE . condition block
+  104            | WHILE . expr block
 
-    NUM    shift, and go to state 5
-    IDENT  shift, and go to state 29
-    OP     shift, and go to state 8
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
 
-    expr       go to state 16
-    condition  go to state 31
+    expr            go to state 45
+    term            go to state 26
+    condition       go to state 46
+    function_block  go to state 32
 
 
 State 3
 
-   73 do_while_block: DO . block WHILE condition TERMINATOR
+  105 do_while_block: DO . block WHILE condition TERMINATOR
+  106               | DO . block WHILE expr TERMINATOR
 
     IF             shift, and go to state 1
     WHILE          shift, and go to state 2
     FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
 
-    assignment           go to state 17
-    block                go to state 33
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 48
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
 
 
 State 4
 
-   74 for_block: FOR . OP assignment TERMINATOR condition TERMINATOR assignment CP block
+  107 for_block: FOR . OP assignment TERMINATOR condition TERMINATOR assignment CP block
 
-    OP  shift, and go to state 34
+    OP  shift, and go to state 49
 
 
 State 5
 
-   45 expr: NUM .
+   86 condition: TRUE .
 
-    $default  reduce using rule 45 (expr)
+    $default  reduce using rule 86 (condition)
 
 
 State 6
 
-   44 expr: IDENT .
-   46 assignment: IDENT . assign_op expr
+   87 condition: FALSE .
 
-    BIN_AND_ASSIGN  shift, and go to state 35
-    BIN_IOR_ASSIGN  shift, and go to state 36
-    BIN_XOR_ASSIGN  shift, and go to state 37
-    ADD_ASSIGN      shift, and go to state 38
-    SUB_ASSIGN      shift, and go to state 39
-    MULT_ASSIGN     shift, and go to state 40
-    DIV_ASSIGN      shift, and go to state 41
-    MOD_ASSIGN      shift, and go to state 42
-    LEFT_ASSIGN     shift, and go to state 43
-    RIGHT_ASSIGN    shift, and go to state 44
-    ASSIGN          shift, and go to state 45
-
-    BIN_AND_ASSIGN  [reduce using rule 44 (expr)]
-    BIN_IOR_ASSIGN  [reduce using rule 44 (expr)]
-    BIN_XOR_ASSIGN  [reduce using rule 44 (expr)]
-    ADD_ASSIGN      [reduce using rule 44 (expr)]
-    SUB_ASSIGN      [reduce using rule 44 (expr)]
-    MULT_ASSIGN     [reduce using rule 44 (expr)]
-    DIV_ASSIGN      [reduce using rule 44 (expr)]
-    MOD_ASSIGN      [reduce using rule 44 (expr)]
-    LEFT_ASSIGN     [reduce using rule 44 (expr)]
-    RIGHT_ASSIGN    [reduce using rule 44 (expr)]
-    ASSIGN          [reduce using rule 44 (expr)]
-    $default        reduce using rule 44 (expr)
-
-    assign_op  go to state 46
+    $default  reduce using rule 87 (condition)
 
 
 State 7
 
-   63 term_block: TERMINATOR .
+    1 data_type: INT .
 
-    $default  reduce using rule 63 (term_block)
+    $default  reduce using rule 1 (data_type)
 
 
 State 8
 
-   43 expr: OP . expr CP
+    2 data_type: LONG .
+    6          | LONG . LONG
+    7          | LONG . FLOAT
+    8          | LONG . DOUBLE
 
-    NUM    shift, and go to state 5
-    IDENT  shift, and go to state 29
-    OP     shift, and go to state 8
+    LONG    shift, and go to state 50
+    FLOAT   shift, and go to state 51
+    DOUBLE  shift, and go to state 52
 
-    expr  go to state 47
+    $default  reduce using rule 2 (data_type)
 
 
 State 9
 
-   50 block: OCB . term_block CCB
+    3 data_type: CHAR .
 
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    DO             shift, and go to state 3
-    FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 48
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    $default  reduce using rule 3 (data_type)
 
 
 State 10
 
-   75 comment_block: COMMENT .
+    4 data_type: FLOAT .
 
-    $default  reduce using rule 75 (comment_block)
+    $default  reduce using rule 4 (data_type)
 
 
 State 11
 
-   76 multi_comment_block: MULTI_COMMENT .
+    5 data_type: DOUBLE .
 
-    $default  reduce using rule 76 (multi_comment_block)
+    $default  reduce using rule 5 (data_type)
 
 
 State 12
 
-   47 assignment: WHITESPACE .
+   56 term: NUM .
 
-    $default  reduce using rule 47 (assignment)
+    $default  reduce using rule 56 (term)
 
 
 State 13
 
-   67 def_block: DEFINE .
+   55 term: IDENT .
+   57 assignment: IDENT . assign_op expr
+   88 function_block: IDENT . OP ident_block CP
 
-    $default  reduce using rule 67 (def_block)
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    OP              shift, and go to state 64
+
+    BIN_AND_ASSIGN  [reduce using rule 55 (term)]
+    BIN_IOR_ASSIGN  [reduce using rule 55 (term)]
+    BIN_XOR_ASSIGN  [reduce using rule 55 (term)]
+    ADD_ASSIGN      [reduce using rule 55 (term)]
+    SUB_ASSIGN      [reduce using rule 55 (term)]
+    MULT_ASSIGN     [reduce using rule 55 (term)]
+    DIV_ASSIGN      [reduce using rule 55 (term)]
+    MOD_ASSIGN      [reduce using rule 55 (term)]
+    LEFT_ASSIGN     [reduce using rule 55 (term)]
+    RIGHT_ASSIGN    [reduce using rule 55 (term)]
+    ASSIGN          [reduce using rule 55 (term)]
+    $default        reduce using rule 55 (term)
+
+    assign_op  go to state 65
 
 
 State 14
 
-   68 def_block: IFDEF .
+   83 term_block: TERMINATOR .
 
-    $default  reduce using rule 68 (def_block)
+    $default  reduce using rule 83 (term_block)
 
 
 State 15
 
-   69 def_block: IFNDEF .
+   51 expr: OP . expr CP
 
-    $default  reduce using rule 69 (def_block)
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 66
+    term            go to state 26
+    condition       go to state 67
+    function_block  go to state 32
 
 
 State 16
 
-   42 expr: expr . op expr
-   64 condition: expr .
+   61 block: OCB . term_block CCB
 
-    AND             shift, and go to state 49
-    OR              shift, and go to state 50
-    NOT             shift, and go to state 51
-    ADD             shift, and go to state 52
-    SUB             shift, and go to state 53
-    MULT            shift, and go to state 54
-    DIV             shift, and go to state 55
-    EXP             shift, and go to state 56
-    MOD             shift, and go to state 57
-    INC             shift, and go to state 58
-    DEC             shift, and go to state 59
-    BIN_NOT         shift, and go to state 60
-    BIN_AND         shift, and go to state 61
-    BIN_OR          shift, and go to state 62
-    BIN_XOR         shift, and go to state 63
-    BIN_LEFT        shift, and go to state 64
-    BIN_RIGHT       shift, and go to state 65
-    BIN_AND_ASSIGN  shift, and go to state 35
-    BIN_IOR_ASSIGN  shift, and go to state 36
-    BIN_XOR_ASSIGN  shift, and go to state 37
-    ADD_ASSIGN      shift, and go to state 38
-    SUB_ASSIGN      shift, and go to state 39
-    MULT_ASSIGN     shift, and go to state 40
-    DIV_ASSIGN      shift, and go to state 41
-    MOD_ASSIGN      shift, and go to state 42
-    LEFT_ASSIGN     shift, and go to state 43
-    RIGHT_ASSIGN    shift, and go to state 44
-    ASSIGN          shift, and go to state 45
-    EQ              shift, and go to state 66
-    NOTEQ           shift, and go to state 67
-    GT              shift, and go to state 68
-    LT              shift, and go to state 69
-    GE              shift, and go to state 70
-    LE              shift, and go to state 71
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
 
-    $default  reduce using rule 64 (condition)
-
-    arith_bi_op  go to state 72
-    arith_un_op  go to state 73
-    logic_bi_op  go to state 74
-    logic_un_op  go to state 75
-    bit_un_op    go to state 76
-    bit_bi_op    go to state 77
-    assign_op    go to state 78
-    op           go to state 79
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 68
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
 
 
 State 17
 
-   48 block: assignment .
+  108 comment_block: COMMENT .
 
-    $default  reduce using rule 48 (block)
+    $default  reduce using rule 108 (comment_block)
 
 
 State 18
 
-   49 block: block . block
-   57 term_block: block .
-   59           | block . TERMINATOR
+  109 multi_comment_block: MULTI_COMMENT .
 
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    TERMINATOR     shift, and go to state 80
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    IF             [reduce using rule 57 (term_block)]
-    WHILE          [reduce using rule 57 (term_block)]
-    FOR            [reduce using rule 57 (term_block)]
-    IDENT          [reduce using rule 57 (term_block)]
-    TERMINATOR     [reduce using rule 57 (term_block)]
-    OCB            [reduce using rule 57 (term_block)]
-    COMMENT        [reduce using rule 57 (term_block)]
-    MULTI_COMMENT  [reduce using rule 57 (term_block)]
-    WHITESPACE     [reduce using rule 57 (term_block)]
-    DEFINE         [reduce using rule 57 (term_block)]
-    IFDEF          [reduce using rule 57 (term_block)]
-    IFNDEF         [reduce using rule 57 (term_block)]
-    $default       reduce using rule 57 (term_block)
-
-    assignment           go to state 17
-    block                go to state 81
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    $default  reduce using rule 109 (multi_comment_block)
 
 
 State 19
 
-    0 $accept: term_block . $end
-   58 term_block: term_block . term_block
+   58 assignment: WHITESPACE .
 
-    $end           shift, and go to state 82
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    DO             shift, and go to state 3
-    FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 83
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    $default  reduce using rule 58 (assignment)
 
 
 State 20
 
-   62 term_block: condition . TERMINATOR
-   65 ternary_block: condition . QUES block COLON block TERMINATOR
-   66              | condition . QUES expr COLON expr
+   96 def_block: DEFINE .
 
-    QUES        shift, and go to state 84
-    TERMINATOR  shift, and go to state 85
+    $default  reduce using rule 96 (def_block)
 
 
 State 21
 
-   61 term_block: ternary_block .
+   97 def_block: IFDEF .
 
-    $default  reduce using rule 61 (term_block)
+    $default  reduce using rule 97 (def_block)
 
 
 State 22
 
-   56 block: def_block .
+   98 def_block: IFNDEF .
 
-    $default  reduce using rule 56 (block)
+    $default  reduce using rule 98 (def_block)
 
 
 State 23
 
-   51 block: if_block .
+   89 function_def_block: FUNCTION . IDENT OP arg_def_block CP OCB term_block CCB
 
-    $default  reduce using rule 51 (block)
+    IDENT  shift, and go to state 69
 
 
 State 24
 
-   52 block: while_block .
+   69 data_def_block: data_type . arr_elem_block TERMINATOR
+   70               | data_type . arr_elem_block ASSIGN expr TERMINATOR
 
-    $default  reduce using rule 52 (block)
+    IDENT  shift, and go to state 70
+
+    arr_elem        go to state 71
+    arr_elem_block  go to state 72
 
 
 State 25
 
-   60 term_block: do_while_block .
+   85 condition: expr . op expr
+   93 ternary_block: expr . QUES block COLON block TERMINATOR
+   95              | expr . QUES expr COLON expr
 
-    $default  reduce using rule 60 (term_block)
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    QUES            shift, and go to state 84
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
 
 
 State 26
 
-   53 block: for_block .
+   52 expr: term .
 
-    $default  reduce using rule 53 (block)
+    $default  reduce using rule 52 (expr)
 
 
 State 27
 
-   54 block: comment_block .
+   59 block: assignment .
 
-    $default  reduce using rule 54 (block)
+    $default  reduce using rule 59 (block)
 
 
 State 28
 
-   55 block: multi_comment_block .
+   60 block: block . block
+   77 term_block: block .
+   79           | block . TERMINATOR
 
-    $default  reduce using rule 55 (block)
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    TERMINATOR     shift, and go to state 105
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    IF             [reduce using rule 77 (term_block)]
+    WHILE          [reduce using rule 77 (term_block)]
+    FOR            [reduce using rule 77 (term_block)]
+    INT            [reduce using rule 77 (term_block)]
+    LONG           [reduce using rule 77 (term_block)]
+    CHAR           [reduce using rule 77 (term_block)]
+    FLOAT          [reduce using rule 77 (term_block)]
+    DOUBLE         [reduce using rule 77 (term_block)]
+    IDENT          [reduce using rule 77 (term_block)]
+    TERMINATOR     [reduce using rule 77 (term_block)]
+    OCB            [reduce using rule 77 (term_block)]
+    COMMENT        [reduce using rule 77 (term_block)]
+    MULTI_COMMENT  [reduce using rule 77 (term_block)]
+    WHITESPACE     [reduce using rule 77 (term_block)]
+    DEFINE         [reduce using rule 77 (term_block)]
+    IFDEF          [reduce using rule 77 (term_block)]
+    IFNDEF         [reduce using rule 77 (term_block)]
+    $default       reduce using rule 77 (term_block)
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
 
 
 State 29
 
-   44 expr: IDENT .
+   68 block: data_def_block .
 
-    $default  reduce using rule 44 (expr)
+    $default  reduce using rule 68 (block)
 
 
 State 30
 
-   70 if_block: IF condition . term_block
-   71         | IF condition . term_block ELSE term_block
+    0 $accept: term_block . $end
+   78 term_block: term_block . term_block
 
+    $end           shift, and go to state 107
     IF             shift, and go to state 1
     WHILE          shift, and go to state 2
     DO             shift, and go to state 3
     FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
 
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 86
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 108
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
 
 
 State 31
 
-   72 while_block: WHILE condition . block
+   50 expr: condition .
+   82 term_block: condition . TERMINATOR
+   92 ternary_block: condition . QUES block COLON block TERMINATOR
+   94              | condition . QUES expr COLON expr
 
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
+    QUES        shift, and go to state 109
+    TERMINATOR  shift, and go to state 110
 
-    assignment           go to state 17
-    block                go to state 87
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    QUES      [reduce using rule 50 (expr)]
+    $default  reduce using rule 50 (expr)
 
 
 State 32
 
-   46 assignment: IDENT . assign_op expr
+   53 expr: function_block .
+   54     | function_block . OB expr CB
 
-    BIN_AND_ASSIGN  shift, and go to state 35
-    BIN_IOR_ASSIGN  shift, and go to state 36
-    BIN_XOR_ASSIGN  shift, and go to state 37
-    ADD_ASSIGN      shift, and go to state 38
-    SUB_ASSIGN      shift, and go to state 39
-    MULT_ASSIGN     shift, and go to state 40
-    DIV_ASSIGN      shift, and go to state 41
-    MOD_ASSIGN      shift, and go to state 42
-    LEFT_ASSIGN     shift, and go to state 43
-    RIGHT_ASSIGN    shift, and go to state 44
-    ASSIGN          shift, and go to state 45
+    OB  shift, and go to state 111
 
-    assign_op  go to state 46
+    $default  reduce using rule 53 (expr)
 
 
 State 33
 
-   49 block: block . block
-   73 do_while_block: DO block . WHILE condition TERMINATOR
+   84 term_block: function_def_block .
 
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 88
-    FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    assignment           go to state 17
-    block                go to state 81
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    $default  reduce using rule 84 (term_block)
 
 
 State 34
 
-   74 for_block: FOR OP . assignment TERMINATOR condition TERMINATOR assignment CP block
+   81 term_block: ternary_block .
 
-    IDENT       shift, and go to state 32
-    WHITESPACE  shift, and go to state 12
-
-    assignment  go to state 89
+    $default  reduce using rule 81 (term_block)
 
 
 State 35
 
-   32 assign_op: BIN_AND_ASSIGN .
+   67 block: def_block .
 
-    $default  reduce using rule 32 (assign_op)
+    $default  reduce using rule 67 (block)
 
 
 State 36
 
-   34 assign_op: BIN_IOR_ASSIGN .
+   62 block: if_block .
 
-    $default  reduce using rule 34 (assign_op)
+    $default  reduce using rule 62 (block)
 
 
 State 37
 
-   33 assign_op: BIN_XOR_ASSIGN .
+   63 block: while_block .
 
-    $default  reduce using rule 33 (assign_op)
+    $default  reduce using rule 63 (block)
 
 
 State 38
 
-   25 assign_op: ADD_ASSIGN .
+   80 term_block: do_while_block .
 
-    $default  reduce using rule 25 (assign_op)
+    $default  reduce using rule 80 (term_block)
 
 
 State 39
 
-   26 assign_op: SUB_ASSIGN .
+   64 block: for_block .
 
-    $default  reduce using rule 26 (assign_op)
+    $default  reduce using rule 64 (block)
 
 
 State 40
 
-   27 assign_op: MULT_ASSIGN .
+   65 block: comment_block .
 
-    $default  reduce using rule 27 (assign_op)
+    $default  reduce using rule 65 (block)
 
 
 State 41
 
-   28 assign_op: DIV_ASSIGN .
+   66 block: multi_comment_block .
 
-    $default  reduce using rule 28 (assign_op)
+    $default  reduce using rule 66 (block)
 
 
 State 42
 
-   29 assign_op: MOD_ASSIGN .
+   55 term: IDENT .
+   88 function_block: IDENT . OP ident_block CP
 
-    $default  reduce using rule 29 (assign_op)
+    OP  shift, and go to state 64
+
+    OP        [reduce using rule 55 (term)]
+    $default  reduce using rule 55 (term)
 
 
 State 43
 
-   30 assign_op: LEFT_ASSIGN .
+   85 condition: expr . op expr
+  100 if_block: IF expr . term_block
+  102         | IF expr . term_block ELSE term_block
 
-    $default  reduce using rule 30 (assign_op)
+    IF              shift, and go to state 1
+    WHILE           shift, and go to state 2
+    DO              shift, and go to state 3
+    FOR             shift, and go to state 4
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    TRUE            shift, and go to state 5
+    FALSE           shift, and go to state 6
+    INT             shift, and go to state 7
+    LONG            shift, and go to state 8
+    CHAR            shift, and go to state 9
+    FLOAT           shift, and go to state 10
+    DOUBLE          shift, and go to state 11
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    NUM             shift, and go to state 12
+    IDENT           shift, and go to state 13
+    ASSIGN          shift, and go to state 63
+    TERMINATOR      shift, and go to state 14
+    OP              shift, and go to state 15
+    OCB             shift, and go to state 16
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+    COMMENT         shift, and go to state 17
+    MULTI_COMMENT   shift, and go to state 18
+    WHITESPACE      shift, and go to state 19
+    DEFINE          shift, and go to state 20
+    IFDEF           shift, and go to state 21
+    IFNDEF          shift, and go to state 22
+    FUNCTION        shift, and go to state 23
+
+    data_type            go to state 24
+    arith_bi_op          go to state 97
+    arith_un_op          go to state 98
+    logic_bi_op          go to state 99
+    logic_un_op          go to state 100
+    bit_un_op            go to state 101
+    bit_bi_op            go to state 102
+    assign_op            go to state 103
+    op                   go to state 104
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 112
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
 
 
 State 44
 
-   31 assign_op: RIGHT_ASSIGN .
-
-    $default  reduce using rule 31 (assign_op)
-
-
-State 45
-
-   24 assign_op: ASSIGN .
-
-    $default  reduce using rule 24 (assign_op)
-
-
-State 46
-
-   46 assignment: IDENT assign_op . expr
-
-    NUM    shift, and go to state 5
-    IDENT  shift, and go to state 29
-    OP     shift, and go to state 8
-
-    expr  go to state 90
-
-
-State 47
-
-   42 expr: expr . op expr
-   43     | OP expr . CP
-
-    AND             shift, and go to state 49
-    OR              shift, and go to state 50
-    NOT             shift, and go to state 51
-    ADD             shift, and go to state 52
-    SUB             shift, and go to state 53
-    MULT            shift, and go to state 54
-    DIV             shift, and go to state 55
-    EXP             shift, and go to state 56
-    MOD             shift, and go to state 57
-    INC             shift, and go to state 58
-    DEC             shift, and go to state 59
-    BIN_NOT         shift, and go to state 60
-    BIN_AND         shift, and go to state 61
-    BIN_OR          shift, and go to state 62
-    BIN_XOR         shift, and go to state 63
-    BIN_LEFT        shift, and go to state 64
-    BIN_RIGHT       shift, and go to state 65
-    BIN_AND_ASSIGN  shift, and go to state 35
-    BIN_IOR_ASSIGN  shift, and go to state 36
-    BIN_XOR_ASSIGN  shift, and go to state 37
-    ADD_ASSIGN      shift, and go to state 38
-    SUB_ASSIGN      shift, and go to state 39
-    MULT_ASSIGN     shift, and go to state 40
-    DIV_ASSIGN      shift, and go to state 41
-    MOD_ASSIGN      shift, and go to state 42
-    LEFT_ASSIGN     shift, and go to state 43
-    RIGHT_ASSIGN    shift, and go to state 44
-    ASSIGN          shift, and go to state 45
-    CP              shift, and go to state 91
-    EQ              shift, and go to state 66
-    NOTEQ           shift, and go to state 67
-    GT              shift, and go to state 68
-    LT              shift, and go to state 69
-    GE              shift, and go to state 70
-    LE              shift, and go to state 71
-
-    arith_bi_op  go to state 72
-    arith_un_op  go to state 73
-    logic_bi_op  go to state 74
-    logic_un_op  go to state 75
-    bit_un_op    go to state 76
-    bit_bi_op    go to state 77
-    assign_op    go to state 78
-    op           go to state 79
-
-
-State 48
-
-   50 block: OCB term_block . CCB
-   58 term_block: term_block . term_block
+   50 expr: condition .
+   99 if_block: IF condition . term_block
+  101         | IF condition . term_block ELSE term_block
 
     IF             shift, and go to state 1
     WHILE          shift, and go to state 2
     DO             shift, and go to state 3
     FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    CCB            shift, and go to state 92
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 83
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 49
-
-   15 logic_bi_op: AND .
-
-    $default  reduce using rule 15 (logic_bi_op)
-
-
-State 50
-
-   16 logic_bi_op: OR .
-
-    $default  reduce using rule 16 (logic_bi_op)
-
-
-State 51
-
-   17 logic_un_op: NOT .
-
-    $default  reduce using rule 17 (logic_un_op)
-
-
-State 52
-
-    1 arith_bi_op: ADD .
-
-    $default  reduce using rule 1 (arith_bi_op)
-
-
-State 53
-
-    2 arith_bi_op: SUB .
-
-    $default  reduce using rule 2 (arith_bi_op)
-
-
-State 54
-
-    3 arith_bi_op: MULT .
-
-    $default  reduce using rule 3 (arith_bi_op)
-
-
-State 55
-
-    4 arith_bi_op: DIV .
-
-    $default  reduce using rule 4 (arith_bi_op)
-
-
-State 56
-
-    6 arith_bi_op: EXP .
-
-    $default  reduce using rule 6 (arith_bi_op)
-
-
-State 57
-
-    5 arith_bi_op: MOD .
-
-    $default  reduce using rule 5 (arith_bi_op)
-
-
-State 58
-
-    7 arith_un_op: INC .
-
-    $default  reduce using rule 7 (arith_un_op)
-
-
-State 59
-
-    8 arith_un_op: DEC .
-
-    $default  reduce using rule 8 (arith_un_op)
-
-
-State 60
-
-   18 bit_un_op: BIN_NOT .
-
-    $default  reduce using rule 18 (bit_un_op)
-
-
-State 61
-
-   19 bit_bi_op: BIN_AND .
-
-    $default  reduce using rule 19 (bit_bi_op)
-
-
-State 62
-
-   20 bit_bi_op: BIN_OR .
-
-    $default  reduce using rule 20 (bit_bi_op)
-
-
-State 63
-
-   21 bit_bi_op: BIN_XOR .
-
-    $default  reduce using rule 21 (bit_bi_op)
-
-
-State 64
-
-   22 bit_bi_op: BIN_LEFT .
-
-    $default  reduce using rule 22 (bit_bi_op)
-
-
-State 65
-
-   23 bit_bi_op: BIN_RIGHT .
-
-    $default  reduce using rule 23 (bit_bi_op)
-
-
-State 66
-
-    9 logic_bi_op: EQ .
-
-    $default  reduce using rule 9 (logic_bi_op)
-
-
-State 67
-
-   10 logic_bi_op: NOTEQ .
-
-    $default  reduce using rule 10 (logic_bi_op)
-
-
-State 68
-
-   11 logic_bi_op: GT .
-
-    $default  reduce using rule 11 (logic_bi_op)
-
-
-State 69
-
-   12 logic_bi_op: LT .
-
-    $default  reduce using rule 12 (logic_bi_op)
-
-
-State 70
-
-   13 logic_bi_op: GE .
-
-    $default  reduce using rule 13 (logic_bi_op)
-
-
-State 71
-
-   14 logic_bi_op: LE .
-
-    $default  reduce using rule 14 (logic_bi_op)
-
-
-State 72
-
-   35 op: arith_bi_op .
-
-    $default  reduce using rule 35 (op)
-
-
-State 73
-
-   36 op: arith_un_op .
-
-    $default  reduce using rule 36 (op)
-
-
-State 74
-
-   37 op: logic_bi_op .
-
-    $default  reduce using rule 37 (op)
-
-
-State 75
-
-   38 op: logic_un_op .
-
-    $default  reduce using rule 38 (op)
-
-
-State 76
-
-   39 op: bit_un_op .
-
-    $default  reduce using rule 39 (op)
-
-
-State 77
-
-   40 op: bit_bi_op .
-
-    $default  reduce using rule 40 (op)
-
-
-State 78
-
-   41 op: assign_op .
-
-    $default  reduce using rule 41 (op)
-
-
-State 79
-
-   42 expr: expr op . expr
-
-    NUM    shift, and go to state 5
-    IDENT  shift, and go to state 29
-    OP     shift, and go to state 8
-
-    expr  go to state 93
-
-
-State 80
-
-   59 term_block: block TERMINATOR .
-
-    $default  reduce using rule 59 (term_block)
-
-
-State 81
-
-   49 block: block . block
-   49      | block block .
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    IF             [reduce using rule 50 (expr)]
+    WHILE          [reduce using rule 50 (expr)]
+    DO             [reduce using rule 50 (expr)]
+    FOR            [reduce using rule 50 (expr)]
+    TRUE           [reduce using rule 50 (expr)]
+    FALSE          [reduce using rule 50 (expr)]
+    INT            [reduce using rule 50 (expr)]
+    LONG           [reduce using rule 50 (expr)]
+    CHAR           [reduce using rule 50 (expr)]
+    FLOAT          [reduce using rule 50 (expr)]
+    DOUBLE         [reduce using rule 50 (expr)]
+    NUM            [reduce using rule 50 (expr)]
+    IDENT          [reduce using rule 50 (expr)]
+    TERMINATOR     [reduce using rule 50 (expr)]
+    OP             [reduce using rule 50 (expr)]
+    OCB            [reduce using rule 50 (expr)]
+    COMMENT        [reduce using rule 50 (expr)]
+    MULTI_COMMENT  [reduce using rule 50 (expr)]
+    WHITESPACE     [reduce using rule 50 (expr)]
+    DEFINE         [reduce using rule 50 (expr)]
+    IFDEF          [reduce using rule 50 (expr)]
+    IFNDEF         [reduce using rule 50 (expr)]
+    FUNCTION       [reduce using rule 50 (expr)]
+    $default       reduce using rule 50 (expr)
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 113
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 45
+
+   85 condition: expr . op expr
+  104 while_block: WHILE expr . block
+
+    IF              shift, and go to state 1
+    WHILE           shift, and go to state 2
+    FOR             shift, and go to state 4
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    INT             shift, and go to state 7
+    LONG            shift, and go to state 8
+    CHAR            shift, and go to state 9
+    FLOAT           shift, and go to state 10
+    DOUBLE          shift, and go to state 11
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    IDENT           shift, and go to state 47
+    ASSIGN          shift, and go to state 63
+    OCB             shift, and go to state 16
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+    COMMENT         shift, and go to state 17
+    MULTI_COMMENT   shift, and go to state 18
+    WHITESPACE      shift, and go to state 19
+    DEFINE          shift, and go to state 20
+    IFDEF           shift, and go to state 21
+    IFNDEF          shift, and go to state 22
+
+    data_type            go to state 24
+    arith_bi_op          go to state 97
+    arith_un_op          go to state 98
+    logic_bi_op          go to state 99
+    logic_un_op          go to state 100
+    bit_un_op            go to state 101
+    bit_bi_op            go to state 102
+    assign_op            go to state 103
+    op                   go to state 104
+    assignment           go to state 27
+    block                go to state 114
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 46
+
+   50 expr: condition .
+  103 while_block: WHILE condition . block
 
     IF             shift, and go to state 1
     WHILE          shift, and go to state 2
     FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
 
-    IF             [reduce using rule 49 (block)]
-    WHILE          [reduce using rule 49 (block)]
-    FOR            [reduce using rule 49 (block)]
-    IDENT          [reduce using rule 49 (block)]
-    OCB            [reduce using rule 49 (block)]
-    COMMENT        [reduce using rule 49 (block)]
-    MULTI_COMMENT  [reduce using rule 49 (block)]
-    WHITESPACE     [reduce using rule 49 (block)]
-    DEFINE         [reduce using rule 49 (block)]
-    IFDEF          [reduce using rule 49 (block)]
-    IFNDEF         [reduce using rule 49 (block)]
-    $default       reduce using rule 49 (block)
+    IF             [reduce using rule 50 (expr)]
+    WHILE          [reduce using rule 50 (expr)]
+    FOR            [reduce using rule 50 (expr)]
+    INT            [reduce using rule 50 (expr)]
+    LONG           [reduce using rule 50 (expr)]
+    CHAR           [reduce using rule 50 (expr)]
+    FLOAT          [reduce using rule 50 (expr)]
+    DOUBLE         [reduce using rule 50 (expr)]
+    IDENT          [reduce using rule 50 (expr)]
+    OCB            [reduce using rule 50 (expr)]
+    COMMENT        [reduce using rule 50 (expr)]
+    MULTI_COMMENT  [reduce using rule 50 (expr)]
+    WHITESPACE     [reduce using rule 50 (expr)]
+    DEFINE         [reduce using rule 50 (expr)]
+    IFDEF          [reduce using rule 50 (expr)]
+    IFNDEF         [reduce using rule 50 (expr)]
+    $default       reduce using rule 50 (expr)
 
-    assignment           go to state 17
-    block                go to state 81
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 115
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 47
+
+   57 assignment: IDENT . assign_op expr
+
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+
+    assign_op  go to state 65
+
+
+State 48
+
+   60 block: block . block
+  105 do_while_block: DO block . WHILE condition TERMINATOR
+  106               | DO block . WHILE expr TERMINATOR
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 116
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 49
+
+  107 for_block: FOR OP . assignment TERMINATOR condition TERMINATOR assignment CP block
+
+    IDENT       shift, and go to state 47
+    WHITESPACE  shift, and go to state 19
+
+    assignment  go to state 117
+
+
+State 50
+
+    6 data_type: LONG LONG .
+
+    $default  reduce using rule 6 (data_type)
+
+
+State 51
+
+    7 data_type: LONG FLOAT .
+
+    $default  reduce using rule 7 (data_type)
+
+
+State 52
+
+    8 data_type: LONG DOUBLE .
+
+    $default  reduce using rule 8 (data_type)
+
+
+State 53
+
+   40 assign_op: BIN_AND_ASSIGN .
+
+    $default  reduce using rule 40 (assign_op)
+
+
+State 54
+
+   42 assign_op: BIN_IOR_ASSIGN .
+
+    $default  reduce using rule 42 (assign_op)
+
+
+State 55
+
+   41 assign_op: BIN_XOR_ASSIGN .
+
+    $default  reduce using rule 41 (assign_op)
+
+
+State 56
+
+   33 assign_op: ADD_ASSIGN .
+
+    $default  reduce using rule 33 (assign_op)
+
+
+State 57
+
+   34 assign_op: SUB_ASSIGN .
+
+    $default  reduce using rule 34 (assign_op)
+
+
+State 58
+
+   35 assign_op: MULT_ASSIGN .
+
+    $default  reduce using rule 35 (assign_op)
+
+
+State 59
+
+   36 assign_op: DIV_ASSIGN .
+
+    $default  reduce using rule 36 (assign_op)
+
+
+State 60
+
+   37 assign_op: MOD_ASSIGN .
+
+    $default  reduce using rule 37 (assign_op)
+
+
+State 61
+
+   38 assign_op: LEFT_ASSIGN .
+
+    $default  reduce using rule 38 (assign_op)
+
+
+State 62
+
+   39 assign_op: RIGHT_ASSIGN .
+
+    $default  reduce using rule 39 (assign_op)
+
+
+State 63
+
+   32 assign_op: ASSIGN .
+
+    $default  reduce using rule 32 (assign_op)
+
+
+State 64
+
+   88 function_block: IDENT OP . ident_block CP
+
+    IDENT  shift, and go to state 118
+
+    ident_block  go to state 119
+
+
+State 65
+
+   57 assignment: IDENT assign_op . expr
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 120
+    term            go to state 26
+    condition       go to state 67
+    function_block  go to state 32
+
+
+State 66
+
+   51 expr: OP expr . CP
+   85 condition: expr . op expr
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    CP              shift, and go to state 121
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 67
+
+   50 expr: condition .
+
+    $default  reduce using rule 50 (expr)
+
+
+State 68
+
+   61 block: OCB term_block . CCB
+   78 term_block: term_block . term_block
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    CCB            shift, and go to state 122
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 108
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 69
+
+   89 function_def_block: FUNCTION IDENT . OP arg_def_block CP OCB term_block CCB
+
+    OP  shift, and go to state 123
+
+
+State 70
+
+   73 arr_elem: IDENT . OB expr CB
+   74         | IDENT .
+
+    OB  shift, and go to state 124
+
+    $default  reduce using rule 74 (arr_elem)
+
+
+State 71
+
+   75 arr_elem_block: arr_elem .
+   76               | arr_elem . COMMA arr_elem_block
+
+    COMMA  shift, and go to state 125
+
+    $default  reduce using rule 75 (arr_elem_block)
+
+
+State 72
+
+   69 data_def_block: data_type arr_elem_block . TERMINATOR
+   70               | data_type arr_elem_block . ASSIGN expr TERMINATOR
+
+    ASSIGN      shift, and go to state 126
+    TERMINATOR  shift, and go to state 127
+
+
+State 73
+
+   23 logic_bi_op: AND .
+
+    $default  reduce using rule 23 (logic_bi_op)
+
+
+State 74
+
+   24 logic_bi_op: OR .
+
+    $default  reduce using rule 24 (logic_bi_op)
+
+
+State 75
+
+   25 logic_un_op: NOT .
+
+    $default  reduce using rule 25 (logic_un_op)
+
+
+State 76
+
+    9 arith_bi_op: ADD .
+
+    $default  reduce using rule 9 (arith_bi_op)
+
+
+State 77
+
+   10 arith_bi_op: SUB .
+
+    $default  reduce using rule 10 (arith_bi_op)
+
+
+State 78
+
+   11 arith_bi_op: MULT .
+
+    $default  reduce using rule 11 (arith_bi_op)
+
+
+State 79
+
+   12 arith_bi_op: DIV .
+
+    $default  reduce using rule 12 (arith_bi_op)
+
+
+State 80
+
+   14 arith_bi_op: EXP .
+
+    $default  reduce using rule 14 (arith_bi_op)
+
+
+State 81
+
+   13 arith_bi_op: MOD .
+
+    $default  reduce using rule 13 (arith_bi_op)
 
 
 State 82
+
+   15 arith_un_op: INC .
+
+    $default  reduce using rule 15 (arith_un_op)
+
+
+State 83
+
+   16 arith_un_op: DEC .
+
+    $default  reduce using rule 16 (arith_un_op)
+
+
+State 84
+
+   93 ternary_block: expr QUES . block COLON block TERMINATOR
+   95              | expr QUES . expr COLON expr
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    expr                 go to state 128
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 129
+    data_def_block       go to state 29
+    condition            go to state 67
+    function_block       go to state 32
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 85
+
+   26 bit_un_op: BIN_NOT .
+
+    $default  reduce using rule 26 (bit_un_op)
+
+
+State 86
+
+   27 bit_bi_op: BIN_AND .
+
+    $default  reduce using rule 27 (bit_bi_op)
+
+
+State 87
+
+   28 bit_bi_op: BIN_OR .
+
+    $default  reduce using rule 28 (bit_bi_op)
+
+
+State 88
+
+   29 bit_bi_op: BIN_XOR .
+
+    $default  reduce using rule 29 (bit_bi_op)
+
+
+State 89
+
+   30 bit_bi_op: BIN_LEFT .
+
+    $default  reduce using rule 30 (bit_bi_op)
+
+
+State 90
+
+   31 bit_bi_op: BIN_RIGHT .
+
+    $default  reduce using rule 31 (bit_bi_op)
+
+
+State 91
+
+   17 logic_bi_op: EQ .
+
+    $default  reduce using rule 17 (logic_bi_op)
+
+
+State 92
+
+   18 logic_bi_op: NOTEQ .
+
+    $default  reduce using rule 18 (logic_bi_op)
+
+
+State 93
+
+   19 logic_bi_op: GT .
+
+    $default  reduce using rule 19 (logic_bi_op)
+
+
+State 94
+
+   20 logic_bi_op: LT .
+
+    $default  reduce using rule 20 (logic_bi_op)
+
+
+State 95
+
+   21 logic_bi_op: GE .
+
+    $default  reduce using rule 21 (logic_bi_op)
+
+
+State 96
+
+   22 logic_bi_op: LE .
+
+    $default  reduce using rule 22 (logic_bi_op)
+
+
+State 97
+
+   43 op: arith_bi_op .
+
+    $default  reduce using rule 43 (op)
+
+
+State 98
+
+   44 op: arith_un_op .
+
+    $default  reduce using rule 44 (op)
+
+
+State 99
+
+   45 op: logic_bi_op .
+
+    $default  reduce using rule 45 (op)
+
+
+State 100
+
+   46 op: logic_un_op .
+
+    $default  reduce using rule 46 (op)
+
+
+State 101
+
+   47 op: bit_un_op .
+
+    $default  reduce using rule 47 (op)
+
+
+State 102
+
+   48 op: bit_bi_op .
+
+    $default  reduce using rule 48 (op)
+
+
+State 103
+
+   49 op: assign_op .
+
+    $default  reduce using rule 49 (op)
+
+
+State 104
+
+   85 condition: expr op . expr
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 130
+    term            go to state 26
+    condition       go to state 67
+    function_block  go to state 32
+
+
+State 105
+
+   79 term_block: block TERMINATOR .
+
+    $default  reduce using rule 79 (term_block)
+
+
+State 106
+
+   60 block: block . block
+   60      | block block .
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    IF             [reduce using rule 60 (block)]
+    WHILE          [reduce using rule 60 (block)]
+    FOR            [reduce using rule 60 (block)]
+    INT            [reduce using rule 60 (block)]
+    LONG           [reduce using rule 60 (block)]
+    CHAR           [reduce using rule 60 (block)]
+    FLOAT          [reduce using rule 60 (block)]
+    DOUBLE         [reduce using rule 60 (block)]
+    IDENT          [reduce using rule 60 (block)]
+    OCB            [reduce using rule 60 (block)]
+    COMMENT        [reduce using rule 60 (block)]
+    MULTI_COMMENT  [reduce using rule 60 (block)]
+    WHITESPACE     [reduce using rule 60 (block)]
+    DEFINE         [reduce using rule 60 (block)]
+    IFDEF          [reduce using rule 60 (block)]
+    IFNDEF         [reduce using rule 60 (block)]
+    $default       reduce using rule 60 (block)
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 107
 
     0 $accept: term_block $end .
 
     $default  accept
 
 
-State 83
-
-   58 term_block: term_block . term_block
-   58           | term_block term_block .
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    DO             shift, and go to state 3
-    FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    IF             [reduce using rule 58 (term_block)]
-    WHILE          [reduce using rule 58 (term_block)]
-    DO             [reduce using rule 58 (term_block)]
-    FOR            [reduce using rule 58 (term_block)]
-    NUM            [reduce using rule 58 (term_block)]
-    IDENT          [reduce using rule 58 (term_block)]
-    TERMINATOR     [reduce using rule 58 (term_block)]
-    OP             [reduce using rule 58 (term_block)]
-    OCB            [reduce using rule 58 (term_block)]
-    COMMENT        [reduce using rule 58 (term_block)]
-    MULTI_COMMENT  [reduce using rule 58 (term_block)]
-    WHITESPACE     [reduce using rule 58 (term_block)]
-    DEFINE         [reduce using rule 58 (term_block)]
-    IFDEF          [reduce using rule 58 (term_block)]
-    IFNDEF         [reduce using rule 58 (term_block)]
-    $default       reduce using rule 58 (term_block)
-
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 83
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 84
-
-   65 ternary_block: condition QUES . block COLON block TERMINATOR
-   66              | condition QUES . expr COLON expr
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    expr                 go to state 94
-    assignment           go to state 17
-    block                go to state 95
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 85
-
-   62 term_block: condition TERMINATOR .
-
-    $default  reduce using rule 62 (term_block)
-
-
-State 86
-
-   58 term_block: term_block . term_block
-   70 if_block: IF condition term_block .
-   71         | IF condition term_block . ELSE term_block
-
-    IF             shift, and go to state 1
-    ELSE           shift, and go to state 96
-    WHILE          shift, and go to state 2
-    DO             shift, and go to state 3
-    FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    IF             [reduce using rule 70 (if_block)]
-    ELSE           [reduce using rule 70 (if_block)]
-    WHILE          [reduce using rule 70 (if_block)]
-    DO             [reduce using rule 70 (if_block)]
-    FOR            [reduce using rule 70 (if_block)]
-    NUM            [reduce using rule 70 (if_block)]
-    IDENT          [reduce using rule 70 (if_block)]
-    TERMINATOR     [reduce using rule 70 (if_block)]
-    OP             [reduce using rule 70 (if_block)]
-    OCB            [reduce using rule 70 (if_block)]
-    COMMENT        [reduce using rule 70 (if_block)]
-    MULTI_COMMENT  [reduce using rule 70 (if_block)]
-    WHITESPACE     [reduce using rule 70 (if_block)]
-    DEFINE         [reduce using rule 70 (if_block)]
-    IFDEF          [reduce using rule 70 (if_block)]
-    IFNDEF         [reduce using rule 70 (if_block)]
-    $default       reduce using rule 70 (if_block)
-
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 83
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 87
-
-   49 block: block . block
-   72 while_block: WHILE condition block .
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    IF             [reduce using rule 72 (while_block)]
-    WHILE          [reduce using rule 72 (while_block)]
-    FOR            [reduce using rule 72 (while_block)]
-    IDENT          [reduce using rule 72 (while_block)]
-    OCB            [reduce using rule 72 (while_block)]
-    COMMENT        [reduce using rule 72 (while_block)]
-    MULTI_COMMENT  [reduce using rule 72 (while_block)]
-    WHITESPACE     [reduce using rule 72 (while_block)]
-    DEFINE         [reduce using rule 72 (while_block)]
-    IFDEF          [reduce using rule 72 (while_block)]
-    IFNDEF         [reduce using rule 72 (while_block)]
-    $default       reduce using rule 72 (while_block)
-
-    assignment           go to state 17
-    block                go to state 81
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 88
-
-   72 while_block: WHILE . condition block
-   73 do_while_block: DO block WHILE . condition TERMINATOR
-
-    NUM    shift, and go to state 5
-    IDENT  shift, and go to state 29
-    OP     shift, and go to state 8
-
-    expr       go to state 16
-    condition  go to state 97
-
-
-State 89
-
-   74 for_block: FOR OP assignment . TERMINATOR condition TERMINATOR assignment CP block
-
-    TERMINATOR  shift, and go to state 98
-
-
-State 90
-
-   42 expr: expr . op expr
-   46 assignment: IDENT assign_op expr .
-
-    AND             shift, and go to state 49
-    OR              shift, and go to state 50
-    NOT             shift, and go to state 51
-    ADD             shift, and go to state 52
-    SUB             shift, and go to state 53
-    MULT            shift, and go to state 54
-    DIV             shift, and go to state 55
-    EXP             shift, and go to state 56
-    MOD             shift, and go to state 57
-    INC             shift, and go to state 58
-    DEC             shift, and go to state 59
-    BIN_NOT         shift, and go to state 60
-    BIN_AND         shift, and go to state 61
-    BIN_OR          shift, and go to state 62
-    BIN_XOR         shift, and go to state 63
-    BIN_LEFT        shift, and go to state 64
-    BIN_RIGHT       shift, and go to state 65
-    BIN_AND_ASSIGN  shift, and go to state 35
-    BIN_IOR_ASSIGN  shift, and go to state 36
-    BIN_XOR_ASSIGN  shift, and go to state 37
-    ADD_ASSIGN      shift, and go to state 38
-    SUB_ASSIGN      shift, and go to state 39
-    MULT_ASSIGN     shift, and go to state 40
-    DIV_ASSIGN      shift, and go to state 41
-    MOD_ASSIGN      shift, and go to state 42
-    LEFT_ASSIGN     shift, and go to state 43
-    RIGHT_ASSIGN    shift, and go to state 44
-    ASSIGN          shift, and go to state 45
-    EQ              shift, and go to state 66
-    NOTEQ           shift, and go to state 67
-    GT              shift, and go to state 68
-    LT              shift, and go to state 69
-    GE              shift, and go to state 70
-    LE              shift, and go to state 71
-
-    $default  reduce using rule 46 (assignment)
-
-    arith_bi_op  go to state 72
-    arith_un_op  go to state 73
-    logic_bi_op  go to state 74
-    logic_un_op  go to state 75
-    bit_un_op    go to state 76
-    bit_bi_op    go to state 77
-    assign_op    go to state 78
-    op           go to state 79
-
-
-State 91
-
-   43 expr: OP expr CP .
-
-    $default  reduce using rule 43 (expr)
-
-
-State 92
-
-   50 block: OCB term_block CCB .
-
-    $default  reduce using rule 50 (block)
-
-
-State 93
-
-   42 expr: expr . op expr
-   42     | expr op expr .
-
-    AND             shift, and go to state 49
-    OR              shift, and go to state 50
-    NOT             shift, and go to state 51
-    ADD             shift, and go to state 52
-    SUB             shift, and go to state 53
-    MULT            shift, and go to state 54
-    DIV             shift, and go to state 55
-    EXP             shift, and go to state 56
-    MOD             shift, and go to state 57
-    INC             shift, and go to state 58
-    DEC             shift, and go to state 59
-    BIN_NOT         shift, and go to state 60
-    BIN_AND         shift, and go to state 61
-    BIN_OR          shift, and go to state 62
-    BIN_XOR         shift, and go to state 63
-    BIN_LEFT        shift, and go to state 64
-    BIN_RIGHT       shift, and go to state 65
-    BIN_AND_ASSIGN  shift, and go to state 35
-    BIN_IOR_ASSIGN  shift, and go to state 36
-    BIN_XOR_ASSIGN  shift, and go to state 37
-    ADD_ASSIGN      shift, and go to state 38
-    SUB_ASSIGN      shift, and go to state 39
-    MULT_ASSIGN     shift, and go to state 40
-    DIV_ASSIGN      shift, and go to state 41
-    MOD_ASSIGN      shift, and go to state 42
-    LEFT_ASSIGN     shift, and go to state 43
-    RIGHT_ASSIGN    shift, and go to state 44
-    ASSIGN          shift, and go to state 45
-    EQ              shift, and go to state 66
-    NOTEQ           shift, and go to state 67
-    GT              shift, and go to state 68
-    LT              shift, and go to state 69
-    GE              shift, and go to state 70
-    LE              shift, and go to state 71
-
-    AND             [reduce using rule 42 (expr)]
-    OR              [reduce using rule 42 (expr)]
-    NOT             [reduce using rule 42 (expr)]
-    ADD             [reduce using rule 42 (expr)]
-    SUB             [reduce using rule 42 (expr)]
-    MULT            [reduce using rule 42 (expr)]
-    DIV             [reduce using rule 42 (expr)]
-    EXP             [reduce using rule 42 (expr)]
-    MOD             [reduce using rule 42 (expr)]
-    INC             [reduce using rule 42 (expr)]
-    DEC             [reduce using rule 42 (expr)]
-    BIN_NOT         [reduce using rule 42 (expr)]
-    BIN_AND         [reduce using rule 42 (expr)]
-    BIN_OR          [reduce using rule 42 (expr)]
-    BIN_XOR         [reduce using rule 42 (expr)]
-    BIN_LEFT        [reduce using rule 42 (expr)]
-    BIN_RIGHT       [reduce using rule 42 (expr)]
-    BIN_AND_ASSIGN  [reduce using rule 42 (expr)]
-    BIN_IOR_ASSIGN  [reduce using rule 42 (expr)]
-    BIN_XOR_ASSIGN  [reduce using rule 42 (expr)]
-    ADD_ASSIGN      [reduce using rule 42 (expr)]
-    SUB_ASSIGN      [reduce using rule 42 (expr)]
-    MULT_ASSIGN     [reduce using rule 42 (expr)]
-    DIV_ASSIGN      [reduce using rule 42 (expr)]
-    MOD_ASSIGN      [reduce using rule 42 (expr)]
-    LEFT_ASSIGN     [reduce using rule 42 (expr)]
-    RIGHT_ASSIGN    [reduce using rule 42 (expr)]
-    ASSIGN          [reduce using rule 42 (expr)]
-    EQ              [reduce using rule 42 (expr)]
-    NOTEQ           [reduce using rule 42 (expr)]
-    GT              [reduce using rule 42 (expr)]
-    LT              [reduce using rule 42 (expr)]
-    GE              [reduce using rule 42 (expr)]
-    LE              [reduce using rule 42 (expr)]
-    $default        reduce using rule 42 (expr)
-
-    arith_bi_op  go to state 72
-    arith_un_op  go to state 73
-    logic_bi_op  go to state 74
-    logic_un_op  go to state 75
-    bit_un_op    go to state 76
-    bit_bi_op    go to state 77
-    assign_op    go to state 78
-    op           go to state 79
-
-
-State 94
-
-   42 expr: expr . op expr
-   66 ternary_block: condition QUES expr . COLON expr
-
-    AND             shift, and go to state 49
-    OR              shift, and go to state 50
-    NOT             shift, and go to state 51
-    ADD             shift, and go to state 52
-    SUB             shift, and go to state 53
-    MULT            shift, and go to state 54
-    DIV             shift, and go to state 55
-    EXP             shift, and go to state 56
-    MOD             shift, and go to state 57
-    INC             shift, and go to state 58
-    DEC             shift, and go to state 59
-    BIN_NOT         shift, and go to state 60
-    BIN_AND         shift, and go to state 61
-    BIN_OR          shift, and go to state 62
-    BIN_XOR         shift, and go to state 63
-    BIN_LEFT        shift, and go to state 64
-    BIN_RIGHT       shift, and go to state 65
-    BIN_AND_ASSIGN  shift, and go to state 35
-    BIN_IOR_ASSIGN  shift, and go to state 36
-    BIN_XOR_ASSIGN  shift, and go to state 37
-    ADD_ASSIGN      shift, and go to state 38
-    SUB_ASSIGN      shift, and go to state 39
-    MULT_ASSIGN     shift, and go to state 40
-    DIV_ASSIGN      shift, and go to state 41
-    MOD_ASSIGN      shift, and go to state 42
-    LEFT_ASSIGN     shift, and go to state 43
-    RIGHT_ASSIGN    shift, and go to state 44
-    ASSIGN          shift, and go to state 45
-    COLON           shift, and go to state 99
-    EQ              shift, and go to state 66
-    NOTEQ           shift, and go to state 67
-    GT              shift, and go to state 68
-    LT              shift, and go to state 69
-    GE              shift, and go to state 70
-    LE              shift, and go to state 71
-
-    arith_bi_op  go to state 72
-    arith_un_op  go to state 73
-    logic_bi_op  go to state 74
-    logic_un_op  go to state 75
-    bit_un_op    go to state 76
-    bit_bi_op    go to state 77
-    assign_op    go to state 78
-    op           go to state 79
-
-
-State 95
-
-   49 block: block . block
-   65 ternary_block: condition QUES block . COLON block TERMINATOR
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    COLON          shift, and go to state 100
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    assignment           go to state 17
-    block                go to state 81
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 96
-
-   71 if_block: IF condition term_block ELSE . term_block
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    DO             shift, and go to state 3
-    FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 101
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 97
-
-   72 while_block: WHILE condition . block
-   73 do_while_block: DO block WHILE condition . TERMINATOR
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    TERMINATOR     shift, and go to state 102
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    assignment           go to state 17
-    block                go to state 87
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 98
-
-   74 for_block: FOR OP assignment TERMINATOR . condition TERMINATOR assignment CP block
-
-    NUM    shift, and go to state 5
-    IDENT  shift, and go to state 29
-    OP     shift, and go to state 8
-
-    expr       go to state 16
-    condition  go to state 103
-
-
-State 99
-
-   66 ternary_block: condition QUES expr COLON . expr
-
-    NUM    shift, and go to state 5
-    IDENT  shift, and go to state 29
-    OP     shift, and go to state 8
-
-    expr  go to state 104
-
-
-State 100
-
-   65 ternary_block: condition QUES block COLON . block TERMINATOR
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    assignment           go to state 17
-    block                go to state 105
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 101
-
-   58 term_block: term_block . term_block
-   71 if_block: IF condition term_block ELSE term_block .
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    DO             shift, and go to state 3
-    FOR            shift, and go to state 4
-    NUM            shift, and go to state 5
-    IDENT          shift, and go to state 6
-    TERMINATOR     shift, and go to state 7
-    OP             shift, and go to state 8
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    IF             [reduce using rule 71 (if_block)]
-    WHILE          [reduce using rule 71 (if_block)]
-    DO             [reduce using rule 71 (if_block)]
-    FOR            [reduce using rule 71 (if_block)]
-    NUM            [reduce using rule 71 (if_block)]
-    IDENT          [reduce using rule 71 (if_block)]
-    TERMINATOR     [reduce using rule 71 (if_block)]
-    OP             [reduce using rule 71 (if_block)]
-    OCB            [reduce using rule 71 (if_block)]
-    COMMENT        [reduce using rule 71 (if_block)]
-    MULTI_COMMENT  [reduce using rule 71 (if_block)]
-    WHITESPACE     [reduce using rule 71 (if_block)]
-    DEFINE         [reduce using rule 71 (if_block)]
-    IFDEF          [reduce using rule 71 (if_block)]
-    IFNDEF         [reduce using rule 71 (if_block)]
-    $default       reduce using rule 71 (if_block)
-
-    expr                 go to state 16
-    assignment           go to state 17
-    block                go to state 18
-    term_block           go to state 83
-    condition            go to state 20
-    ternary_block        go to state 21
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    do_while_block       go to state 25
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 102
-
-   73 do_while_block: DO block WHILE condition TERMINATOR .
-
-    $default  reduce using rule 73 (do_while_block)
-
-
-State 103
-
-   74 for_block: FOR OP assignment TERMINATOR condition . TERMINATOR assignment CP block
-
-    TERMINATOR  shift, and go to state 106
-
-
-State 104
-
-   42 expr: expr . op expr
-   66 ternary_block: condition QUES expr COLON expr .
-
-    AND             shift, and go to state 49
-    OR              shift, and go to state 50
-    NOT             shift, and go to state 51
-    ADD             shift, and go to state 52
-    SUB             shift, and go to state 53
-    MULT            shift, and go to state 54
-    DIV             shift, and go to state 55
-    EXP             shift, and go to state 56
-    MOD             shift, and go to state 57
-    INC             shift, and go to state 58
-    DEC             shift, and go to state 59
-    BIN_NOT         shift, and go to state 60
-    BIN_AND         shift, and go to state 61
-    BIN_OR          shift, and go to state 62
-    BIN_XOR         shift, and go to state 63
-    BIN_LEFT        shift, and go to state 64
-    BIN_RIGHT       shift, and go to state 65
-    BIN_AND_ASSIGN  shift, and go to state 35
-    BIN_IOR_ASSIGN  shift, and go to state 36
-    BIN_XOR_ASSIGN  shift, and go to state 37
-    ADD_ASSIGN      shift, and go to state 38
-    SUB_ASSIGN      shift, and go to state 39
-    MULT_ASSIGN     shift, and go to state 40
-    DIV_ASSIGN      shift, and go to state 41
-    MOD_ASSIGN      shift, and go to state 42
-    LEFT_ASSIGN     shift, and go to state 43
-    RIGHT_ASSIGN    shift, and go to state 44
-    ASSIGN          shift, and go to state 45
-    EQ              shift, and go to state 66
-    NOTEQ           shift, and go to state 67
-    GT              shift, and go to state 68
-    LT              shift, and go to state 69
-    GE              shift, and go to state 70
-    LE              shift, and go to state 71
-
-    $default  reduce using rule 66 (ternary_block)
-
-    arith_bi_op  go to state 72
-    arith_un_op  go to state 73
-    logic_bi_op  go to state 74
-    logic_un_op  go to state 75
-    bit_un_op    go to state 76
-    bit_bi_op    go to state 77
-    assign_op    go to state 78
-    op           go to state 79
-
-
-State 105
-
-   49 block: block . block
-   65 ternary_block: condition QUES block COLON block . TERMINATOR
-
-    IF             shift, and go to state 1
-    WHILE          shift, and go to state 2
-    FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    TERMINATOR     shift, and go to state 107
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
-
-    assignment           go to state 17
-    block                go to state 81
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
-
-
-State 106
-
-   74 for_block: FOR OP assignment TERMINATOR condition TERMINATOR . assignment CP block
-
-    IDENT       shift, and go to state 32
-    WHITESPACE  shift, and go to state 12
-
-    assignment  go to state 108
-
-
-State 107
-
-   65 ternary_block: condition QUES block COLON block TERMINATOR .
-
-    $default  reduce using rule 65 (ternary_block)
-
-
 State 108
 
-   74 for_block: FOR OP assignment TERMINATOR condition TERMINATOR assignment . CP block
+   78 term_block: term_block . term_block
+   78           | term_block term_block .
 
-    CP  shift, and go to state 109
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    IF             [reduce using rule 78 (term_block)]
+    WHILE          [reduce using rule 78 (term_block)]
+    DO             [reduce using rule 78 (term_block)]
+    FOR            [reduce using rule 78 (term_block)]
+    TRUE           [reduce using rule 78 (term_block)]
+    FALSE          [reduce using rule 78 (term_block)]
+    INT            [reduce using rule 78 (term_block)]
+    LONG           [reduce using rule 78 (term_block)]
+    CHAR           [reduce using rule 78 (term_block)]
+    FLOAT          [reduce using rule 78 (term_block)]
+    DOUBLE         [reduce using rule 78 (term_block)]
+    NUM            [reduce using rule 78 (term_block)]
+    IDENT          [reduce using rule 78 (term_block)]
+    TERMINATOR     [reduce using rule 78 (term_block)]
+    OP             [reduce using rule 78 (term_block)]
+    OCB            [reduce using rule 78 (term_block)]
+    COMMENT        [reduce using rule 78 (term_block)]
+    MULTI_COMMENT  [reduce using rule 78 (term_block)]
+    WHITESPACE     [reduce using rule 78 (term_block)]
+    DEFINE         [reduce using rule 78 (term_block)]
+    IFDEF          [reduce using rule 78 (term_block)]
+    IFNDEF         [reduce using rule 78 (term_block)]
+    FUNCTION       [reduce using rule 78 (term_block)]
+    $default       reduce using rule 78 (term_block)
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 108
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
 
 
 State 109
 
-   74 for_block: FOR OP assignment TERMINATOR condition TERMINATOR assignment CP . block
+   92 ternary_block: condition QUES . block COLON block TERMINATOR
+   94              | condition QUES . expr COLON expr
 
     IF             shift, and go to state 1
     WHILE          shift, and go to state 2
     FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
 
-    assignment           go to state 17
-    block                go to state 110
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    data_type            go to state 24
+    expr                 go to state 131
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 132
+    data_def_block       go to state 29
+    condition            go to state 67
+    function_block       go to state 32
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
 
 
 State 110
 
-   49 block: block . block
-   74 for_block: FOR OP assignment TERMINATOR condition TERMINATOR assignment CP block .
+   82 term_block: condition TERMINATOR .
+
+    $default  reduce using rule 82 (term_block)
+
+
+State 111
+
+   54 expr: function_block OB . expr CB
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 133
+    term            go to state 26
+    condition       go to state 67
+    function_block  go to state 32
+
+
+State 112
+
+   78 term_block: term_block . term_block
+  100 if_block: IF expr term_block .
+  102         | IF expr term_block . ELSE term_block
+
+    IF             shift, and go to state 1
+    ELSE           shift, and go to state 134
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    IF             [reduce using rule 100 (if_block)]
+    ELSE           [reduce using rule 100 (if_block)]
+    WHILE          [reduce using rule 100 (if_block)]
+    DO             [reduce using rule 100 (if_block)]
+    FOR            [reduce using rule 100 (if_block)]
+    TRUE           [reduce using rule 100 (if_block)]
+    FALSE          [reduce using rule 100 (if_block)]
+    INT            [reduce using rule 100 (if_block)]
+    LONG           [reduce using rule 100 (if_block)]
+    CHAR           [reduce using rule 100 (if_block)]
+    FLOAT          [reduce using rule 100 (if_block)]
+    DOUBLE         [reduce using rule 100 (if_block)]
+    NUM            [reduce using rule 100 (if_block)]
+    IDENT          [reduce using rule 100 (if_block)]
+    TERMINATOR     [reduce using rule 100 (if_block)]
+    OP             [reduce using rule 100 (if_block)]
+    OCB            [reduce using rule 100 (if_block)]
+    COMMENT        [reduce using rule 100 (if_block)]
+    MULTI_COMMENT  [reduce using rule 100 (if_block)]
+    WHITESPACE     [reduce using rule 100 (if_block)]
+    DEFINE         [reduce using rule 100 (if_block)]
+    IFDEF          [reduce using rule 100 (if_block)]
+    IFNDEF         [reduce using rule 100 (if_block)]
+    FUNCTION       [reduce using rule 100 (if_block)]
+    $default       reduce using rule 100 (if_block)
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 108
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 113
+
+   78 term_block: term_block . term_block
+   99 if_block: IF condition term_block .
+  101         | IF condition term_block . ELSE term_block
+
+    IF             shift, and go to state 1
+    ELSE           shift, and go to state 135
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    IF             [reduce using rule 99 (if_block)]
+    ELSE           [reduce using rule 99 (if_block)]
+    WHILE          [reduce using rule 99 (if_block)]
+    DO             [reduce using rule 99 (if_block)]
+    FOR            [reduce using rule 99 (if_block)]
+    TRUE           [reduce using rule 99 (if_block)]
+    FALSE          [reduce using rule 99 (if_block)]
+    INT            [reduce using rule 99 (if_block)]
+    LONG           [reduce using rule 99 (if_block)]
+    CHAR           [reduce using rule 99 (if_block)]
+    FLOAT          [reduce using rule 99 (if_block)]
+    DOUBLE         [reduce using rule 99 (if_block)]
+    NUM            [reduce using rule 99 (if_block)]
+    IDENT          [reduce using rule 99 (if_block)]
+    TERMINATOR     [reduce using rule 99 (if_block)]
+    OP             [reduce using rule 99 (if_block)]
+    OCB            [reduce using rule 99 (if_block)]
+    COMMENT        [reduce using rule 99 (if_block)]
+    MULTI_COMMENT  [reduce using rule 99 (if_block)]
+    WHITESPACE     [reduce using rule 99 (if_block)]
+    DEFINE         [reduce using rule 99 (if_block)]
+    IFDEF          [reduce using rule 99 (if_block)]
+    IFNDEF         [reduce using rule 99 (if_block)]
+    FUNCTION       [reduce using rule 99 (if_block)]
+    $default       reduce using rule 99 (if_block)
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 108
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 114
+
+   60 block: block . block
+  104 while_block: WHILE expr block .
 
     IF             shift, and go to state 1
     WHILE          shift, and go to state 2
     FOR            shift, and go to state 4
-    IDENT          shift, and go to state 32
-    OCB            shift, and go to state 9
-    COMMENT        shift, and go to state 10
-    MULTI_COMMENT  shift, and go to state 11
-    WHITESPACE     shift, and go to state 12
-    DEFINE         shift, and go to state 13
-    IFDEF          shift, and go to state 14
-    IFNDEF         shift, and go to state 15
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
 
-    IF             [reduce using rule 74 (for_block)]
-    WHILE          [reduce using rule 74 (for_block)]
-    FOR            [reduce using rule 74 (for_block)]
-    IDENT          [reduce using rule 74 (for_block)]
-    OCB            [reduce using rule 74 (for_block)]
-    COMMENT        [reduce using rule 74 (for_block)]
-    MULTI_COMMENT  [reduce using rule 74 (for_block)]
-    WHITESPACE     [reduce using rule 74 (for_block)]
-    DEFINE         [reduce using rule 74 (for_block)]
-    IFDEF          [reduce using rule 74 (for_block)]
-    IFNDEF         [reduce using rule 74 (for_block)]
-    $default       reduce using rule 74 (for_block)
+    IF             [reduce using rule 104 (while_block)]
+    WHILE          [reduce using rule 104 (while_block)]
+    FOR            [reduce using rule 104 (while_block)]
+    INT            [reduce using rule 104 (while_block)]
+    LONG           [reduce using rule 104 (while_block)]
+    CHAR           [reduce using rule 104 (while_block)]
+    FLOAT          [reduce using rule 104 (while_block)]
+    DOUBLE         [reduce using rule 104 (while_block)]
+    IDENT          [reduce using rule 104 (while_block)]
+    OCB            [reduce using rule 104 (while_block)]
+    COMMENT        [reduce using rule 104 (while_block)]
+    MULTI_COMMENT  [reduce using rule 104 (while_block)]
+    WHITESPACE     [reduce using rule 104 (while_block)]
+    DEFINE         [reduce using rule 104 (while_block)]
+    IFDEF          [reduce using rule 104 (while_block)]
+    IFNDEF         [reduce using rule 104 (while_block)]
+    $default       reduce using rule 104 (while_block)
 
-    assignment           go to state 17
-    block                go to state 81
-    def_block            go to state 22
-    if_block             go to state 23
-    while_block          go to state 24
-    for_block            go to state 26
-    comment_block        go to state 27
-    multi_comment_block  go to state 28
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 115
+
+   60 block: block . block
+  103 while_block: WHILE condition block .
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    IF             [reduce using rule 103 (while_block)]
+    WHILE          [reduce using rule 103 (while_block)]
+    FOR            [reduce using rule 103 (while_block)]
+    INT            [reduce using rule 103 (while_block)]
+    LONG           [reduce using rule 103 (while_block)]
+    CHAR           [reduce using rule 103 (while_block)]
+    FLOAT          [reduce using rule 103 (while_block)]
+    DOUBLE         [reduce using rule 103 (while_block)]
+    IDENT          [reduce using rule 103 (while_block)]
+    OCB            [reduce using rule 103 (while_block)]
+    COMMENT        [reduce using rule 103 (while_block)]
+    MULTI_COMMENT  [reduce using rule 103 (while_block)]
+    WHITESPACE     [reduce using rule 103 (while_block)]
+    DEFINE         [reduce using rule 103 (while_block)]
+    IFDEF          [reduce using rule 103 (while_block)]
+    IFNDEF         [reduce using rule 103 (while_block)]
+    $default       reduce using rule 103 (while_block)
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 116
+
+  103 while_block: WHILE . condition block
+  104            | WHILE . expr block
+  105 do_while_block: DO block WHILE . condition TERMINATOR
+  106               | DO block WHILE . expr TERMINATOR
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 136
+    term            go to state 26
+    condition       go to state 137
+    function_block  go to state 32
+
+
+State 117
+
+  107 for_block: FOR OP assignment . TERMINATOR condition TERMINATOR assignment CP block
+
+    TERMINATOR  shift, and go to state 138
+
+
+State 118
+
+   71 ident_block: IDENT .
+
+    $default  reduce using rule 71 (ident_block)
+
+
+State 119
+
+   72 ident_block: ident_block . COMMA IDENT
+   88 function_block: IDENT OP ident_block . CP
+
+    CP     shift, and go to state 139
+    COMMA  shift, and go to state 140
+
+
+State 120
+
+   57 assignment: IDENT assign_op expr .
+   85 condition: expr . op expr
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    $default  reduce using rule 57 (assignment)
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 121
+
+   51 expr: OP expr CP .
+
+    $default  reduce using rule 51 (expr)
+
+
+State 122
+
+   61 block: OCB term_block CCB .
+
+    $default  reduce using rule 61 (block)
+
+
+State 123
+
+   89 function_def_block: FUNCTION IDENT OP . arg_def_block CP OCB term_block CCB
+
+    INT     shift, and go to state 7
+    LONG    shift, and go to state 8
+    CHAR    shift, and go to state 9
+    FLOAT   shift, and go to state 10
+    DOUBLE  shift, and go to state 11
+
+    data_type      go to state 141
+    arg_def_block  go to state 142
+
+
+State 124
+
+   73 arr_elem: IDENT OB . expr CB
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 143
+    term            go to state 26
+    condition       go to state 67
+    function_block  go to state 32
+
+
+State 125
+
+   76 arr_elem_block: arr_elem COMMA . arr_elem_block
+
+    IDENT  shift, and go to state 70
+
+    arr_elem        go to state 71
+    arr_elem_block  go to state 144
+
+
+State 126
+
+   70 data_def_block: data_type arr_elem_block ASSIGN . expr TERMINATOR
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 145
+    term            go to state 26
+    condition       go to state 67
+    function_block  go to state 32
+
+
+State 127
+
+   69 data_def_block: data_type arr_elem_block TERMINATOR .
+
+    $default  reduce using rule 69 (data_def_block)
+
+
+State 128
+
+   85 condition: expr . op expr
+   95 ternary_block: expr QUES expr . COLON expr
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    COLON           shift, and go to state 146
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 129
+
+   60 block: block . block
+   93 ternary_block: expr QUES block . COLON block TERMINATOR
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    COLON          shift, and go to state 147
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 130
+
+   85 condition: expr . op expr
+   85          | expr op expr .
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    AND             [reduce using rule 85 (condition)]
+    OR              [reduce using rule 85 (condition)]
+    NOT             [reduce using rule 85 (condition)]
+    ADD             [reduce using rule 85 (condition)]
+    SUB             [reduce using rule 85 (condition)]
+    MULT            [reduce using rule 85 (condition)]
+    DIV             [reduce using rule 85 (condition)]
+    EXP             [reduce using rule 85 (condition)]
+    MOD             [reduce using rule 85 (condition)]
+    INC             [reduce using rule 85 (condition)]
+    DEC             [reduce using rule 85 (condition)]
+    BIN_NOT         [reduce using rule 85 (condition)]
+    BIN_AND         [reduce using rule 85 (condition)]
+    BIN_OR          [reduce using rule 85 (condition)]
+    BIN_XOR         [reduce using rule 85 (condition)]
+    BIN_LEFT        [reduce using rule 85 (condition)]
+    BIN_RIGHT       [reduce using rule 85 (condition)]
+    BIN_AND_ASSIGN  [reduce using rule 85 (condition)]
+    BIN_IOR_ASSIGN  [reduce using rule 85 (condition)]
+    BIN_XOR_ASSIGN  [reduce using rule 85 (condition)]
+    ADD_ASSIGN      [reduce using rule 85 (condition)]
+    SUB_ASSIGN      [reduce using rule 85 (condition)]
+    MULT_ASSIGN     [reduce using rule 85 (condition)]
+    DIV_ASSIGN      [reduce using rule 85 (condition)]
+    MOD_ASSIGN      [reduce using rule 85 (condition)]
+    LEFT_ASSIGN     [reduce using rule 85 (condition)]
+    RIGHT_ASSIGN    [reduce using rule 85 (condition)]
+    ASSIGN          [reduce using rule 85 (condition)]
+    EQ              [reduce using rule 85 (condition)]
+    NOTEQ           [reduce using rule 85 (condition)]
+    GT              [reduce using rule 85 (condition)]
+    LT              [reduce using rule 85 (condition)]
+    GE              [reduce using rule 85 (condition)]
+    LE              [reduce using rule 85 (condition)]
+    $default        reduce using rule 85 (condition)
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 131
+
+   85 condition: expr . op expr
+   94 ternary_block: condition QUES expr . COLON expr
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    COLON           shift, and go to state 148
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 132
+
+   60 block: block . block
+   92 ternary_block: condition QUES block . COLON block TERMINATOR
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    COLON          shift, and go to state 149
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 133
+
+   54 expr: function_block OB expr . CB
+   85 condition: expr . op expr
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    CB              shift, and go to state 150
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 134
+
+  102 if_block: IF expr term_block ELSE . term_block
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 151
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 135
+
+  101 if_block: IF condition term_block ELSE . term_block
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 152
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 136
+
+   85 condition: expr . op expr
+  104 while_block: WHILE expr . block
+  106 do_while_block: DO block WHILE expr . TERMINATOR
+
+    IF              shift, and go to state 1
+    WHILE           shift, and go to state 2
+    FOR             shift, and go to state 4
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    INT             shift, and go to state 7
+    LONG            shift, and go to state 8
+    CHAR            shift, and go to state 9
+    FLOAT           shift, and go to state 10
+    DOUBLE          shift, and go to state 11
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    IDENT           shift, and go to state 47
+    ASSIGN          shift, and go to state 63
+    TERMINATOR      shift, and go to state 153
+    OCB             shift, and go to state 16
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+    COMMENT         shift, and go to state 17
+    MULTI_COMMENT   shift, and go to state 18
+    WHITESPACE      shift, and go to state 19
+    DEFINE          shift, and go to state 20
+    IFDEF           shift, and go to state 21
+    IFNDEF          shift, and go to state 22
+
+    data_type            go to state 24
+    arith_bi_op          go to state 97
+    arith_un_op          go to state 98
+    logic_bi_op          go to state 99
+    logic_un_op          go to state 100
+    bit_un_op            go to state 101
+    bit_bi_op            go to state 102
+    assign_op            go to state 103
+    op                   go to state 104
+    assignment           go to state 27
+    block                go to state 114
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 137
+
+   50 expr: condition .
+  103 while_block: WHILE condition . block
+  105 do_while_block: DO block WHILE condition . TERMINATOR
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    TERMINATOR     shift, and go to state 154
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    IF             [reduce using rule 50 (expr)]
+    WHILE          [reduce using rule 50 (expr)]
+    FOR            [reduce using rule 50 (expr)]
+    INT            [reduce using rule 50 (expr)]
+    LONG           [reduce using rule 50 (expr)]
+    CHAR           [reduce using rule 50 (expr)]
+    FLOAT          [reduce using rule 50 (expr)]
+    DOUBLE         [reduce using rule 50 (expr)]
+    IDENT          [reduce using rule 50 (expr)]
+    TERMINATOR     [reduce using rule 50 (expr)]
+    OCB            [reduce using rule 50 (expr)]
+    COMMENT        [reduce using rule 50 (expr)]
+    MULTI_COMMENT  [reduce using rule 50 (expr)]
+    WHITESPACE     [reduce using rule 50 (expr)]
+    DEFINE         [reduce using rule 50 (expr)]
+    IFDEF          [reduce using rule 50 (expr)]
+    IFNDEF         [reduce using rule 50 (expr)]
+    $default       reduce using rule 50 (expr)
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 115
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 138
+
+  107 for_block: FOR OP assignment TERMINATOR . condition TERMINATOR assignment CP block
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 155
+    term            go to state 26
+    condition       go to state 156
+    function_block  go to state 32
+
+
+State 139
+
+   88 function_block: IDENT OP ident_block CP .
+
+    $default  reduce using rule 88 (function_block)
+
+
+State 140
+
+   72 ident_block: ident_block COMMA . IDENT
+
+    IDENT  shift, and go to state 157
+
+
+State 141
+
+   90 arg_def_block: data_type . IDENT COMMA arg_def_block
+   91              | data_type . IDENT
+
+    IDENT  shift, and go to state 158
+
+
+State 142
+
+   89 function_def_block: FUNCTION IDENT OP arg_def_block . CP OCB term_block CCB
+
+    CP  shift, and go to state 159
+
+
+State 143
+
+   73 arr_elem: IDENT OB expr . CB
+   85 condition: expr . op expr
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    CB              shift, and go to state 160
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 144
+
+   76 arr_elem_block: arr_elem COMMA arr_elem_block .
+
+    $default  reduce using rule 76 (arr_elem_block)
+
+
+State 145
+
+   70 data_def_block: data_type arr_elem_block ASSIGN expr . TERMINATOR
+   85 condition: expr . op expr
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    TERMINATOR      shift, and go to state 161
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 146
+
+   95 ternary_block: expr QUES expr COLON . expr
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 162
+    term            go to state 26
+    condition       go to state 67
+    function_block  go to state 32
+
+
+State 147
+
+   93 ternary_block: expr QUES block COLON . block TERMINATOR
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 163
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 148
+
+   94 ternary_block: condition QUES expr COLON . expr
+
+    TRUE   shift, and go to state 5
+    FALSE  shift, and go to state 6
+    NUM    shift, and go to state 12
+    IDENT  shift, and go to state 42
+    OP     shift, and go to state 15
+
+    expr            go to state 164
+    term            go to state 26
+    condition       go to state 67
+    function_block  go to state 32
+
+
+State 149
+
+   92 ternary_block: condition QUES block COLON . block TERMINATOR
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 165
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 150
+
+   54 expr: function_block OB expr CB .
+
+    $default  reduce using rule 54 (expr)
+
+
+State 151
+
+   78 term_block: term_block . term_block
+  102 if_block: IF expr term_block ELSE term_block .
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    IF             [reduce using rule 102 (if_block)]
+    WHILE          [reduce using rule 102 (if_block)]
+    DO             [reduce using rule 102 (if_block)]
+    FOR            [reduce using rule 102 (if_block)]
+    TRUE           [reduce using rule 102 (if_block)]
+    FALSE          [reduce using rule 102 (if_block)]
+    INT            [reduce using rule 102 (if_block)]
+    LONG           [reduce using rule 102 (if_block)]
+    CHAR           [reduce using rule 102 (if_block)]
+    FLOAT          [reduce using rule 102 (if_block)]
+    DOUBLE         [reduce using rule 102 (if_block)]
+    NUM            [reduce using rule 102 (if_block)]
+    IDENT          [reduce using rule 102 (if_block)]
+    TERMINATOR     [reduce using rule 102 (if_block)]
+    OP             [reduce using rule 102 (if_block)]
+    OCB            [reduce using rule 102 (if_block)]
+    COMMENT        [reduce using rule 102 (if_block)]
+    MULTI_COMMENT  [reduce using rule 102 (if_block)]
+    WHITESPACE     [reduce using rule 102 (if_block)]
+    DEFINE         [reduce using rule 102 (if_block)]
+    IFDEF          [reduce using rule 102 (if_block)]
+    IFNDEF         [reduce using rule 102 (if_block)]
+    FUNCTION       [reduce using rule 102 (if_block)]
+    $default       reduce using rule 102 (if_block)
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 108
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 152
+
+   78 term_block: term_block . term_block
+  101 if_block: IF condition term_block ELSE term_block .
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    IF             [reduce using rule 101 (if_block)]
+    WHILE          [reduce using rule 101 (if_block)]
+    DO             [reduce using rule 101 (if_block)]
+    FOR            [reduce using rule 101 (if_block)]
+    TRUE           [reduce using rule 101 (if_block)]
+    FALSE          [reduce using rule 101 (if_block)]
+    INT            [reduce using rule 101 (if_block)]
+    LONG           [reduce using rule 101 (if_block)]
+    CHAR           [reduce using rule 101 (if_block)]
+    FLOAT          [reduce using rule 101 (if_block)]
+    DOUBLE         [reduce using rule 101 (if_block)]
+    NUM            [reduce using rule 101 (if_block)]
+    IDENT          [reduce using rule 101 (if_block)]
+    TERMINATOR     [reduce using rule 101 (if_block)]
+    OP             [reduce using rule 101 (if_block)]
+    OCB            [reduce using rule 101 (if_block)]
+    COMMENT        [reduce using rule 101 (if_block)]
+    MULTI_COMMENT  [reduce using rule 101 (if_block)]
+    WHITESPACE     [reduce using rule 101 (if_block)]
+    DEFINE         [reduce using rule 101 (if_block)]
+    IFDEF          [reduce using rule 101 (if_block)]
+    IFNDEF         [reduce using rule 101 (if_block)]
+    FUNCTION       [reduce using rule 101 (if_block)]
+    $default       reduce using rule 101 (if_block)
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 108
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 153
+
+  106 do_while_block: DO block WHILE expr TERMINATOR .
+
+    $default  reduce using rule 106 (do_while_block)
+
+
+State 154
+
+  105 do_while_block: DO block WHILE condition TERMINATOR .
+
+    $default  reduce using rule 105 (do_while_block)
+
+
+State 155
+
+   85 condition: expr . op expr
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 156
+
+   50 expr: condition .
+  107 for_block: FOR OP assignment TERMINATOR condition . TERMINATOR assignment CP block
+
+    TERMINATOR  shift, and go to state 166
+
+    $default  reduce using rule 50 (expr)
+
+
+State 157
+
+   72 ident_block: ident_block COMMA IDENT .
+
+    $default  reduce using rule 72 (ident_block)
+
+
+State 158
+
+   90 arg_def_block: data_type IDENT . COMMA arg_def_block
+   91              | data_type IDENT .
+
+    COMMA  shift, and go to state 167
+
+    $default  reduce using rule 91 (arg_def_block)
+
+
+State 159
+
+   89 function_def_block: FUNCTION IDENT OP arg_def_block CP . OCB term_block CCB
+
+    OCB  shift, and go to state 168
+
+
+State 160
+
+   73 arr_elem: IDENT OB expr CB .
+
+    $default  reduce using rule 73 (arr_elem)
+
+
+State 161
+
+   70 data_def_block: data_type arr_elem_block ASSIGN expr TERMINATOR .
+
+    $default  reduce using rule 70 (data_def_block)
+
+
+State 162
+
+   85 condition: expr . op expr
+   95 ternary_block: expr QUES expr COLON expr .
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    $default  reduce using rule 95 (ternary_block)
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 163
+
+   60 block: block . block
+   93 ternary_block: expr QUES block COLON block . TERMINATOR
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    TERMINATOR     shift, and go to state 169
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 164
+
+   85 condition: expr . op expr
+   94 ternary_block: condition QUES expr COLON expr .
+
+    AND             shift, and go to state 73
+    OR              shift, and go to state 74
+    NOT             shift, and go to state 75
+    ADD             shift, and go to state 76
+    SUB             shift, and go to state 77
+    MULT            shift, and go to state 78
+    DIV             shift, and go to state 79
+    EXP             shift, and go to state 80
+    MOD             shift, and go to state 81
+    INC             shift, and go to state 82
+    DEC             shift, and go to state 83
+    BIN_NOT         shift, and go to state 85
+    BIN_AND         shift, and go to state 86
+    BIN_OR          shift, and go to state 87
+    BIN_XOR         shift, and go to state 88
+    BIN_LEFT        shift, and go to state 89
+    BIN_RIGHT       shift, and go to state 90
+    BIN_AND_ASSIGN  shift, and go to state 53
+    BIN_IOR_ASSIGN  shift, and go to state 54
+    BIN_XOR_ASSIGN  shift, and go to state 55
+    ADD_ASSIGN      shift, and go to state 56
+    SUB_ASSIGN      shift, and go to state 57
+    MULT_ASSIGN     shift, and go to state 58
+    DIV_ASSIGN      shift, and go to state 59
+    MOD_ASSIGN      shift, and go to state 60
+    LEFT_ASSIGN     shift, and go to state 61
+    RIGHT_ASSIGN    shift, and go to state 62
+    ASSIGN          shift, and go to state 63
+    EQ              shift, and go to state 91
+    NOTEQ           shift, and go to state 92
+    GT              shift, and go to state 93
+    LT              shift, and go to state 94
+    GE              shift, and go to state 95
+    LE              shift, and go to state 96
+
+    $default  reduce using rule 94 (ternary_block)
+
+    arith_bi_op  go to state 97
+    arith_un_op  go to state 98
+    logic_bi_op  go to state 99
+    logic_un_op  go to state 100
+    bit_un_op    go to state 101
+    bit_bi_op    go to state 102
+    assign_op    go to state 103
+    op           go to state 104
+
+
+State 165
+
+   60 block: block . block
+   92 ternary_block: condition QUES block COLON block . TERMINATOR
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    TERMINATOR     shift, and go to state 170
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 166
+
+  107 for_block: FOR OP assignment TERMINATOR condition TERMINATOR . assignment CP block
+
+    IDENT       shift, and go to state 47
+    WHITESPACE  shift, and go to state 19
+
+    assignment  go to state 171
+
+
+State 167
+
+   90 arg_def_block: data_type IDENT COMMA . arg_def_block
+
+    INT     shift, and go to state 7
+    LONG    shift, and go to state 8
+    CHAR    shift, and go to state 9
+    FLOAT   shift, and go to state 10
+    DOUBLE  shift, and go to state 11
+
+    data_type      go to state 141
+    arg_def_block  go to state 172
+
+
+State 168
+
+   89 function_def_block: FUNCTION IDENT OP arg_def_block CP OCB . term_block CCB
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 173
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 169
+
+   93 ternary_block: expr QUES block COLON block TERMINATOR .
+
+    $default  reduce using rule 93 (ternary_block)
+
+
+State 170
+
+   92 ternary_block: condition QUES block COLON block TERMINATOR .
+
+    $default  reduce using rule 92 (ternary_block)
+
+
+State 171
+
+  107 for_block: FOR OP assignment TERMINATOR condition TERMINATOR assignment . CP block
+
+    CP  shift, and go to state 174
+
+
+State 172
+
+   90 arg_def_block: data_type IDENT COMMA arg_def_block .
+
+    $default  reduce using rule 90 (arg_def_block)
+
+
+State 173
+
+   78 term_block: term_block . term_block
+   89 function_def_block: FUNCTION IDENT OP arg_def_block CP OCB term_block . CCB
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    DO             shift, and go to state 3
+    FOR            shift, and go to state 4
+    TRUE           shift, and go to state 5
+    FALSE          shift, and go to state 6
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    NUM            shift, and go to state 12
+    IDENT          shift, and go to state 13
+    TERMINATOR     shift, and go to state 14
+    OP             shift, and go to state 15
+    OCB            shift, and go to state 16
+    CCB            shift, and go to state 175
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+    FUNCTION       shift, and go to state 23
+
+    data_type            go to state 24
+    expr                 go to state 25
+    term                 go to state 26
+    assignment           go to state 27
+    block                go to state 28
+    data_def_block       go to state 29
+    term_block           go to state 108
+    condition            go to state 31
+    function_block       go to state 32
+    function_def_block   go to state 33
+    ternary_block        go to state 34
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    do_while_block       go to state 38
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 174
+
+  107 for_block: FOR OP assignment TERMINATOR condition TERMINATOR assignment CP . block
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 176
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41
+
+
+State 175
+
+   89 function_def_block: FUNCTION IDENT OP arg_def_block CP OCB term_block CCB .
+
+    $default  reduce using rule 89 (function_def_block)
+
+
+State 176
+
+   60 block: block . block
+  107 for_block: FOR OP assignment TERMINATOR condition TERMINATOR assignment CP block .
+
+    IF             shift, and go to state 1
+    WHILE          shift, and go to state 2
+    FOR            shift, and go to state 4
+    INT            shift, and go to state 7
+    LONG           shift, and go to state 8
+    CHAR           shift, and go to state 9
+    FLOAT          shift, and go to state 10
+    DOUBLE         shift, and go to state 11
+    IDENT          shift, and go to state 47
+    OCB            shift, and go to state 16
+    COMMENT        shift, and go to state 17
+    MULTI_COMMENT  shift, and go to state 18
+    WHITESPACE     shift, and go to state 19
+    DEFINE         shift, and go to state 20
+    IFDEF          shift, and go to state 21
+    IFNDEF         shift, and go to state 22
+
+    IF             [reduce using rule 107 (for_block)]
+    WHILE          [reduce using rule 107 (for_block)]
+    FOR            [reduce using rule 107 (for_block)]
+    INT            [reduce using rule 107 (for_block)]
+    LONG           [reduce using rule 107 (for_block)]
+    CHAR           [reduce using rule 107 (for_block)]
+    FLOAT          [reduce using rule 107 (for_block)]
+    DOUBLE         [reduce using rule 107 (for_block)]
+    IDENT          [reduce using rule 107 (for_block)]
+    OCB            [reduce using rule 107 (for_block)]
+    COMMENT        [reduce using rule 107 (for_block)]
+    MULTI_COMMENT  [reduce using rule 107 (for_block)]
+    WHITESPACE     [reduce using rule 107 (for_block)]
+    DEFINE         [reduce using rule 107 (for_block)]
+    IFDEF          [reduce using rule 107 (for_block)]
+    IFNDEF         [reduce using rule 107 (for_block)]
+    $default       reduce using rule 107 (for_block)
+
+    data_type            go to state 24
+    assignment           go to state 27
+    block                go to state 106
+    data_def_block       go to state 29
+    def_block            go to state 35
+    if_block             go to state 36
+    while_block          go to state 37
+    for_block            go to state 39
+    comment_block        go to state 40
+    multi_comment_block  go to state 41

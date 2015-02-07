@@ -6,28 +6,47 @@
 	void yyerror(const char *);
 %}
 
-
-
 %union {
 	int num;
 	char *str;
 }
 
-
-%token IF ELSE WHILE DO FOR AND OR NOT TRUE FALSE INT CHAR FLOAT DOUBLE
+%token IF ELSE WHILE DO FOR AND OR NOT TRUE FALSE
+%token INT LONG CHAR FLOAT DOUBLE
 %token ADD SUB MULT DIV EXP MOD INC DEC QUES
 %token BIN_NOT BIN_AND BIN_OR BIN_XOR BIN_LEFT BIN_RIGHT
 %token BIN_AND_ASSIGN BIN_IOR_ASSIGN BIN_XOR_ASSIGN
-%token ADD_ASSIGN SUB_ASSIGN MULT_ASSIGN DIV_ASSIGN MOD_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN
+%token ADD_ASSIGN SUB_ASSIGN MULT_ASSIGN DIV_ASSIGN 
+	MOD_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN
 %token NUM IDENT ASSIGN TERMINATOR COLON
 %token OP CP CB OB OCB CCB
 %token EQ NOTEQ GT LT GE LE
 %token COMMENT MULTI_COMMENT
 %token WHITESPACE
 %token DEFINE IFDEF IFNDEF
+%token FUNCTION
+%token COMMA
+
+%right ASSIGN
+%left AND OR
+%left LT GT LE GE EQ NOTEQ
+%left ADD SUB
+%left MULT DIV
+%left NOT
 
 %start term_block
+
 %%
+
+data_type 			:	INT 
+					|	LONG
+					|	CHAR
+					|	FLOAT 
+					|	DOUBLE
+					|	LONG LONG
+					|	LONG FLOAT
+					|	LONG DOUBLE
+					;
 
 arith_bi_op			:	ADD
 					|	SUB
@@ -87,13 +106,17 @@ op 					: 	arith_bi_op
 					|	assign_op
 					;
 
-expr				:	expr op expr								
+expr				:	condition
 							{printf(" ** expr\n");}
 					| 	OP expr CP	
-					|	IDENT
-					|	NUM
+					|	term
+					|	function_block
+					|	function_block OB expr CB
 					;
 
+term 				:	IDENT
+					|	NUM
+					;
 
 assignment			:	IDENT assign_op expr						
 							{printf(" ** assignment\n");}
@@ -109,6 +132,24 @@ block 				:	assignment
 					|	comment_block
 					|	multi_comment_block
 					|	def_block
+					|	data_def_block
+					;
+
+data_def_block 		:	data_type arr_elem_block TERMINATOR
+					|	data_type arr_elem_block ASSIGN expr TERMINATOR
+							{printf(" ** data define\n");}
+					;
+
+ident_block 		:	IDENT
+					|	ident_block COMMA IDENT
+					;
+
+arr_elem 			:	IDENT OB expr CB 
+					|	IDENT
+					;
+
+arr_elem_block 		: 	arr_elem
+					|	arr_elem COMMA arr_elem_block
 					;
 
 term_block			:	block
@@ -118,33 +159,54 @@ term_block			:	block
 					|	ternary_block
 					|	condition TERMINATOR
 					|	TERMINATOR
+					|	function_def_block
 					;
 
-condition 			:	expr									
+condition 			:	expr op expr
+					|	TRUE
+					|	FALSE
 							{printf(" ** cond\n");}
 					;
 
-ternary_block 		:	condition QUES block COLON block TERMINATOR				
+function_block 		:	IDENT OP ident_block CP
+							{printf(" ** function\n");}
+					;
+
+function_def_block	:	FUNCTION IDENT OP arg_def_block CP OCB term_block CCB
+							{printf(" ** function define\n");}
+					;
+
+arg_def_block		:	data_type IDENT COMMA arg_def_block
+					|	data_type IDENT
+					;
+
+ternary_block 		:	condition QUES block COLON block TERMINATOR							|	expr QUES block COLON block TERMINATOR	
 							{printf(" ** ternary\n");}
-					|	condition QUES expr COLON expr					
+					|	condition QUES expr COLON expr			
+					|	expr QUES expr COLON expr
 							{printf(" ** ternary\n");}
 					;
 
 def_block			:	DEFINE
 					|	IFDEF
 					|	IFNDEF
+					;
 
-if_block 			:	IF condition term_block								
+if_block 			:	IF condition term_block	
+					|	IF expr term_block							
 							{printf(" ** if\n");}
-					|	IF condition term_block ELSE term_block				
+					|	IF condition term_block ELSE term_block		
+					|	IF expr term_block ELSE term_block				
 							{printf(" ** if\n");}
 					;
 
-while_block			:	WHILE condition block							
+while_block			:	WHILE condition block	
+					|	WHILE expr block						
 							{printf(" ** while\n");}
 					;
 
-do_while_block		:	DO block WHILE condition TERMINATOR 			
+do_while_block		:	DO block WHILE condition TERMINATOR 
+					|	DO block WHILE expr TERMINATOR
 							{printf(" ** do while\n");}
 					;
 

@@ -8,6 +8,8 @@ for(j=9;j<20;j=0){
 	k=10;
 }
 
+;
+
 do{
 	k=100;
 }while(j==10);
@@ -45,3 +47,16 @@ do{
 	};
 }while(j==100);
 
+function a(int d, char g){
+	d=g;
+}
+
+int d;
+
+int sd[100];
+
+c = a(c);
+
+char t = c(d);
+
+int rt = foo(d, gh);

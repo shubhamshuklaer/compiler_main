@@ -22,10 +22,12 @@ DIG		[0-9]
 "true" 									return TRUE;
 "false" 								return FALSE;
 "int" 									return INT;
+"long"									return LONG;
 "char" 									return CHAR;
 "float" 								return FLOAT;
 "double" 								return DOUBLE;
 (" "|"\t"|"\r"|"\s")*					/* ignore */
+","										return COMMA;
 "+"										return ADD;
 "-" 									return SUB;
 "*" 									return MULT;
@@ -69,10 +71,11 @@ DIG		[0-9]
 "&="									return BIN_AND_ASSIGN;
 "^="									return BIN_XOR_ASSIGN;
 "|="									return BIN_IOR_ASSIGN;
-"/*"(.|"\n")*"*/"								{yylval.str=strdup(yytext);return MULTI_COMMENT;}
+"/*"(.|"\n")*"*/"						{yylval.str=strdup(yytext);return MULTI_COMMENT;}
 "#define ".*"\n"						{yylval.str=strdup(yytext);return DEFINE;}
 "#ifdef ".*"\n"							{yylval.str=strdup(yytext);return IFDEF;}
 "#ifndef ".*"\n"						{yylval.str=strdup(yytext);return IFNDEF;}
+"function"								return FUNCTION;
 (_|{ALPHA})(_|{ALPHA}|{DIG})*			{yylval.num=atoi(yytext);return IDENT;}
 {DIG}+(\.{DIG}+)?						{yylval.num=atoi(yytext);return NUM;}
 "# ".*"\n"								{yylval.str=strdup(yytext);return COMMENT;}
