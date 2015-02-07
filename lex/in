@@ -1,0 +1,25 @@
+# if construct
+if(j==10)	
+{
+	k=10;
+	j=100;
+}
+
+# for loop
+for(i=0;i<100;j=12){
+	i=10;
+	j=10;
+}
+
+# while loop
+while i==0{
+	k=100;
+}
+
+# do while loop
+do{
+	j=100;
+}while(m==0);
+
+# ternary block
+(m==0)?j=10:j=20;		
