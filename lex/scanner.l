@@ -1,10 +1,8 @@
 %{
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.hpp"
 #define TOKEN(t) (yylval.token=t)
-
 %}
 
 ALPHA	[a-zA-Z]
@@ -14,71 +12,71 @@ DIG		[0-9]
 
 %%
 
-"if" 									return IF;
-"else" 									return ELSE;
-"while" 								return WHILE;
-"do" 									return DO;
-"for" 									return FOR;
-"true" 									return TRUE;
-"false" 								return FALSE;
-"int" 									return INT;
-"long"									return LONG;
-"char" 									return CHAR;
-"float" 								return FLOAT;
-"double" 								return DOUBLE;
-(" "|"\t"|"\r"|"\s")*					/* ignore */
-","										return COMMA;
-"+"										return ADD;
-"-" 									return SUB;
-"*" 									return MULT;
-"/" 									return DIV;
-"^^"									return EXP;
-"?" 									return QUES;
-"%" 									return MOD;
-"==" 									return EQ;
-"!=" 									return NOTEQ;
-">" 									return GT;
-"<" 									return LT;
-">="									return GE;
-"<="									return LE;
-"="										return ASSIGN;
-";"										return TERMINATOR;
-":"										return COLON;
-"("										return OP;
-")"										return CP;
-"["										return OB;
-"]"										return CB;
-"{"										return OCB;
-"}"										return CCB;
-"++"									return INC;
-"--"									return DEC;
-"&&"									return AND;		
-"||"									return OR;
-"!"										return NOT;
-"~"										return BIN_NOT;
-"&"										return BIN_AND;
-"|"										return BIN_OR;
-"^"										return BIN_XOR;
-"<<"									return BIN_LEFT;
-">>"									return BIN_RIGHT;
-"+="									return ADD_ASSIGN;
-"-="									return SUB_ASSIGN;
-"*="									return MULT_ASSIGN;
-"/="									return DIV_ASSIGN;
-"%="									return MOD_ASSIGN;
-"<<="									return LEFT_ASSIGN;
-">>="									return RIGHT_ASSIGN;
-"&="									return BIN_AND_ASSIGN;
-"^="									return BIN_XOR_ASSIGN;
-"|="									return BIN_IOR_ASSIGN;
-"/*"(.|"\n")*"*/"						{yylval.str=strdup(yytext);return MULTI_COMMENT;}
-"#define ".*"\n"						{yylval.str=strdup(yytext);return DEFINE;}
-"#ifdef ".*"\n"							{yylval.str=strdup(yytext);return IFDEF;}
-"#ifndef ".*"\n"						{yylval.str=strdup(yytext);return IFNDEF;}
-"function"								return FUNCTION;
-(_|{ALPHA})(_|{ALPHA}|{DIG})*			{yylval.num=atoi(yytext);return IDENT;}
-{DIG}+(\.{DIG}+)?						{yylval.num=atoi(yytext);return NUM;}
-"# ".*"\n"								{yylval.str=strdup(yytext);return COMMENT;}
+"if" 									{printf("<keyword,\'if\'> "); return IF;}
+"else" 									{printf("<keyword,\'else\'> ");return ELSE;}
+"while" 								{printf("<keyword,\'while\'> ");return WHILE;}
+"do" 									{printf("<keyword,\'do\'> ");return DO;}
+"for" 									{printf("<keyword,\'for\'> ");return FOR;}
+"true" 									{printf("<keyword,\'true\'> ");return TRUE;}
+"false" 								{printf("<keyword,\'false\'> ");return FALSE;}
+"int" 									{printf("<keyword,\'int\'> ");  return INT;}
+"long"									{printf("<keyword,\'long\'> "); return LONG;}
+"char" 									{printf("<keyword,\'char\'> "); return CHAR;}
+"float" 								{printf("<keyword,\'float\'> "); return FLOAT;}
+"double" 								{printf("<keyword,\'double\'> "); return DOUBLE;}
+(" "|"\t"|"\r"|"\s")*					{printf("");/* ignore */}
+","										{printf("<operator,\',\'> ");return COMMA;}
+"+"										{printf("<operator,\'+\'> ");return ADD;}
+"-" 									{printf("<operator,\'-\'> ");return SUB;}
+"*" 									{printf("<operator,\'*\'> ");return MULT;}
+"/" 									{printf("<operator,\'/\'> ");return DIV;}
+"^^"									{printf("<operator,\'^^\'> ");return EXP;}
+"?" 									{printf("<operator,\'?\'> ");return QUES;}
+"%" 									{printf("<operator,\'%%\'> ");return MOD;}
+"==" 									{printf("<operator,\'==\'> ");return EQ;}
+"!=" 									{printf("<operator,\'!=\'> ");return NOTEQ;}
+">" 									{printf("<operator,\'>\'> ");return GT;}
+"<" 									{printf("<operator,\'<\'> ");return LT;}
+">="									{printf("<operator,\'>=\'> ");return GE;}
+"<="									{printf("<operator,\'<=\'> ");return LE;}
+"="										{printf("<operator,\'=\'> ");return ASSIGN;}
+";"										{printf("<keyword,\';\'> ");return TERMINATOR;}
+":"										{printf("<keyword,\':\'> ");return COLON;}
+"("										{printf("<keyword,\'(\'> ");return OP;}
+")"										{printf("<keyword,\')\'> ");return CP;}
+"["										{printf("<keyword,\'[\'> ");return OB;}
+"]"										{printf("<keyword,\']\'> ");return CB;}
+"{"										{printf("<keyword,\'{\'> ");return OCB;}
+"}"										{printf("<keyword,\'}\'> ");return CCB;}
+"++"									{printf("<operator,\'++\'> ");return INC;}
+"--"									{printf("<operator,\'--\'> ");return DEC;}
+"&&"									{printf("<operator,\'&&\'> ");return AND;}		
+"||"									{printf("<operator,\'||\'> ");return OR;}
+"!"										{printf("<operator,\'!\'> ");return NOT;}
+"~"										{printf("<operator,\'~\'> ");return BIN_NOT;}
+"&"										{printf("<operator,\'&\'> ");return BIN_AND;}
+"|"										{printf("<operator,\'|\'> ");return BIN_OR;}
+"^"										{printf("<operator,\'^\'> ");return BIN_XOR;}
+"<<"									{printf("<operator,\'<<\'> ");return BIN_LEFT;}
+">>"									{printf("<operator,\'>>\'> ");return BIN_RIGHT;}
+"+="									{printf("<operator,\'+=\'> ");return ADD_ASSIGN;}
+"-="									{printf("<operator,\'-=\'> ");return SUB_ASSIGN;}
+"*="									{printf("<operator,\'*=\'> ");return MULT_ASSIGN;}
+"/="									{printf("<operator,\'/=\'> ");return DIV_ASSIGN;}
+"%="									{printf("<operator,\'%%=\'> ");return MOD_ASSIGN;}
+"<<="									{printf("<operator,\'<<=\'> ");return LEFT_ASSIGN;}
+">>="									{printf("<operator,\'>>=\'> ");return RIGHT_ASSIGN;}
+"&="									{printf("<operator,\'&=\'> ");return BIN_AND_ASSIGN;}
+"^="									{printf("<operator,\'^=\'> ");return BIN_XOR_ASSIGN;}
+"|="									{printf("<operator,\'|=\'> ");return BIN_IOR_ASSIGN;}
+"/*"(.|"\n")*"*/"						{printf("<plainText,\'/* */\'> "); yylval.type = MULTI_COMMENT; yylval.str=strdup(yytext); return MULTI_COMMENT;}
+"#define ".*"\n"						{printf("<preprocess,\'#define\'> "); yylval.str=strdup(yytext);return DEFINE;}
+"#ifdef ".*"\n"							{printf("<preprocess,\'#ifdef\'> ");  yylval.str=strdup(yytext);return IFDEF;}
+"#ifndef ".*"\n"						{printf("<preprocess,\'#ifndef\'> "); yylval.str=strdup(yytext);return IFNDEF;}
+"function"								{printf("<keyword,\'function\'> "); return FUNCTION;}
+(_|{ALPHA})(_|{ALPHA}|{DIG})*			{	yylval.str = strdup(yytext); printf("<identifier,\'%s\'> ",yylval.str); yylval.type = IDENT; return IDENT; }
+{DIG}+(\.{DIG}+)?						{printf("<constant,\'%d\'> ",atoi(yytext)); yylval.num=atoi(yytext);return NUM;}
+"# ".*"\n"								{printf("<plainText,\'#\'> ");yylval.str=strdup(yytext);return COMMENT;}
 .										;
 %%
 

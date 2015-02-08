@@ -182,8 +182,9 @@ union YYSTYPE
 
 	int num;
 	char *str;
+	int type;
 
-#line 187 "parser.cpp" /* yacc.c:355  */
+#line 188 "parser.cpp" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -198,7 +199,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 202 "parser.cpp" /* yacc.c:358  */
+#line 203 "parser.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -502,18 +503,18 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    41,    41,    42,    43,    44,    45,    46,    47,    48,
-      51,    52,    53,    54,    55,    56,    59,    60,    63,    65,
-      66,    67,    68,    69,    70,    71,    74,    77,    80,    81,
-      82,    83,    84,    87,    88,    89,    90,    91,    92,    93,
-      94,    95,    96,    97,   100,   101,   102,   103,   104,   105,
-     106,   109,   111,   112,   113,   114,   117,   118,   121,   123,
-     126,   127,   128,   129,   130,   131,   132,   133,   134,   135,
-     138,   139,   143,   144,   147,   148,   151,   152,   155,   156,
-     157,   158,   159,   160,   161,   162,   165,   166,   167,   171,
-     175,   179,   180,   183,   183,   185,   186,   190,   191,   192,
-     195,   196,   198,   199,   203,   204,   208,   209,   213,   218,
-     222
+       0,    42,    42,    43,    44,    45,    46,    47,    48,    49,
+      52,    53,    54,    55,    56,    57,    60,    61,    64,    66,
+      67,    68,    69,    70,    71,    72,    75,    78,    81,    82,
+      83,    84,    85,    88,    89,    90,    91,    92,    93,    94,
+      95,    96,    97,    98,   101,   102,   103,   104,   105,   106,
+     107,   110,   112,   113,   114,   115,   118,   119,   122,   124,
+     127,   128,   129,   130,   131,   132,   133,   134,   135,   136,
+     139,   140,   144,   145,   148,   149,   152,   153,   156,   157,
+     158,   159,   160,   161,   162,   163,   166,   167,   168,   172,
+     176,   180,   181,   184,   184,   186,   187,   191,   192,   193,
+     196,   197,   199,   200,   204,   205,   209,   210,   214,   219,
+     223
 };
 #endif
 
@@ -1647,104 +1648,8 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 18:
-#line 64 "parser.y" /* yacc.c:1646  */
-    {printf(" ** equals\n");}
-#line 1654 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 51:
-#line 110 "parser.y" /* yacc.c:1646  */
-    {printf(" ** expr\n");}
-#line 1660 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 58:
-#line 122 "parser.y" /* yacc.c:1646  */
-    {printf(" ** assignment\n");}
-#line 1666 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 71:
-#line 140 "parser.y" /* yacc.c:1646  */
-    {printf(" ** data define\n");}
-#line 1672 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 88:
-#line 168 "parser.y" /* yacc.c:1646  */
-    {printf(" ** cond\n");}
-#line 1678 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 89:
-#line 172 "parser.y" /* yacc.c:1646  */
-    {printf(" ** function\n");}
-#line 1684 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 90:
-#line 176 "parser.y" /* yacc.c:1646  */
-    {printf(" ** function define\n");}
-#line 1690 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 94:
-#line 184 "parser.y" /* yacc.c:1646  */
-    {printf(" ** ternary\n");}
-#line 1696 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 96:
-#line 187 "parser.y" /* yacc.c:1646  */
-    {printf(" ** ternary\n");}
-#line 1702 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 101:
-#line 197 "parser.y" /* yacc.c:1646  */
-    {printf(" ** if\n");}
-#line 1708 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 103:
-#line 200 "parser.y" /* yacc.c:1646  */
-    {printf(" ** if\n");}
-#line 1714 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 105:
-#line 205 "parser.y" /* yacc.c:1646  */
-    {printf(" ** while\n");}
-#line 1720 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 107:
-#line 210 "parser.y" /* yacc.c:1646  */
-    {printf(" ** do while\n");}
-#line 1726 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 108:
-#line 215 "parser.y" /* yacc.c:1646  */
-    {printf(" ** for\n");}
-#line 1732 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 109:
-#line 219 "parser.y" /* yacc.c:1646  */
-    {printf(" ** comment\n");}
-#line 1738 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-  case 110:
-#line 223 "parser.y" /* yacc.c:1646  */
-    {printf(" ** comment\n");}
-#line 1744 "parser.cpp" /* yacc.c:1646  */
-    break;
-
-
-#line 1748 "parser.cpp" /* yacc.c:1646  */
+      
+#line 1653 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1972,7 +1877,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 227 "parser.y" /* yacc.c:1906  */
+#line 228 "parser.y" /* yacc.c:1906  */
 
 
 void yyerror(const char *err){

@@ -1,0 +1,20 @@
+<plainText,'#'> <keyword,'if'> <keyword,'('> <identifier,'j'> <operator,'=='> <constant,'10'> <keyword,')'> 
+<keyword,'{'> 
+<identifier,'k'> <operator,'='> <constant,'10'> <keyword,';'> 
+<identifier,'j'> <operator,'='> <constant,'100'> <keyword,';'> 
+<keyword,'}'> 
+
+<plainText,'#'> <keyword,'for'> <keyword,'('> <identifier,'i'> <operator,'='> <constant,'0'> <keyword,';'> <identifier,'i'> <operator,'<'> <constant,'100'> <keyword,';'> <identifier,'j'> <operator,'='> <constant,'12'> <keyword,')'> <keyword,'{'> 
+<identifier,'i'> <operator,'='> <constant,'10'> <keyword,';'> 
+<identifier,'j'> <operator,'='> <constant,'10'> <keyword,';'> 
+<keyword,'}'> 
+
+<plainText,'#'> <keyword,'while'> <identifier,'i'> <operator,'=='> <constant,'0'> <keyword,'{'> 
+<identifier,'k'> <operator,'='> <constant,'100'> <keyword,';'> 
+<keyword,'}'> 
+
+<plainText,'#'> <keyword,'do'> <keyword,'{'> 
+<identifier,'j'> <operator,'='> <constant,'100'> <keyword,';'> 
+<keyword,'}'> <keyword,'while'> <keyword,'('> <identifier,'m'> <operator,'=='> <constant,'0'> <keyword,')'> <keyword,';'> 
+
+<plainText,'#'> <keyword,'('> <identifier,'m'> <operator,'=='> <constant,'0'> <keyword,')'> <operator,'?'> <identifier,'j'> <operator,'='> <constant,'10'> <keyword,':'> <identifier,'j'> <operator,'='> <constant,'20'> <keyword,';'> 

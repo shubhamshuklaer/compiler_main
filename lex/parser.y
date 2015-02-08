@@ -9,6 +9,7 @@
 %union {
 	int num;
 	char *str;
+	int type;
 }
 
 %token IF ELSE WHILE DO FOR AND OR NOT TRUE FALSE
@@ -61,7 +62,7 @@ arith_un_op			:	INC
 					;
 
 logic_bi_op			:	EQ								
-							{printf(" ** equals\n");}
+							//{printf(" ** equals\n");}
 					|	NOTEQ
 					|	GT
 					|	LT
@@ -107,7 +108,7 @@ op 					: 	arith_bi_op
 					;
 
 expr				:	condition
-							{printf(" ** expr\n");}
+							//{printf(" ** expr\n");}
 					| 	OP expr CP	
 					|	term
 					|	function_block
@@ -119,7 +120,7 @@ term 				:	IDENT
 					;
 
 assignment			:	IDENT assign_op expr						
-							{printf(" ** assignment\n");}
+							//{printf(" ** assignment\n");}
 					|	WHITESPACE
 					;
 
@@ -137,7 +138,7 @@ block 				:	assignment
 
 data_def_block 		:	data_type arr_elem_block TERMINATOR
 					|	data_type arr_elem_block ASSIGN expr TERMINATOR
-							{printf(" ** data define\n");}
+							//{printf(" ** data define\n");}
 					;
 
 ident_block 		:	IDENT
@@ -165,15 +166,15 @@ term_block			:	block
 condition 			:	expr op expr
 					|	TRUE
 					|	FALSE
-							{printf(" ** cond\n");}
+							//{printf(" ** cond\n");}
 					;
 
 function_block 		:	IDENT OP ident_block CP
-							{printf(" ** function\n");}
+						//	{printf(" ** function\n");}
 					;
 
 function_def_block	:	FUNCTION IDENT OP arg_def_block CP OCB term_block CCB
-							{printf(" ** function define\n");}
+						//	{printf(" ** function define\n");}
 					;
 
 arg_def_block		:	data_type IDENT COMMA arg_def_block
@@ -181,10 +182,10 @@ arg_def_block		:	data_type IDENT COMMA arg_def_block
 					;
 
 ternary_block 		:	condition QUES block COLON block TERMINATOR							|	expr QUES block COLON block TERMINATOR	
-							{printf(" ** ternary\n");}
+						//	{printf(" ** ternary\n");}
 					|	condition QUES expr COLON expr			
 					|	expr QUES expr COLON expr
-							{printf(" ** ternary\n");}
+						//	{printf(" ** ternary\n");}
 					;
 
 def_block			:	DEFINE
@@ -194,33 +195,33 @@ def_block			:	DEFINE
 
 if_block 			:	IF condition term_block	
 					|	IF expr term_block							
-							{printf(" ** if\n");}
+						//	{printf(" ** if\n");}
 					|	IF condition term_block ELSE term_block		
 					|	IF expr term_block ELSE term_block				
-							{printf(" ** if\n");}
+						//	{printf(" ** if\n");}
 					;
 
 while_block			:	WHILE condition block	
 					|	WHILE expr block						
-							{printf(" ** while\n");}
+						//	{printf(" ** while\n");}
 					;
 
 do_while_block		:	DO block WHILE condition TERMINATOR 
 					|	DO block WHILE expr TERMINATOR
-							{printf(" ** do while\n");}
+						//	{printf(" ** do while\n");}
 					;
 
 for_block			:	FOR OP assignment TERMINATOR condition 
 						TERMINATOR assignment CP block 						
-							{printf(" ** for\n");}
+						//	{printf(" ** for\n");}
 					;
 
 comment_block 		:	COMMENT 										
-							{printf(" ** comment\n");}
+						//	{printf(" ** comment\n");}
 					;
 
 multi_comment_block	:	MULTI_COMMENT
-							{printf(" ** comment\n");}
+						//	{printf(" ** comment\n");}
 					;
 
 

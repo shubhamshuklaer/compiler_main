@@ -122,8 +122,9 @@ union YYSTYPE
 
 	int num;
 	char *str;
+	int type;
 
-#line 127 "parser.hpp" /* yacc.c:1909  */
+#line 128 "parser.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
