@@ -87,29 +87,38 @@ extern int yydebug;
     RIGHT_ASSIGN = 297,
     NUM = 298,
     IDENT = 299,
-    ASSIGN = 300,
-    TERMINATOR = 301,
-    COLON = 302,
-    OP = 303,
-    CP = 304,
-    CB = 305,
-    OB = 306,
-    OCB = 307,
-    CCB = 308,
-    EQ = 309,
-    NOTEQ = 310,
-    GT = 311,
-    LT = 312,
-    GE = 313,
-    LE = 314,
-    COMMENT = 315,
-    MULTI_COMMENT = 316,
-    WHITESPACE = 317,
-    DEFINE = 318,
-    IFDEF = 319,
-    IFNDEF = 320,
-    FUNCTION = 321,
-    COMMA = 322
+    VAR = 300,
+    POINTER = 301,
+    DREF = 302,
+    ASSIGN = 303,
+    TERMINATOR = 304,
+    COLON = 305,
+    OP = 306,
+    CP = 307,
+    CB = 308,
+    OB = 309,
+    OCB = 310,
+    CCB = 311,
+    EQ = 312,
+    NOTEQ = 313,
+    GT = 314,
+    LT = 315,
+    GE = 316,
+    LE = 317,
+    COMMENT = 318,
+    MULTI_COMMENT = 319,
+    WHITESPACE = 320,
+    DEFINE = 321,
+    IFDEF = 322,
+    IFNDEF = 323,
+    FUNCTION = 324,
+    COMMA = 325,
+    BACKTICK = 326,
+    DOUBLE_BACKTICK = 327,
+    TEXT = 328,
+    SYN_ERROR = 329,
+    PRINT = 330,
+    LTGT = 331
   };
 #endif
 
@@ -122,8 +131,9 @@ union YYSTYPE
 
 	int num;
 	char *str;
+	int type;
 
-#line 127 "parser.hpp" /* yacc.c:1909  */
+#line 137 "parser.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
