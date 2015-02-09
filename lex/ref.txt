@@ -2,4 +2,4 @@ bison -d -o parser.cpp parser.y
 lex -o scanner.cpp scanner.l
 gcc -o parser parser.cpp scanner.cpp
 
-bison --verbose -d -o parser.cpp  parser.y && lex -o scanner.cpp scanner.l && gcc -o parser parser.cpp scanner.cpp -ll && ./parser < in
+bison --verbose -d -o parser.cpp  parser.y && lex -o scanner.cpp scanner.l && gcc -o parser parser.cpp scanner.cpp -ll && ./parser < in2
