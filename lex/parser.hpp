@@ -126,7 +126,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 30 "parser.y" /* yacc.c:1909  */
+#line 34 "parser.y" /* yacc.c:1909  */
 
 	int num;
 	char *str;
