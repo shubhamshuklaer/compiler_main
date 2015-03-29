@@ -1,0 +1,22 @@
+
+<keyword : 'int'> <identifier : '$a'> <keyword : '['> <constant : '2'> <keyword : ']'> <keyword : ';'> 
+
+<identifier : '$a'> <keyword : '['> <constant : '1'> <operator : '*'> <constant : '2'> <operator : '+'> <constant : '3'> <keyword : ']'> <operator : '='> <fidentifier : 'abc'> <keyword : '('> <identifier : '$a'> <keyword : '['> <constant : '2'> <keyword : ']'> <operator : ','> <constant : '2'> <keyword : ')'> <operator : '+'> <constant : '2'> <keyword : ';'> 
+
+<keyword : 'for'> <keyword : '('> <identifier : '$i'> <operator : '='> <constant : '0'> <operator : ','> <identifier : '$j'> <operator : '='> <constant : '1'> <keyword : ';'> <identifier : '$i'> <operator : '<='> <constant : '2'> <operator : '&&'> <keyword : '('> <identifier : '$k'> <operator : '=='> <constant : '2'> <keyword : ')'> <keyword : ';'> <identifier : '$i'> <operator : '++'> <keyword : ')'> 
+<keyword : '{'> 
+<identifier : '$i'> <operator : '='> <keyword : '('> <keyword : '('> <identifier : '$i'> <operator : '+'> <identifier : '$a'> <keyword : ')'> <operator : '+'> <keyword : '('> <identifier : '$k'> <operator : '+'> <identifier : '$a'> <keyword : ')'> <keyword : ')'> <operator : '+'> <keyword : '('> <identifier : '$i'> <operator : '+'> <constant : '2'> <keyword : ')'> <keyword : ';'> 
+<plainText : '#'> <plainText : '#'> <identifier : '$j'> <operator : '*='> <identifier : '$i'> <operator : '+'> <constant : '2'> <keyword : ';'> 
+<keyword : '}'> 
+<keyword : 'int'> <pointer : '@a'> <keyword : ';'> 
+<pointer : '@a'> <operator : '='> <constant : '2'> <keyword : ';'> 
+<dref : '*a'> <operator : '='> <keyword : 'string'> <keyword : ';'> 
+<dref : '*c'> <operator : '='> <keyword : '('> <keyword : '('> <constant : '1'> <operator : '+'> <keyword : '('> <constant : '21'> <operator : '+'> <keyword : '('> <constant : '2'> <operator : '+'> <constant : '3'> <keyword : ')'> <keyword : ')'> <keyword : ')'> <keyword : ')'> <keyword : ';'> 
+<keyword : 'if'> <keyword : '('> <identifier : '$i'> <operator : '<'> <identifier : '$j'> <keyword : ')'> 
+<keyword : '{'> 
+<plainText : '#'> <keyword : '}'> 
+
+<keyword : 'while'> <keyword : '('> <constant : '2'> <keyword : ')'> 
+<keyword : '{'> 
+<plainText : '#'> <keyword : '}'> 
+root

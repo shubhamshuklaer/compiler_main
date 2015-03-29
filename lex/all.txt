@@ -1,0 +1,493 @@
+--in.txt--
+
+# if construct
+if($j==10)	
+{
+	$k=10;
+	$j=100;
+}
+
+# for loop
+for($i=0;$i<100;$j=12){
+	$i=10;
+	$j=10;
+}
+
+# while loop
+while $i==0{
+	$k=100;
+}
+
+# do while loop
+do{
+	$j=100;
+}while($m==0);
+
+# ternary block
+($m==0)?$j=10:$j=20;		
+--in2.txt--
+
+while($j>10){
+	$k=100;
+}
+
+$j=10;
+
+for($j=9;$j<20;$j=0){
+	$k=10;
+}
+
+;
+
+do{
+	$k=100;
+}while($j==10);
+
+($k==10)?$j=100:$j=10;	
+
+if($j==10){$k=10;;}
+
+if $j==10 $k=100;
+
+$k>10?$j=20:$j=0;
+
+$k==100;
+
+#define tt 2
+
+if($j==10){
+	if($k>2){
+		$j=100;
+	}
+}
+
+# single line comment
+
+/*
+	multiline 
+	comment
+*/
+
+do{
+	$t<>10?$k=10:{
+		if($j==10){
+			$k=100;
+		}
+	};
+}while($j==100);
+
+function a(int $d, char $g){
+	$d=$g;
+}
+
+int $d;
+
+int $sd[100];
+
+$c = a($c);
+
+char $t = c($d);
+
+int $rt = foo($d, $gh);
+
+@srt = foo(@a, 10);
+
+*c = $d;
+
+print ``ok`` > ``a.txt``;
+
+--in3.txt--
+
+
+*c = d;
+
+--parser.y--
+
+%{
+	#define YYDEBUG 1
+	#include <stdio.h>
+	#include "header.h"
+	int yylex(void);
+	void yyerror(const char *);
+%}
+
+%union {
+	int num;
+	char *str;
+	int type;
+}
+
+%token IF ELSE WHILE DO FOR AND OR NOT TRUE FALSE
+%token INT LONG CHAR FLOAT DOUBLE
+%token ADD SUB MULT DIV EXP MOD INC DEC QUES
+%token BIN_NOT BIN_AND BIN_OR BIN_XOR BIN_LEFT BIN_RIGHT
+%token BIN_AND_ASSIGN BIN_IOR_ASSIGN BIN_XOR_ASSIGN
+%token ADD_ASSIGN SUB_ASSIGN MULT_ASSIGN DIV_ASSIGN 
+	MOD_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN
+%token NUM IDENT VAR POINTER DREF ASSIGN TERMINATOR COLON
+%token OP CP CB OB OCB CCB
+%token EQ NOTEQ GT LT GE LE
+%token COMMENT MULTI_COMMENT
+%token WHITESPACE
+%token DEFINE IFDEF IFNDEF
+%token FUNCTION
+%token COMMA BACKTICK DOUBLE_BACKTICK TEXT
+%token SYN_ERROR
+%token PRINT
+%right ASSIGN
+%left AND OR
+%left LT GT LE GE LTGT EQ NOTEQ
+%left ADD SUB
+%left MULT DIV
+%left NOT
+
+%start term_block
+
+%%
+
+data_type 			:	INT 
+					|	LONG
+					|	CHAR
+					|	FLOAT 
+					|	DOUBLE
+					|	LONG LONG
+					|	LONG FLOAT
+					|	LONG DOUBLE
+					;
+
+arith_bi_op			:	ADD
+					|	SUB
+					|	MULT
+					|	DIV
+					|	MOD
+					|	EXP
+					;
+
+arith_un_op			:	INC
+					|	DEC
+					;
+
+logic_bi_op			:	EQ								
+							//{printf(" ** equals\n");}
+					|	NOTEQ
+					|	GT
+					|	LT
+					|	LTGT
+					|	GE
+					|	LE
+					|	AND
+					|	OR
+					;
+
+logic_un_op			:	NOT
+					;
+
+bit_un_op			:	BIN_NOT
+					;
+
+bit_bi_op			:	BIN_AND
+					|	BIN_OR
+					|	BIN_XOR
+					|	BIN_LEFT
+					|	BIN_RIGHT
+					;
+
+assign_op			:	ASSIGN
+					|	ADD_ASSIGN
+					|	SUB_ASSIGN
+					|	MULT_ASSIGN
+					| 	DIV_ASSIGN
+					|	MOD_ASSIGN
+					|	LEFT_ASSIGN
+					|	RIGHT_ASSIGN
+					|	BIN_AND_ASSIGN
+					|	BIN_XOR_ASSIGN
+					|	BIN_IOR_ASSIGN
+					;
+
+op 					: 	arith_bi_op
+					|	arith_un_op
+					|	logic_bi_op
+					|	logic_un_op
+					|	bit_un_op
+					|	bit_bi_op
+					|	assign_op
+					;
+
+expr				:	condition
+							//{printf(" ** expr\n");}
+					| 	OP expr CP	
+					|	term
+					|	const
+					|	function_block
+					|	expr OB expr CB
+					;
+
+term 				:	VAR
+					|	POINTER
+					|	DREF
+					|	IDENT
+					;
+
+const				:	NUM
+					|	string
+					|	TEXT
+					|	BACKTICK IDENT BACKTICK
+					|	DOUBLE_BACKTICK IDENT DOUBLE_BACKTICK
+					;
+
+string 				:	DOUBLE_BACKTICK block DOUBLE_BACKTICK
+
+term_const			:	term
+					|	const
+					;
+
+assignment			:	VAR assign_op expr
+					|	POINTER assign_op expr						
+							//{printf(" ** assignment\n");}
+					|	WHITESPACE
+					;
+
+block 				:	expr
+					|	assignment
+					|	block block
+					|	OCB term_block CCB	
+					|	if_block
+					|	while_block
+					|	for_block
+					|	comment_block
+					|	multi_comment_block
+					|	def_block
+					|	data_def_block
+					|	print_block
+					;
+
+print_block			:	PRINT expr GT const
+
+data_def_block 		:	data_type arr_elem_block TERMINATOR
+					|	data_type arr_elem_block ASSIGN expr TERMINATOR
+							//{printf(" ** data define\n");}
+					;
+
+ident_block 		:	term
+					|	ident_block COMMA term
+					;
+
+ident_const_block	:	ident_block
+					|	const_block	
+					|	ident_block COMMA const_block
+					|	const_block COMMA ident_block
+					;
+
+const_block			:	const
+					|	const_block COMMA const
+					;
+
+arr_elem 			:	term OB expr CB 
+					|	term
+					;
+
+arr_elem_block 		: 	arr_elem
+					|	arr_elem COMMA arr_elem_block
+					;
+
+term_block			:	block
+					|	term_block term_block
+					|	block TERMINATOR
+					|	do_while_block
+					|	ternary_block
+					|	condition TERMINATOR
+					|	TERMINATOR
+					|	function_def_block
+					|	assignment TERMINATOR
+					;
+
+condition 			:	expr op expr
+					|	TRUE
+					|	FALSE
+							//{printf(" ** cond\n");}
+					;
+
+function_block 		:	IDENT OP ident_const_block CP
+						//	{printf(" ** function\n");}
+					;
+
+function_def_block	:	FUNCTION IDENT OP arg_def_block CP OCB term_block CCB
+						//	{printf(" ** function define\n");}
+					;
+
+arg_def_block		:	data_type term COMMA arg_def_block
+					|	data_type term
+					;
+
+ternary_block 		:	condition QUES block COLON block TERMINATOR							|	expr QUES block COLON block TERMINATOR	
+						//	{printf(" ** ternary\n");}
+					|	condition QUES expr COLON expr			
+					|	expr QUES expr COLON expr
+						//	{printf(" ** ternary\n");}
+					;
+
+def_block			:	DEFINE term expr
+					|	IFDEF term 
+					|	IFNDEF term 
+					;
+
+if_block 			:	IF condition term_block	
+					|	IF expr term_block							
+						//	{printf(" ** if\n");}
+					|	IF condition term_block ELSE term_block		
+					|	IF expr term_block ELSE term_block				
+						//	{printf(" ** if\n");}
+					;
+
+while_block			:	WHILE condition block	
+					|	WHILE expr block						
+						//	{printf(" ** while\n");}
+					;
+
+do_while_block		:	DO block WHILE condition TERMINATOR 
+					|	DO block WHILE expr TERMINATOR
+						//	{printf(" ** do while\n");}
+					;
+
+for_block			:	FOR OP assignment TERMINATOR condition 
+						TERMINATOR assignment CP block 						
+						//	{printf(" ** for\n");}
+					;
+
+comment_block 		:	COMMENT 										
+						//	{printf(" ** comment\n");}
+					;
+
+multi_comment_block	:	MULTI_COMMENT
+						//	{printf(" ** comment\n");}
+					;
+
+
+
+%%
+
+void yyerror(const char *err){
+	printf(" ** %s\n",err);
+}
+
+int main(){
+	#if YYDEBUG
+	    yydebug = 1;
+	#endif
+	//yylex();
+	yyparse();
+	return 0;
+}
+
+--ref.txt--
+
+bison -d -o parser.cpp parser.y
+lex -o scanner.cpp scanner.l
+gcc -o parser parser.cpp scanner.cpp
+
+bison --verbose -d -o parser.cpp  parser.y && lex -o scanner.cpp scanner.l && gcc -o parser parser.cpp scanner.cpp -ll && ./parser < in2
+
+--scanner.l--
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include "parser.hpp"
+#define TOKEN(t) (yylval.token=t)
+%}
+
+ALPHA	[a-zA-Z]
+DIG		[0-9]
+
+
+
+%%
+
+"if" 										{printf("<keyword : \'if\'> "); return IF;}
+"else" 										{printf("<keyword : \'else\'> ");return ELSE;}
+"while" 									{printf("<keyword : \'while\'> ");return WHILE;}
+"do" 										{printf("<keyword : \'do\'> ");return DO;}
+"for" 										{printf("<keyword : \'for\'> ");return FOR;}
+"true" 										{printf("<keyword : \'true\'> ");return TRUE;}
+"false" 									{printf("<keyword : \'false\'> ");return FALSE;}
+"int" 										{printf("<keyword : \'int\'> ");  return INT;}
+"long"										{printf("<keyword : \'long\'> "); return LONG;}
+"char" 										{printf("<keyword : \'char\'> "); return CHAR;}
+"float" 									{printf("<keyword : \'float\'> "); return FLOAT;}
+"double" 									{printf("<keyword : \'double\'> "); return DOUBLE;}
+(" "|"\t"|"\r"|"\s")*						{printf("");/* ignore */}
+","											{printf("<operator : \',\'> ");return COMMA;}
+"+"											{printf("<operator : \'+\'> ");return ADD;}
+"-" 										{printf("<operator : \'-\'> ");return SUB;}
+"*" 										{printf("<operator : \'*\'> ");return MULT;}
+"/" 										{printf("<operator : \'/\'> ");return DIV;}
+"^^"										{printf("<operator : \'^^\'> ");return EXP;}
+"?" 										{printf("<operator : \'?\'> ");return QUES;}
+"%" 										{printf("<operator : \'%%\'> ");return MOD;}
+"==" 										{printf("<operator : \'==\'> ");return EQ;}
+"!=" 										{printf("<operator : \'!=\'> ");return NOTEQ;}
+">" 										{printf("<operator : \'>\'> ");return GT;}
+"<" 										{printf("<operator : \'<\'> ");return LT;}
+">="										{printf("<operator : \'>=\'> ");return GE;}
+"<="										{printf("<operator : \'<=\'> ");return LE;}
+"<>"										{printf("<operator : \'<>\'> ");return LTGT;}
+"="											{printf("<operator : \'=\'> ");return ASSIGN;}
+";"											{printf("<keyword : \';\'> ");return TERMINATOR;}
+":"											{printf("<keyword : \':\'> ");return COLON;}
+"("											{printf("<keyword : \'(\'> ");return OP;}
+")"											{printf("<keyword : \')\'> ");return CP;}
+"["											{printf("<keyword : \'[\'> ");return OB;}
+"]"											{printf("<keyword : \']\'> ");return CB;}
+"{"											{printf("<keyword : \'{\'> ");return OCB;}
+"}"											{printf("<keyword : \'}\'> ");return CCB;}
+"++"										{printf("<operator : \'++\'> ");return INC;}
+"--"										{printf("<operator : \'--\'> ");return DEC;}
+"&&"										{printf("<operator : \'&&\'> ");return AND;}		
+"||"										{printf("<operator : \'||\'> ");return OR;}
+"!"											{printf("<operator : \'!\'> ");return NOT;}
+"~"											{printf("<operator : \'~\'> ");return BIN_NOT;}
+"&"											{printf("<operator : \'&\'> ");return BIN_AND;}
+"|"											{printf("<operator : \'|\'> ");return BIN_OR;}
+"^"											{printf("<operator : \'^\'> ");return BIN_XOR;}
+"<<"										{printf("<operator : \'<<\'> ");return BIN_LEFT;}
+">>"										{printf("<operator : \'>>\'> ");return BIN_RIGHT;}
+"+="										{printf("<operator : \'+=\'> ");return ADD_ASSIGN;}
+"-="										{printf("<operator : \'-=\'> ");return SUB_ASSIGN;}
+"*="										{printf("<operator : \'*=\'> ");return MULT_ASSIGN;}
+"/="										{printf("<operator : \'/=\'> ");return DIV_ASSIGN;}
+"%="										{printf("<operator : \'%%=\'> ");return MOD_ASSIGN;}
+"<<="										{printf("<operator : \'<<=\'> ");return LEFT_ASSIGN;}
+">>="										{printf("<operator : \'>>=\'> ");return RIGHT_ASSIGN;}
+"&="										{printf("<operator : \'&=\'> ");return BIN_AND_ASSIGN;}
+"^="										{printf("<operator : \'^=\'> ");return BIN_XOR_ASSIGN;}
+"|="										{printf("<operator : \'|=\'> ");return BIN_IOR_ASSIGN;}
+"`"											{printf("<keyword : \'`\'> ");return DOUBLE_BACKTICK;}
+"``"										{printf("<keyword : \'``\'> ");return BACKTICK;}
+"``"(_|\.|{ALPHA}|{DIG})*"``"					{printf("<keyword : \'text\'> "); return TEXT;}
+"/*"(.|"\n")*"*/"							{printf("<plainText : \'/* */\'> "); yylval.type = MULTI_COMMENT; yylval.str=strdup(yytext); return MULTI_COMMENT;}
+"#define "									{printf("<preprocess : \'#define\'> "); yylval.str=strdup(yytext);return DEFINE;}
+"#ifdef "									{printf("<preprocess : \'#ifdef\'> ");  yylval.str=strdup(yytext);return IFDEF;}
+"#ifndef "									{printf("<preprocess : \'#ifndef\'> "); yylval.str=strdup(yytext);return IFNDEF;}
+"function "									{printf("<keyword : \'function\'> "); return FUNCTION;}
+"print "									{printf("<keyword : \'print\'> "); return PRINT;}
+(_|{ALPHA})(_|{ALPHA}|{DIG})*				{yylval.str = strdup(yytext); printf("<identifier : \'%s\'> ",yylval.str); yylval.type = IDENT; return IDENT; }
+$(_|{ALPHA})(_|{ALPHA}|{DIG})*				{yylval.str = strdup(yytext); printf("<identifier : \'%s\'> ",yylval.str); yylval.type = VAR; return VAR; }
+@(_|{ALPHA})(_|{ALPHA}|{DIG})*				{yylval.str = strdup(yytext); printf("<pointer : \'%s\'> ",yylval.str); yylval.type = POINTER; return POINTER; }
+"*"(_|{ALPHA})(_|{ALPHA}|{DIG})*			{yylval.str = strdup(yytext); printf("<dref : \'%s\'> ",yylval.str); yylval.type = DREF; return DREF; }
+{DIG}+(\.{DIG}+)?							{printf("<constant : \'%d\'> ",atoi(yytext)); yylval.num=atoi(yytext);return NUM;}
+"# ".*"\n"									{printf("<plainText : \'#\'> ");yylval.str=strdup(yytext);return COMMENT;}
+.											{yylval.str=strdup(yytext);printf("<error : \'%s\'>",yytext);return SYN_ERROR;}
+%%
+
+/*
+int main(int argc, char** argv)
+{
+  if (argc > 1)
+    yyin = fopen(argv[1], "r");
+  else
+    yyin = stdin;
+  return yylex();
+}
+
+*/

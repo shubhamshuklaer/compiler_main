@@ -1,0 +1,1277 @@
+Terminals unused in grammar
+
+   STRING_LITERAL
+   TEPSILON
+
+
+Grammar
+
+    0 $accept: spec $end
+
+    1 $@1: %empty
+
+    2 $@2: %empty
+
+    3 $@3: %empty
+
+    4 $@4: %empty
+
+    5 spec: defsection $@1 TMARK $@2 rulesection $@3 TMARK $@4 tailsection
+
+    6 defsection: %empty
+
+    7 $@5: %empty
+
+    8 defsection: defsection $@5 bisonDeclars
+
+    9 bisonDeclars: bisonDeclar
+   10             | CDeclar
+
+   11 $@6: %empty
+
+   12 $@7: %empty
+
+   13 CDeclar: TLCURL $@6 CCODE $@7 TRCURL
+
+   14 $@8: %empty
+
+   15 bisonDeclar: TSTART $@8 yaccIdentifier
+   16            | unionDeclar
+   17            | TPURE_PARSER
+   18            | TSEMANTIC_PARSER
+
+   19 $@9: %empty
+
+   20 bisonDeclar: TEXPECT $@9 TNUM
+   21            | TTHONG
+
+   22 $@10: %empty
+
+   23 $@11: %empty
+
+   24 bisonDeclar: rword $@10 tag $@11 nlist
+
+   25 yaccIdentifier: TIDENT
+   26               | TNT
+
+   27 $@12: %empty
+
+   28 $@13: %empty
+
+   29 $@14: %empty
+
+   30 unionDeclar: TUNION $@12 TOPENBRACES $@13 CCODE $@14 TCLOSEBRACES
+
+   31 rword: TTOKEN
+   32      | TLEFT
+   33      | TRIGHT
+   34      | TNONASSOC
+   35      | TTYPE
+
+   36 $@15: %empty
+
+   37 $@16: %empty
+
+   38 tag: TLT $@15 TIDENT $@16 TGT
+   39    | %empty
+
+   40 nlist: nmno
+
+   41 $@17: %empty
+
+   42 nlist: nlist $@17 nmno
+
+   43 $@18: %empty
+
+   44 $@19: %empty
+
+   45 nlist: nlist $@18 TCOMMA $@19 nmno
+
+   46 nmno: yaccIdentifier
+
+   47 $@20: %empty
+
+   48 nmno: yaccIdentifier $@20 TNUM
+   49     | CHARCONSTANT
+
+   50 $@21: %empty
+
+   51 nmno: CHARCONSTANT $@21 TNUM
+
+   52 rulesection: rules
+
+   53 $@22: %empty
+
+   54 rules: rule $@22 TSEMICOL
+
+   55 $@23: %empty
+
+   56 $@24: %empty
+
+   57 rules: rules $@23 rule $@24 TSEMICOL
+
+   58 $@25: %empty
+
+   59 rule: TNTLHS $@25 productions
+
+   60 productions: production
+
+   61 $@26: %empty
+
+   62 $@27: %empty
+
+   63 productions: productions $@26 TPIPE $@27 production
+
+   64 $@28: %empty
+
+   65 production: rulebody $@28 prec
+
+   66 rulebody: action
+
+   67 $@29: %empty
+
+   68 $@30: %empty
+
+   69 rulebody: rulebody $@29 yaccIdentifier $@30 action
+
+   70 $@31: %empty
+
+   71 $@32: %empty
+
+   72 rulebody: rulebody $@31 CHARCONSTANT $@32 action
+
+   73 prec: %empty
+
+   74 $@33: %empty
+
+   75 $@34: %empty
+
+   76 prec: TPREC $@33 yaccIdentifier $@34 action
+
+   77 $@35: %empty
+
+   78 $@36: %empty
+
+   79 prec: TPREC $@35 CHARCONSTANT $@36 action
+
+   80 action: %empty
+
+   81 $@37: %empty
+
+   82 $@38: %empty
+
+   83 action: TOPENBRACES $@37 CCODE $@38 TCLOSEBRACES
+
+   84 tailsection: %empty
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+TNUM (258) 20 48 51
+CHARCONSTANT (259) 49 51 72 79
+STRING_LITERAL (260)
+CCODE (261) 13 30 83
+TIDENT (262) 25 38
+TNT (263) 26
+TNTLHS (264) 59
+TLEFT (265) 32
+TRIGHT (266) 33
+TNONASSOC (267) 34
+TTOKEN (268) 31
+TPREC (269) 76 79
+TTYPE (270) 35
+TSTART (271) 15
+TUNION (272) 30
+TPURE_PARSER (273) 17
+TSEMANTIC_PARSER (274) 18
+TEXPECT (275) 20
+TTHONG (276) 21
+TMARK (277) 5
+TLCURL (278) 13
+TRCURL (279) 13
+TSEMICOL (280) 54 57
+TPIPE (281) 63
+TOPENBRACES (282) 30 83
+TCLOSEBRACES (283) 30 83
+TLT (284) 38
+TGT (285) 38
+TCOMMA (286) 45
+TEPSILON (287)
+
+
+Nonterminals, with rules where they appear
+
+$accept (33)
+    on left: 0
+spec (34)
+    on left: 5, on right: 0
+$@1 (35)
+    on left: 1, on right: 5
+$@2 (36)
+    on left: 2, on right: 5
+$@3 (37)
+    on left: 3, on right: 5
+$@4 (38)
+    on left: 4, on right: 5
+defsection (39)
+    on left: 6 8, on right: 5 8
+$@5 (40)
+    on left: 7, on right: 8
+bisonDeclars (41)
+    on left: 9 10, on right: 8
+CDeclar (42)
+    on left: 13, on right: 10
+$@6 (43)
+    on left: 11, on right: 13
+$@7 (44)
+    on left: 12, on right: 13
+bisonDeclar (45)
+    on left: 15 16 17 18 20 21 24, on right: 9
+$@8 (46)
+    on left: 14, on right: 15
+$@9 (47)
+    on left: 19, on right: 20
+$@10 (48)
+    on left: 22, on right: 24
+$@11 (49)
+    on left: 23, on right: 24
+yaccIdentifier (50)
+    on left: 25 26, on right: 15 46 48 69 76
+unionDeclar (51)
+    on left: 30, on right: 16
+$@12 (52)
+    on left: 27, on right: 30
+$@13 (53)
+    on left: 28, on right: 30
+$@14 (54)
+    on left: 29, on right: 30
+rword (55)
+    on left: 31 32 33 34 35, on right: 24
+tag (56)
+    on left: 38 39, on right: 24
+$@15 (57)
+    on left: 36, on right: 38
+$@16 (58)
+    on left: 37, on right: 38
+nlist (59)
+    on left: 40 42 45, on right: 24 42 45
+$@17 (60)
+    on left: 41, on right: 42
+$@18 (61)
+    on left: 43, on right: 45
+$@19 (62)
+    on left: 44, on right: 45
+nmno (63)
+    on left: 46 48 49 51, on right: 40 42 45
+$@20 (64)
+    on left: 47, on right: 48
+$@21 (65)
+    on left: 50, on right: 51
+rulesection (66)
+    on left: 52, on right: 5
+rules (67)
+    on left: 54 57, on right: 52 57
+$@22 (68)
+    on left: 53, on right: 54
+$@23 (69)
+    on left: 55, on right: 57
+$@24 (70)
+    on left: 56, on right: 57
+rule (71)
+    on left: 59, on right: 54 57
+$@25 (72)
+    on left: 58, on right: 59
+productions (73)
+    on left: 60 63, on right: 59 63
+$@26 (74)
+    on left: 61, on right: 63
+$@27 (75)
+    on left: 62, on right: 63
+production (76)
+    on left: 65, on right: 60 63
+$@28 (77)
+    on left: 64, on right: 65
+rulebody (78)
+    on left: 66 69 72, on right: 65 69 72
+$@29 (79)
+    on left: 67, on right: 69
+$@30 (80)
+    on left: 68, on right: 69
+$@31 (81)
+    on left: 70, on right: 72
+$@32 (82)
+    on left: 71, on right: 72
+prec (83)
+    on left: 73 76 79, on right: 65
+$@33 (84)
+    on left: 74, on right: 76
+$@34 (85)
+    on left: 75, on right: 76
+$@35 (86)
+    on left: 77, on right: 79
+$@36 (87)
+    on left: 78, on right: 79
+action (88)
+    on left: 80 83, on right: 66 69 72 76 79
+$@37 (89)
+    on left: 81, on right: 83
+$@38 (90)
+    on left: 82, on right: 83
+tailsection (91)
+    on left: 84, on right: 5
+
+
+State 0
+
+    0 $accept: . spec $end
+
+    $default  reduce using rule 6 (defsection)
+
+    spec        go to state 1
+    defsection  go to state 2
+
+
+State 1
+
+    0 $accept: spec . $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    5 spec: defsection . $@1 TMARK $@2 rulesection $@3 TMARK $@4 tailsection
+    8 defsection: defsection . $@5 bisonDeclars
+
+    TMARK     reduce using rule 1 ($@1)
+    $default  reduce using rule 7 ($@5)
+
+    $@1  go to state 4
+    $@5  go to state 5
+
+
+State 3
+
+    0 $accept: spec $end .
+
+    $default  accept
+
+
+State 4
+
+    5 spec: defsection $@1 . TMARK $@2 rulesection $@3 TMARK $@4 tailsection
+
+    TMARK  shift, and go to state 6
+
+
+State 5
+
+    8 defsection: defsection $@5 . bisonDeclars
+
+    TLEFT             shift, and go to state 7
+    TRIGHT            shift, and go to state 8
+    TNONASSOC         shift, and go to state 9
+    TTOKEN            shift, and go to state 10
+    TTYPE             shift, and go to state 11
+    TSTART            shift, and go to state 12
+    TUNION            shift, and go to state 13
+    TPURE_PARSER      shift, and go to state 14
+    TSEMANTIC_PARSER  shift, and go to state 15
+    TEXPECT           shift, and go to state 16
+    TTHONG            shift, and go to state 17
+    TLCURL            shift, and go to state 18
+
+    bisonDeclars  go to state 19
+    CDeclar       go to state 20
+    bisonDeclar   go to state 21
+    unionDeclar   go to state 22
+    rword         go to state 23
+
+
+State 6
+
+    5 spec: defsection $@1 TMARK . $@2 rulesection $@3 TMARK $@4 tailsection
+
+    $default  reduce using rule 2 ($@2)
+
+    $@2  go to state 24
+
+
+State 7
+
+   32 rword: TLEFT .
+
+    $default  reduce using rule 32 (rword)
+
+
+State 8
+
+   33 rword: TRIGHT .
+
+    $default  reduce using rule 33 (rword)
+
+
+State 9
+
+   34 rword: TNONASSOC .
+
+    $default  reduce using rule 34 (rword)
+
+
+State 10
+
+   31 rword: TTOKEN .
+
+    $default  reduce using rule 31 (rword)
+
+
+State 11
+
+   35 rword: TTYPE .
+
+    $default  reduce using rule 35 (rword)
+
+
+State 12
+
+   15 bisonDeclar: TSTART . $@8 yaccIdentifier
+
+    $default  reduce using rule 14 ($@8)
+
+    $@8  go to state 25
+
+
+State 13
+
+   30 unionDeclar: TUNION . $@12 TOPENBRACES $@13 CCODE $@14 TCLOSEBRACES
+
+    $default  reduce using rule 27 ($@12)
+
+    $@12  go to state 26
+
+
+State 14
+
+   17 bisonDeclar: TPURE_PARSER .
+
+    $default  reduce using rule 17 (bisonDeclar)
+
+
+State 15
+
+   18 bisonDeclar: TSEMANTIC_PARSER .
+
+    $default  reduce using rule 18 (bisonDeclar)
+
+
+State 16
+
+   20 bisonDeclar: TEXPECT . $@9 TNUM
+
+    $default  reduce using rule 19 ($@9)
+
+    $@9  go to state 27
+
+
+State 17
+
+   21 bisonDeclar: TTHONG .
+
+    $default  reduce using rule 21 (bisonDeclar)
+
+
+State 18
+
+   13 CDeclar: TLCURL . $@6 CCODE $@7 TRCURL
+
+    $default  reduce using rule 11 ($@6)
+
+    $@6  go to state 28
+
+
+State 19
+
+    8 defsection: defsection $@5 bisonDeclars .
+
+    $default  reduce using rule 8 (defsection)
+
+
+State 20
+
+   10 bisonDeclars: CDeclar .
+
+    $default  reduce using rule 10 (bisonDeclars)
+
+
+State 21
+
+    9 bisonDeclars: bisonDeclar .
+
+    $default  reduce using rule 9 (bisonDeclars)
+
+
+State 22
+
+   16 bisonDeclar: unionDeclar .
+
+    $default  reduce using rule 16 (bisonDeclar)
+
+
+State 23
+
+   24 bisonDeclar: rword . $@10 tag $@11 nlist
+
+    $default  reduce using rule 22 ($@10)
+
+    $@10  go to state 29
+
+
+State 24
+
+    5 spec: defsection $@1 TMARK $@2 . rulesection $@3 TMARK $@4 tailsection
+
+    TNTLHS  shift, and go to state 30
+
+    rulesection  go to state 31
+    rules        go to state 32
+    rule         go to state 33
+
+
+State 25
+
+   15 bisonDeclar: TSTART $@8 . yaccIdentifier
+
+    TIDENT  shift, and go to state 34
+    TNT     shift, and go to state 35
+
+    yaccIdentifier  go to state 36
+
+
+State 26
+
+   30 unionDeclar: TUNION $@12 . TOPENBRACES $@13 CCODE $@14 TCLOSEBRACES
+
+    TOPENBRACES  shift, and go to state 37
+
+
+State 27
+
+   20 bisonDeclar: TEXPECT $@9 . TNUM
+
+    TNUM  shift, and go to state 38
+
+
+State 28
+
+   13 CDeclar: TLCURL $@6 . CCODE $@7 TRCURL
+
+    CCODE  shift, and go to state 39
+
+
+State 29
+
+   24 bisonDeclar: rword $@10 . tag $@11 nlist
+
+    TLT  shift, and go to state 40
+
+    $default  reduce using rule 39 (tag)
+
+    tag  go to state 41
+
+
+State 30
+
+   59 rule: TNTLHS . $@25 productions
+
+    $default  reduce using rule 58 ($@25)
+
+    $@25  go to state 42
+
+
+State 31
+
+    5 spec: defsection $@1 TMARK $@2 rulesection . $@3 TMARK $@4 tailsection
+
+    $default  reduce using rule 3 ($@3)
+
+    $@3  go to state 43
+
+
+State 32
+
+   52 rulesection: rules .
+   57 rules: rules . $@23 rule $@24 TSEMICOL
+
+    TNTLHS    reduce using rule 55 ($@23)
+    $default  reduce using rule 52 (rulesection)
+
+    $@23  go to state 44
+
+
+State 33
+
+   54 rules: rule . $@22 TSEMICOL
+
+    $default  reduce using rule 53 ($@22)
+
+    $@22  go to state 45
+
+
+State 34
+
+   25 yaccIdentifier: TIDENT .
+
+    $default  reduce using rule 25 (yaccIdentifier)
+
+
+State 35
+
+   26 yaccIdentifier: TNT .
+
+    $default  reduce using rule 26 (yaccIdentifier)
+
+
+State 36
+
+   15 bisonDeclar: TSTART $@8 yaccIdentifier .
+
+    $default  reduce using rule 15 (bisonDeclar)
+
+
+State 37
+
+   30 unionDeclar: TUNION $@12 TOPENBRACES . $@13 CCODE $@14 TCLOSEBRACES
+
+    $default  reduce using rule 28 ($@13)
+
+    $@13  go to state 46
+
+
+State 38
+
+   20 bisonDeclar: TEXPECT $@9 TNUM .
+
+    $default  reduce using rule 20 (bisonDeclar)
+
+
+State 39
+
+   13 CDeclar: TLCURL $@6 CCODE . $@7 TRCURL
+
+    $default  reduce using rule 12 ($@7)
+
+    $@7  go to state 47
+
+
+State 40
+
+   38 tag: TLT . $@15 TIDENT $@16 TGT
+
+    $default  reduce using rule 36 ($@15)
+
+    $@15  go to state 48
+
+
+State 41
+
+   24 bisonDeclar: rword $@10 tag . $@11 nlist
+
+    $default  reduce using rule 23 ($@11)
+
+    $@11  go to state 49
+
+
+State 42
+
+   59 rule: TNTLHS $@25 . productions
+
+    TOPENBRACES  shift, and go to state 50
+
+    $default  reduce using rule 80 (action)
+
+    productions  go to state 51
+    production   go to state 52
+    rulebody     go to state 53
+    action       go to state 54
+
+
+State 43
+
+    5 spec: defsection $@1 TMARK $@2 rulesection $@3 . TMARK $@4 tailsection
+
+    TMARK  shift, and go to state 55
+
+
+State 44
+
+   57 rules: rules $@23 . rule $@24 TSEMICOL
+
+    TNTLHS  shift, and go to state 30
+
+    rule  go to state 56
+
+
+State 45
+
+   54 rules: rule $@22 . TSEMICOL
+
+    TSEMICOL  shift, and go to state 57
+
+
+State 46
+
+   30 unionDeclar: TUNION $@12 TOPENBRACES $@13 . CCODE $@14 TCLOSEBRACES
+
+    CCODE  shift, and go to state 58
+
+
+State 47
+
+   13 CDeclar: TLCURL $@6 CCODE $@7 . TRCURL
+
+    TRCURL  shift, and go to state 59
+
+
+State 48
+
+   38 tag: TLT $@15 . TIDENT $@16 TGT
+
+    TIDENT  shift, and go to state 60
+
+
+State 49
+
+   24 bisonDeclar: rword $@10 tag $@11 . nlist
+
+    CHARCONSTANT  shift, and go to state 61
+    TIDENT        shift, and go to state 34
+    TNT           shift, and go to state 35
+
+    yaccIdentifier  go to state 62
+    nlist           go to state 63
+    nmno            go to state 64
+
+
+State 50
+
+   83 action: TOPENBRACES . $@37 CCODE $@38 TCLOSEBRACES
+
+    $default  reduce using rule 81 ($@37)
+
+    $@37  go to state 65
+
+
+State 51
+
+   59 rule: TNTLHS $@25 productions .
+   63 productions: productions . $@26 TPIPE $@27 production
+
+    TPIPE     reduce using rule 61 ($@26)
+    $default  reduce using rule 59 (rule)
+
+    $@26  go to state 66
+
+
+State 52
+
+   60 productions: production .
+
+    $default  reduce using rule 60 (productions)
+
+
+State 53
+
+   65 production: rulebody . $@28 prec
+   69 rulebody: rulebody . $@29 yaccIdentifier $@30 action
+   72         | rulebody . $@31 CHARCONSTANT $@32 action
+
+    CHARCONSTANT  reduce using rule 70 ($@31)
+    TIDENT        reduce using rule 67 ($@29)
+    TNT           reduce using rule 67 ($@29)
+    $default      reduce using rule 64 ($@28)
+
+    $@28  go to state 67
+    $@29  go to state 68
+    $@31  go to state 69
+
+
+State 54
+
+   66 rulebody: action .
+
+    $default  reduce using rule 66 (rulebody)
+
+
+State 55
+
+    5 spec: defsection $@1 TMARK $@2 rulesection $@3 TMARK . $@4 tailsection
+
+    $default  reduce using rule 4 ($@4)
+
+    $@4  go to state 70
+
+
+State 56
+
+   57 rules: rules $@23 rule . $@24 TSEMICOL
+
+    $default  reduce using rule 56 ($@24)
+
+    $@24  go to state 71
+
+
+State 57
+
+   54 rules: rule $@22 TSEMICOL .
+
+    $default  reduce using rule 54 (rules)
+
+
+State 58
+
+   30 unionDeclar: TUNION $@12 TOPENBRACES $@13 CCODE . $@14 TCLOSEBRACES
+
+    $default  reduce using rule 29 ($@14)
+
+    $@14  go to state 72
+
+
+State 59
+
+   13 CDeclar: TLCURL $@6 CCODE $@7 TRCURL .
+
+    $default  reduce using rule 13 (CDeclar)
+
+
+State 60
+
+   38 tag: TLT $@15 TIDENT . $@16 TGT
+
+    $default  reduce using rule 37 ($@16)
+
+    $@16  go to state 73
+
+
+State 61
+
+   49 nmno: CHARCONSTANT .
+   51     | CHARCONSTANT . $@21 TNUM
+
+    TNUM      reduce using rule 50 ($@21)
+    $default  reduce using rule 49 (nmno)
+
+    $@21  go to state 74
+
+
+State 62
+
+   46 nmno: yaccIdentifier .
+   48     | yaccIdentifier . $@20 TNUM
+
+    TNUM      reduce using rule 47 ($@20)
+    $default  reduce using rule 46 (nmno)
+
+    $@20  go to state 75
+
+
+State 63
+
+   24 bisonDeclar: rword $@10 tag $@11 nlist .
+   42 nlist: nlist . $@17 nmno
+   45      | nlist . $@18 TCOMMA $@19 nmno
+
+    CHARCONSTANT  reduce using rule 41 ($@17)
+    TIDENT        reduce using rule 41 ($@17)
+    TNT           reduce using rule 41 ($@17)
+    TCOMMA        reduce using rule 43 ($@18)
+    $default      reduce using rule 24 (bisonDeclar)
+
+    $@17  go to state 76
+    $@18  go to state 77
+
+
+State 64
+
+   40 nlist: nmno .
+
+    $default  reduce using rule 40 (nlist)
+
+
+State 65
+
+   83 action: TOPENBRACES $@37 . CCODE $@38 TCLOSEBRACES
+
+    CCODE  shift, and go to state 78
+
+
+State 66
+
+   63 productions: productions $@26 . TPIPE $@27 production
+
+    TPIPE  shift, and go to state 79
+
+
+State 67
+
+   65 production: rulebody $@28 . prec
+
+    TPREC  shift, and go to state 80
+
+    $default  reduce using rule 73 (prec)
+
+    prec  go to state 81
+
+
+State 68
+
+   69 rulebody: rulebody $@29 . yaccIdentifier $@30 action
+
+    TIDENT  shift, and go to state 34
+    TNT     shift, and go to state 35
+
+    yaccIdentifier  go to state 82
+
+
+State 69
+
+   72 rulebody: rulebody $@31 . CHARCONSTANT $@32 action
+
+    CHARCONSTANT  shift, and go to state 83
+
+
+State 70
+
+    5 spec: defsection $@1 TMARK $@2 rulesection $@3 TMARK $@4 . tailsection
+
+    $default  reduce using rule 84 (tailsection)
+
+    tailsection  go to state 84
+
+
+State 71
+
+   57 rules: rules $@23 rule $@24 . TSEMICOL
+
+    TSEMICOL  shift, and go to state 85
+
+
+State 72
+
+   30 unionDeclar: TUNION $@12 TOPENBRACES $@13 CCODE $@14 . TCLOSEBRACES
+
+    TCLOSEBRACES  shift, and go to state 86
+
+
+State 73
+
+   38 tag: TLT $@15 TIDENT $@16 . TGT
+
+    TGT  shift, and go to state 87
+
+
+State 74
+
+   51 nmno: CHARCONSTANT $@21 . TNUM
+
+    TNUM  shift, and go to state 88
+
+
+State 75
+
+   48 nmno: yaccIdentifier $@20 . TNUM
+
+    TNUM  shift, and go to state 89
+
+
+State 76
+
+   42 nlist: nlist $@17 . nmno
+
+    CHARCONSTANT  shift, and go to state 61
+    TIDENT        shift, and go to state 34
+    TNT           shift, and go to state 35
+
+    yaccIdentifier  go to state 62
+    nmno            go to state 90
+
+
+State 77
+
+   45 nlist: nlist $@18 . TCOMMA $@19 nmno
+
+    TCOMMA  shift, and go to state 91
+
+
+State 78
+
+   83 action: TOPENBRACES $@37 CCODE . $@38 TCLOSEBRACES
+
+    $default  reduce using rule 82 ($@38)
+
+    $@38  go to state 92
+
+
+State 79
+
+   63 productions: productions $@26 TPIPE . $@27 production
+
+    $default  reduce using rule 62 ($@27)
+
+    $@27  go to state 93
+
+
+State 80
+
+   76 prec: TPREC . $@33 yaccIdentifier $@34 action
+   79     | TPREC . $@35 CHARCONSTANT $@36 action
+
+    CHARCONSTANT  reduce using rule 77 ($@35)
+    $default      reduce using rule 74 ($@33)
+
+    $@33  go to state 94
+    $@35  go to state 95
+
+
+State 81
+
+   65 production: rulebody $@28 prec .
+
+    $default  reduce using rule 65 (production)
+
+
+State 82
+
+   69 rulebody: rulebody $@29 yaccIdentifier . $@30 action
+
+    $default  reduce using rule 68 ($@30)
+
+    $@30  go to state 96
+
+
+State 83
+
+   72 rulebody: rulebody $@31 CHARCONSTANT . $@32 action
+
+    $default  reduce using rule 71 ($@32)
+
+    $@32  go to state 97
+
+
+State 84
+
+    5 spec: defsection $@1 TMARK $@2 rulesection $@3 TMARK $@4 tailsection .
+
+    $default  reduce using rule 5 (spec)
+
+
+State 85
+
+   57 rules: rules $@23 rule $@24 TSEMICOL .
+
+    $default  reduce using rule 57 (rules)
+
+
+State 86
+
+   30 unionDeclar: TUNION $@12 TOPENBRACES $@13 CCODE $@14 TCLOSEBRACES .
+
+    $default  reduce using rule 30 (unionDeclar)
+
+
+State 87
+
+   38 tag: TLT $@15 TIDENT $@16 TGT .
+
+    $default  reduce using rule 38 (tag)
+
+
+State 88
+
+   51 nmno: CHARCONSTANT $@21 TNUM .
+
+    $default  reduce using rule 51 (nmno)
+
+
+State 89
+
+   48 nmno: yaccIdentifier $@20 TNUM .
+
+    $default  reduce using rule 48 (nmno)
+
+
+State 90
+
+   42 nlist: nlist $@17 nmno .
+
+    $default  reduce using rule 42 (nlist)
+
+
+State 91
+
+   45 nlist: nlist $@18 TCOMMA . $@19 nmno
+
+    $default  reduce using rule 44 ($@19)
+
+    $@19  go to state 98
+
+
+State 92
+
+   83 action: TOPENBRACES $@37 CCODE $@38 . TCLOSEBRACES
+
+    TCLOSEBRACES  shift, and go to state 99
+
+
+State 93
+
+   63 productions: productions $@26 TPIPE $@27 . production
+
+    TOPENBRACES  shift, and go to state 50
+
+    $default  reduce using rule 80 (action)
+
+    production  go to state 100
+    rulebody    go to state 53
+    action      go to state 54
+
+
+State 94
+
+   76 prec: TPREC $@33 . yaccIdentifier $@34 action
+
+    TIDENT  shift, and go to state 34
+    TNT     shift, and go to state 35
+
+    yaccIdentifier  go to state 101
+
+
+State 95
+
+   79 prec: TPREC $@35 . CHARCONSTANT $@36 action
+
+    CHARCONSTANT  shift, and go to state 102
+
+
+State 96
+
+   69 rulebody: rulebody $@29 yaccIdentifier $@30 . action
+
+    TOPENBRACES  shift, and go to state 50
+
+    $default  reduce using rule 80 (action)
+
+    action  go to state 103
+
+
+State 97
+
+   72 rulebody: rulebody $@31 CHARCONSTANT $@32 . action
+
+    TOPENBRACES  shift, and go to state 50
+
+    $default  reduce using rule 80 (action)
+
+    action  go to state 104
+
+
+State 98
+
+   45 nlist: nlist $@18 TCOMMA $@19 . nmno
+
+    CHARCONSTANT  shift, and go to state 61
+    TIDENT        shift, and go to state 34
+    TNT           shift, and go to state 35
+
+    yaccIdentifier  go to state 62
+    nmno            go to state 105
+
+
+State 99
+
+   83 action: TOPENBRACES $@37 CCODE $@38 TCLOSEBRACES .
+
+    $default  reduce using rule 83 (action)
+
+
+State 100
+
+   63 productions: productions $@26 TPIPE $@27 production .
+
+    $default  reduce using rule 63 (productions)
+
+
+State 101
+
+   76 prec: TPREC $@33 yaccIdentifier . $@34 action
+
+    $default  reduce using rule 75 ($@34)
+
+    $@34  go to state 106
+
+
+State 102
+
+   79 prec: TPREC $@35 CHARCONSTANT . $@36 action
+
+    $default  reduce using rule 78 ($@36)
+
+    $@36  go to state 107
+
+
+State 103
+
+   69 rulebody: rulebody $@29 yaccIdentifier $@30 action .
+
+    $default  reduce using rule 69 (rulebody)
+
+
+State 104
+
+   72 rulebody: rulebody $@31 CHARCONSTANT $@32 action .
+
+    $default  reduce using rule 72 (rulebody)
+
+
+State 105
+
+   45 nlist: nlist $@18 TCOMMA $@19 nmno .
+
+    $default  reduce using rule 45 (nlist)
+
+
+State 106
+
+   76 prec: TPREC $@33 yaccIdentifier $@34 . action
+
+    TOPENBRACES  shift, and go to state 50
+
+    $default  reduce using rule 80 (action)
+
+    action  go to state 108
+
+
+State 107
+
+   79 prec: TPREC $@35 CHARCONSTANT $@36 . action
+
+    TOPENBRACES  shift, and go to state 50
+
+    $default  reduce using rule 80 (action)
+
+    action  go to state 109
+
+
+State 108
+
+   76 prec: TPREC $@33 yaccIdentifier $@34 action .
+
+    $default  reduce using rule 76 (prec)
+
+
+State 109
+
+   79 prec: TPREC $@35 CHARCONSTANT $@36 action .
+
+    $default  reduce using rule 79 (prec)

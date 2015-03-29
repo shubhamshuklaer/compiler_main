@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_PARSER_HPP_INCLUDED
-# define YY_YY_PARSER_HPP_INCLUDED
+#ifndef YY_YY_Y_TAB_H_INCLUDED
+# define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -45,79 +45,36 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    IF = 258,
-    ELSE = 259,
-    WHILE = 260,
-    DO = 261,
-    FOR = 262,
-    AND = 263,
-    OR = 264,
-    NOT = 265,
-    TRUE = 266,
-    FALSE = 267,
-    INT = 268,
-    LONG = 269,
-    CHAR = 270,
-    FLOAT = 271,
-    DOUBLE = 272,
-    ADD = 273,
-    SUB = 274,
-    MULT = 275,
-    DIV = 276,
-    EXP = 277,
-    MOD = 278,
-    INC = 279,
-    DEC = 280,
-    QUES = 281,
-    BIN_NOT = 282,
-    BIN_AND = 283,
-    BIN_OR = 284,
-    BIN_XOR = 285,
-    BIN_LEFT = 286,
-    BIN_RIGHT = 287,
-    BIN_AND_ASSIGN = 288,
-    BIN_IOR_ASSIGN = 289,
-    BIN_XOR_ASSIGN = 290,
-    ADD_ASSIGN = 291,
-    SUB_ASSIGN = 292,
-    MULT_ASSIGN = 293,
-    DIV_ASSIGN = 294,
-    MOD_ASSIGN = 295,
-    LEFT_ASSIGN = 296,
-    RIGHT_ASSIGN = 297,
-    NUM = 298,
-    IDENT = 299,
-    VAR = 300,
-    POINTER = 301,
-    DREF = 302,
-    ASSIGN = 303,
-    TERMINATOR = 304,
-    COLON = 305,
-    STRING = 306,
-    CHARACTER = 307,
-    OP = 308,
-    CP = 309,
-    CB = 310,
-    OB = 311,
-    OCB = 312,
-    CCB = 313,
-    EQ = 314,
-    NOTEQ = 315,
-    GT = 316,
-    LT = 317,
-    GE = 318,
-    LE = 319,
-    COMMENT = 320,
-    MULTI_COMMENT = 321,
-    WHITESPACE = 322,
-    DEFINE = 323,
-    IFDEF = 324,
-    IFNDEF = 325,
-    FUNCTION = 326,
-    COMMA = 327,
-    SYN_ERROR = 328,
-    PRINT = 329,
-    LTGT = 330
+    TNUM = 258,
+    CHARCONSTANT = 259,
+    STRING_LITERAL = 260,
+    CCODE = 261,
+    TIDENT = 262,
+    TNT = 263,
+    TNTLHS = 264,
+    TLEFT = 265,
+    TRIGHT = 266,
+    TNONASSOC = 267,
+    TTOKEN = 268,
+    TPREC = 269,
+    TTYPE = 270,
+    TSTART = 271,
+    TUNION = 272,
+    TPURE_PARSER = 273,
+    TSEMANTIC_PARSER = 274,
+    TEXPECT = 275,
+    TTHONG = 276,
+    TMARK = 277,
+    TLCURL = 278,
+    TRCURL = 279,
+    TSEMICOL = 280,
+    TPIPE = 281,
+    TOPENBRACES = 282,
+    TCLOSEBRACES = 283,
+    TLT = 284,
+    TGT = 285,
+    TCOMMA = 286,
+    TEPSILON = 287
   };
 #endif
 
@@ -126,14 +83,14 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 30 "parser.y" /* yacc.c:1909  */
+#line 38 "yaccviso.y" /* yacc.c:1909  */
 
-	int num;
-	char *str;
-	int type;
-	struct node *entry;
+  char           *ccode;		/* a char* that holds the c code*/
+  node           *nptr;
+  symentry	 *symptr;		/* for non terminals (LHS, RHS), 
+					   terminals, identifiers  */
 
-#line 137 "parser.hpp" /* yacc.c:1909  */
+#line 94 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -144,4 +101,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_PARSER_HPP_INCLUDED  */
+#endif /* !YY_YY_Y_TAB_H_INCLUDED  */

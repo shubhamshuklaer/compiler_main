@@ -1,0 +1,1721 @@
+graph: {
+	title: "Dependencies in ../../lex/parser.y"
+	splines: yes
+	display_edge_labels: no
+	node: {	title: "OB"
+		label: "OB"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "CB"
+		label: "CB"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "LE"
+		label: "LE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "GE"
+		label: "GE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "IF"
+		label: "IF"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "DO"
+		label: "DO"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "OP"
+		label: "OP"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "CP"
+		label: "CP"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "EQ"
+		label: "EQ"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "OR"
+		label: "OR"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "GT"
+		label: "GT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "LT"
+		label: "LT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "op"
+		label: "op"
+		/* number of buckets = 7 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "op"
+		targetname: "arith_bi_op"
+		class: 1
+	}
+	edge: {	sourcename: "op"
+		targetname: "arith_un_op"
+		class: 2
+	}
+	edge: {	sourcename: "op"
+		targetname: "logic_bi_op"
+		class: 3
+	}
+	edge: {	sourcename: "op"
+		targetname: "logic_un_op"
+		class: 4
+	}
+	edge: {	sourcename: "op"
+		targetname: "bit_un_op"
+		class: 5
+	}
+	edge: {	sourcename: "op"
+		targetname: "bit_bi_op"
+		class: 6
+	}
+	edge: {	sourcename: "op"
+		targetname: "assign_op"
+		class: 7
+	}
+	node: {	title: "CCB"
+		label: "CCB"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "OCB"
+		label: "OCB"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "DEC"
+		label: "DEC"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "ADD"
+		label: "ADD"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "INC"
+		label: "INC"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "AND"
+		label: "AND"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "MOD"
+		label: "MOD"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "SUB"
+		label: "SUB"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "VAR"
+		label: "VAR"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "NUM"
+		label: "NUM"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "FOR"
+		label: "FOR"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "DIV"
+		label: "DIV"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "INT"
+		label: "INT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "NOT"
+		label: "NOT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "EXP"
+		label: "EXP"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "DREF"
+		label: "DREF"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "LONG"
+		label: "LONG"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "CHAR"
+		label: "CHAR"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "ELSE"
+		label: "ELSE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "TRUE"
+		label: "TRUE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "QUES"
+		label: "QUES"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "LTGT"
+		label: "LTGT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "MULT"
+		label: "MULT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "TEXT"
+		label: "TEXT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "term"
+		label: "term"
+		/* number of buckets = 4 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "term"
+		targetname: "VAR"
+		class: 1
+	}
+	edge: {	sourcename: "term"
+		targetname: "POINTER"
+		class: 2
+	}
+	edge: {	sourcename: "term"
+		targetname: "DREF"
+		class: 3
+	}
+	edge: {	sourcename: "term"
+		targetname: "IDENT"
+		class: 4
+	}
+	node: {	title: "expr"
+		label: "expr"
+		/* number of buckets = 11 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "expr"
+		targetname: "condition"
+		label: "printf(\fi034 ** expr\fi092n\fi034);"
+		class: 1
+	}
+	edge: {	sourcename: "expr"
+		targetname: "OP"
+		class: 2
+	}
+	edge: {	sourcename: "expr"
+		targetname: "expr"
+		class: 2
+	}
+	edge: {	sourcename: "expr"
+		targetname: "CP"
+		class: 2
+	}
+	edge: {	sourcename: "expr"
+		targetname: "term"
+		class: 3
+	}
+	edge: {	sourcename: "expr"
+		targetname: "const"
+		class: 4
+	}
+	edge: {	sourcename: "expr"
+		targetname: "function_block"
+		class: 5
+	}
+	edge: {	sourcename: "expr"
+		targetname: "expr"
+		class: 6
+	}
+	edge: {	sourcename: "expr"
+		targetname: "OB"
+		class: 6
+	}
+	edge: {	sourcename: "expr"
+		targetname: "expr"
+		class: 6
+	}
+	edge: {	sourcename: "expr"
+		targetname: "CB"
+		class: 6
+	}
+	node: {	title: "IFDEF"
+		label: "IFDEF"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "WHILE"
+		label: "WHILE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "COMMA"
+		label: "COMMA"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "FALSE"
+		label: "FALSE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "FLOAT"
+		label: "FLOAT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "IDENT"
+		label: "IDENT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "NOTEQ"
+		label: "NOTEQ"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "COLON"
+		label: "COLON"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "PRINT"
+		label: "PRINT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "block"
+		label: "block"
+		/* number of buckets = 15 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "block"
+		targetname: "expr"
+		class: 1
+	}
+	edge: {	sourcename: "block"
+		targetname: "assignment"
+		class: 2
+	}
+	edge: {	sourcename: "block"
+		targetname: "block"
+		class: 3
+	}
+	edge: {	sourcename: "block"
+		targetname: "block"
+		class: 3
+	}
+	edge: {	sourcename: "block"
+		targetname: "OCB"
+		class: 4
+	}
+	edge: {	sourcename: "block"
+		targetname: "term_block"
+		class: 4
+	}
+	edge: {	sourcename: "block"
+		targetname: "CCB"
+		class: 4
+	}
+	edge: {	sourcename: "block"
+		targetname: "if_block"
+		class: 5
+	}
+	edge: {	sourcename: "block"
+		targetname: "while_block"
+		class: 6
+	}
+	edge: {	sourcename: "block"
+		targetname: "for_block"
+		class: 7
+	}
+	edge: {	sourcename: "block"
+		targetname: "comment_block"
+		class: 8
+	}
+	edge: {	sourcename: "block"
+		targetname: "multi_comment_block"
+		class: 9
+	}
+	edge: {	sourcename: "block"
+		targetname: "def_block"
+		class: 10
+	}
+	edge: {	sourcename: "block"
+		targetname: "data_def_block"
+		class: 11
+	}
+	edge: {	sourcename: "block"
+		targetname: "print_block"
+		class: 12
+	}
+	node: {	title: "IFNDEF"
+		label: "IFNDEF"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "DEFINE"
+		label: "DEFINE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "DOUBLE"
+		label: "DOUBLE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "const"
+		label: "const"
+		/* number of buckets = 9 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "const"
+		targetname: "NUM"
+		class: 1
+	}
+	edge: {	sourcename: "const"
+		targetname: "string"
+		class: 2
+	}
+	edge: {	sourcename: "const"
+		targetname: "TEXT"
+		class: 3
+	}
+	edge: {	sourcename: "const"
+		targetname: "BACKTICK"
+		class: 4
+	}
+	edge: {	sourcename: "const"
+		targetname: "IDENT"
+		class: 4
+	}
+	edge: {	sourcename: "const"
+		targetname: "BACKTICK"
+		class: 4
+	}
+	edge: {	sourcename: "const"
+		targetname: "DOUBLE_BACKTICK"
+		class: 5
+	}
+	edge: {	sourcename: "const"
+		targetname: "IDENT"
+		class: 5
+	}
+	edge: {	sourcename: "const"
+		targetname: "DOUBLE_BACKTICK"
+		class: 5
+	}
+	node: {	title: "ASSIGN"
+		label: "ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "BIN_OR"
+		label: "BIN_OR"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "BIN_AND"
+		label: "BIN_AND"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "string"
+		label: "string"
+		/* number of buckets = 3 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "string"
+		targetname: "DOUBLE_BACKTICK"
+		class: 1
+	}
+	edge: {	sourcename: "string"
+		targetname: "block"
+		class: 1
+	}
+	edge: {	sourcename: "string"
+		targetname: "DOUBLE_BACKTICK"
+		class: 1
+	}
+	node: {	title: "POINTER"
+		label: "POINTER"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "COMMENT"
+		label: "COMMENT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "multi_comment_block"
+		label: "multi_comment_block"
+		/* number of buckets = 1 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "multi_comment_block"
+		targetname: "MULTI_COMMENT"
+		label: "printf(\fi034 ** comment\fi092n\fi034);"
+		class: 1
+	}
+	node: {	title: "BIN_NOT"
+		label: "BIN_NOT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "BIN_XOR"
+		label: "BIN_XOR"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "BACKTICK"
+		label: "BACKTICK"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "FUNCTION"
+		label: "FUNCTION"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "BIN_LEFT"
+		label: "BIN_LEFT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "BIN_RIGHT"
+		label: "BIN_RIGHT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "if_block"
+		label: "if_block"
+		/* number of buckets = 16 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "IF"
+		class: 1
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "condition"
+		class: 1
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "term_block"
+		class: 1
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "IF"
+		class: 2
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "expr"
+		class: 2
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "term_block"
+		label: "printf(\fi034 ** if\fi092n\fi034);"
+		class: 2
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "IF"
+		class: 3
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "condition"
+		class: 3
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "term_block"
+		class: 3
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "ELSE"
+		class: 3
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "term_block"
+		class: 3
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "IF"
+		class: 4
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "expr"
+		class: 4
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "term_block"
+		class: 4
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "ELSE"
+		class: 4
+	}
+	edge: {	sourcename: "if_block"
+		targetname: "term_block"
+		label: "printf(\fi034 ** if\fi092n\fi034);"
+		class: 4
+	}
+	node: {	title: "SYN_ERROR"
+		label: "SYN_ERROR"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "arr_elem"
+		label: "arr_elem"
+		/* number of buckets = 5 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "arr_elem"
+		targetname: "term"
+		class: 1
+	}
+	edge: {	sourcename: "arr_elem"
+		targetname: "OB"
+		class: 1
+	}
+	edge: {	sourcename: "arr_elem"
+		targetname: "expr"
+		class: 1
+	}
+	edge: {	sourcename: "arr_elem"
+		targetname: "CB"
+		class: 1
+	}
+	edge: {	sourcename: "arr_elem"
+		targetname: "term"
+		class: 2
+	}
+	node: {	title: "WHITESPACE"
+		label: "WHITESPACE"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "ADD_ASSIGN"
+		label: "ADD_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "MOD_ASSIGN"
+		label: "MOD_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "SUB_ASSIGN"
+		label: "SUB_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "DIV_ASSIGN"
+		label: "DIV_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "TERMINATOR"
+		label: "TERMINATOR"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "def_block"
+		label: "def_block"
+		/* number of buckets = 7 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "def_block"
+		targetname: "DEFINE"
+		class: 1
+	}
+	edge: {	sourcename: "def_block"
+		targetname: "term"
+		class: 1
+	}
+	edge: {	sourcename: "def_block"
+		targetname: "expr"
+		class: 1
+	}
+	edge: {	sourcename: "def_block"
+		targetname: "IFDEF"
+		class: 2
+	}
+	edge: {	sourcename: "def_block"
+		targetname: "term"
+		class: 2
+	}
+	edge: {	sourcename: "def_block"
+		targetname: "IFNDEF"
+		class: 3
+	}
+	edge: {	sourcename: "def_block"
+		targetname: "term"
+		class: 3
+	}
+	node: {	title: "for_block"
+		label: "for_block"
+		/* number of buckets = 9 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "FOR"
+		class: 1
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "OP"
+		class: 1
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "assignment"
+		class: 1
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "TERMINATOR"
+		class: 1
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "condition"
+		class: 1
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "TERMINATOR"
+		class: 1
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "assignment"
+		class: 1
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "CP"
+		class: 1
+	}
+	edge: {	sourcename: "for_block"
+		targetname: "block"
+		label: "printf(\fi034 ** for\fi092n\fi034);"
+		class: 1
+	}
+	node: {	title: "bit_bi_op"
+		label: "bit_bi_op"
+		/* number of buckets = 5 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "bit_bi_op"
+		targetname: "BIN_AND"
+		class: 1
+	}
+	edge: {	sourcename: "bit_bi_op"
+		targetname: "BIN_OR"
+		class: 2
+	}
+	edge: {	sourcename: "bit_bi_op"
+		targetname: "BIN_XOR"
+		class: 3
+	}
+	edge: {	sourcename: "bit_bi_op"
+		targetname: "BIN_LEFT"
+		class: 4
+	}
+	edge: {	sourcename: "bit_bi_op"
+		targetname: "BIN_RIGHT"
+		class: 5
+	}
+	node: {	title: "assign_op"
+		label: "assign_op"
+		/* number of buckets = 11 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "ASSIGN"
+		class: 1
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "ADD_ASSIGN"
+		class: 2
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "SUB_ASSIGN"
+		class: 3
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "MULT_ASSIGN"
+		class: 4
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "DIV_ASSIGN"
+		class: 5
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "MOD_ASSIGN"
+		class: 6
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "LEFT_ASSIGN"
+		class: 7
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "RIGHT_ASSIGN"
+		class: 8
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "BIN_AND_ASSIGN"
+		class: 9
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "BIN_XOR_ASSIGN"
+		class: 10
+	}
+	edge: {	sourcename: "assign_op"
+		targetname: "BIN_IOR_ASSIGN"
+		class: 11
+	}
+	node: {	title: "bit_un_op"
+		label: "bit_un_op"
+		/* number of buckets = 1 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "bit_un_op"
+		targetname: "BIN_NOT"
+		class: 1
+	}
+	node: {	title: "data_type"
+		label: "data_type"
+		/* number of buckets = 11 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "INT"
+		class: 1
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "LONG"
+		class: 2
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "CHAR"
+		class: 3
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "FLOAT"
+		class: 4
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "DOUBLE"
+		class: 5
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "LONG"
+		class: 6
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "LONG"
+		class: 6
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "LONG"
+		class: 7
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "FLOAT"
+		class: 7
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "LONG"
+		class: 8
+	}
+	edge: {	sourcename: "data_type"
+		targetname: "DOUBLE"
+		class: 8
+	}
+	node: {	title: "condition"
+		label: "condition"
+		/* number of buckets = 5 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "condition"
+		targetname: "expr"
+		class: 1
+	}
+	edge: {	sourcename: "condition"
+		targetname: "op"
+		class: 1
+	}
+	edge: {	sourcename: "condition"
+		targetname: "expr"
+		class: 1
+	}
+	edge: {	sourcename: "condition"
+		targetname: "TRUE"
+		class: 2
+	}
+	edge: {	sourcename: "condition"
+		targetname: "FALSE"
+		label: "printf(\fi034 ** cond\fi092n\fi034);"
+		class: 3
+	}
+	node: {	title: "LEFT_ASSIGN"
+		label: "LEFT_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "MULT_ASSIGN"
+		label: "MULT_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "term_block"
+		label: "term_block"
+		/* number of buckets = 16 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "block"
+		class: 1
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "term_block"
+		class: 2
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "term_block"
+		class: 2
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "term_block"
+		class: 3
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "function_def_block"
+		class: 3
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "function_def_block"
+		class: 4
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "term_block"
+		class: 4
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "block"
+		class: 5
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "TERMINATOR"
+		class: 5
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "do_while_block"
+		class: 6
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "ternary_block"
+		class: 7
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "condition"
+		class: 8
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "TERMINATOR"
+		class: 8
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "TERMINATOR"
+		class: 9
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "assignment"
+		class: 10
+	}
+	edge: {	sourcename: "term_block"
+		targetname: "TERMINATOR"
+		class: 10
+	}
+	node: {	title: "assignment"
+		label: "assignment"
+		/* number of buckets = 7 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "assignment"
+		targetname: "VAR"
+		class: 1
+	}
+	edge: {	sourcename: "assignment"
+		targetname: "assign_op"
+		class: 1
+	}
+	edge: {	sourcename: "assignment"
+		targetname: "expr"
+		class: 1
+	}
+	edge: {	sourcename: "assignment"
+		targetname: "POINTER"
+		class: 2
+	}
+	edge: {	sourcename: "assignment"
+		targetname: "assign_op"
+		class: 2
+	}
+	edge: {	sourcename: "assignment"
+		targetname: "expr"
+		label: "printf(\fi034 ** assignment\fi092n\fi034);"
+		class: 2
+	}
+	edge: {	sourcename: "assignment"
+		targetname: "WHITESPACE"
+		class: 3
+	}
+	node: {	title: "term_const"
+		label: "term_const"
+		/* number of buckets = 2 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "term_const"
+		targetname: "term"
+		class: 1
+	}
+	edge: {	sourcename: "term_const"
+		targetname: "const"
+		class: 2
+	}
+	node: {	title: "RIGHT_ASSIGN"
+		label: "RIGHT_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "logic_bi_op"
+		label: "logic_bi_op"
+		/* number of buckets = 9 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "EQ"
+		label: "printf(\fi034 ** equals\fi092n\fi034);"
+		class: 1
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "NOTEQ"
+		class: 2
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "GT"
+		class: 3
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "LT"
+		class: 4
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "LTGT"
+		class: 5
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "GE"
+		class: 6
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "LE"
+		class: 7
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "AND"
+		class: 8
+	}
+	edge: {	sourcename: "logic_bi_op"
+		targetname: "OR"
+		class: 9
+	}
+	node: {	title: "while_block"
+		label: "while_block"
+		/* number of buckets = 6 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "while_block"
+		targetname: "WHILE"
+		class: 1
+	}
+	edge: {	sourcename: "while_block"
+		targetname: "condition"
+		class: 1
+	}
+	edge: {	sourcename: "while_block"
+		targetname: "block"
+		class: 1
+	}
+	edge: {	sourcename: "while_block"
+		targetname: "WHILE"
+		class: 2
+	}
+	edge: {	sourcename: "while_block"
+		targetname: "expr"
+		class: 2
+	}
+	edge: {	sourcename: "while_block"
+		targetname: "block"
+		label: "printf(\fi034 ** while\fi092n\fi034);"
+		class: 2
+	}
+	node: {	title: "ident_block"
+		label: "ident_block"
+		/* number of buckets = 4 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "ident_block"
+		targetname: "term"
+		class: 1
+	}
+	edge: {	sourcename: "ident_block"
+		targetname: "ident_block"
+		class: 2
+	}
+	edge: {	sourcename: "ident_block"
+		targetname: "COMMA"
+		class: 2
+	}
+	edge: {	sourcename: "ident_block"
+		targetname: "term"
+		class: 2
+	}
+	node: {	title: "arith_bi_op"
+		label: "arith_bi_op"
+		/* number of buckets = 6 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "arith_bi_op"
+		targetname: "ADD"
+		class: 1
+	}
+	edge: {	sourcename: "arith_bi_op"
+		targetname: "SUB"
+		class: 2
+	}
+	edge: {	sourcename: "arith_bi_op"
+		targetname: "MULT"
+		class: 3
+	}
+	edge: {	sourcename: "arith_bi_op"
+		targetname: "DIV"
+		class: 4
+	}
+	edge: {	sourcename: "arith_bi_op"
+		targetname: "MOD"
+		class: 5
+	}
+	edge: {	sourcename: "arith_bi_op"
+		targetname: "EXP"
+		class: 6
+	}
+	node: {	title: "start_block"
+		label: "start_block"
+		/* number of buckets = 2 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "start_block"
+		targetname: "function_def_block"
+		class: 1
+	}
+	edge: {	sourcename: "start_block"
+		targetname: "term_block"
+		class: 2
+	}
+	node: {	title: "print_block"
+		label: "print_block"
+		/* number of buckets = 4 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "print_block"
+		targetname: "PRINT"
+		class: 1
+	}
+	edge: {	sourcename: "print_block"
+		targetname: "expr"
+		class: 1
+	}
+	edge: {	sourcename: "print_block"
+		targetname: "GT"
+		class: 1
+	}
+	edge: {	sourcename: "print_block"
+		targetname: "const"
+		class: 1
+	}
+	node: {	title: "const_block"
+		label: "const_block"
+		/* number of buckets = 4 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "const_block"
+		targetname: "const"
+		class: 1
+	}
+	edge: {	sourcename: "const_block"
+		targetname: "const_block"
+		class: 2
+	}
+	edge: {	sourcename: "const_block"
+		targetname: "COMMA"
+		class: 2
+	}
+	edge: {	sourcename: "const_block"
+		targetname: "const"
+		class: 2
+	}
+	node: {	title: "logic_un_op"
+		label: "logic_un_op"
+		/* number of buckets = 1 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "logic_un_op"
+		targetname: "NOT"
+		class: 1
+	}
+	node: {	title: "arith_un_op"
+		label: "arith_un_op"
+		/* number of buckets = 2 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "arith_un_op"
+		targetname: "INC"
+		class: 1
+	}
+	edge: {	sourcename: "arith_un_op"
+		targetname: "DEC"
+		class: 2
+	}
+	node: {	title: "MULTI_COMMENT"
+		label: "MULTI_COMMENT"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "BIN_AND_ASSIGN"
+		label: "BIN_AND_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "BIN_IOR_ASSIGN"
+		label: "BIN_IOR_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "BIN_XOR_ASSIGN"
+		label: "BIN_XOR_ASSIGN"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 0 */
+	}
+	node: {	title: "DOUBLE_BACKTICK"
+		label: "DOUBLE_BACKTICK"
+		/* number of buckets = 0 */
+		/* bUsed = 1 */
+		/* type = 3 */
+	}
+	node: {	title: "arg_def_block"
+		label: "arg_def_block"
+		/* number of buckets = 6 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "arg_def_block"
+		targetname: "data_type"
+		class: 1
+	}
+	edge: {	sourcename: "arg_def_block"
+		targetname: "term"
+		class: 1
+	}
+	edge: {	sourcename: "arg_def_block"
+		targetname: "COMMA"
+		class: 1
+	}
+	edge: {	sourcename: "arg_def_block"
+		targetname: "arg_def_block"
+		class: 1
+	}
+	edge: {	sourcename: "arg_def_block"
+		targetname: "data_type"
+		class: 2
+	}
+	edge: {	sourcename: "arg_def_block"
+		targetname: "term"
+		class: 2
+	}
+	node: {	title: "comment_block"
+		label: "comment_block"
+		/* number of buckets = 1 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "comment_block"
+		targetname: "COMMENT"
+		label: "printf(\fi034 ** comment\fi092n\fi034);"
+		class: 1
+	}
+	node: {	title: "ternary_block"
+		label: "ternary_block"
+		/* number of buckets = 24 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "condition"
+		class: 1
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "QUES"
+		class: 1
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "block"
+		class: 1
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "COLON"
+		class: 1
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "block"
+		class: 1
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "TERMINATOR"
+		class: 1
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "expr"
+		class: 2
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "QUES"
+		class: 2
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "block"
+		class: 2
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "COLON"
+		class: 2
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "block"
+		class: 2
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "TERMINATOR"
+		label: "printf(\fi034 ** ternary\fi092n\fi034);"
+		class: 2
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "condition"
+		class: 3
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "QUES"
+		class: 3
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "expr"
+		class: 3
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "COLON"
+		class: 3
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "expr"
+		class: 3
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "expr"
+		class: 4
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "QUES"
+		class: 4
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "expr"
+		class: 4
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "COLON"
+		class: 4
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "expr"
+		label: "printf(\fi034 ** ternary\fi092n\fi034);"
+		class: 4
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "term_block"
+		class: 5
+	}
+	edge: {	sourcename: "ternary_block"
+		targetname: "ternary_block"
+		class: 5
+	}
+	node: {	title: "data_def_block"
+		label: "data_def_block"
+		/* number of buckets = 8 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "data_def_block"
+		targetname: "data_type"
+		class: 1
+	}
+	edge: {	sourcename: "data_def_block"
+		targetname: "arr_elem_block"
+		class: 1
+	}
+	edge: {	sourcename: "data_def_block"
+		targetname: "TERMINATOR"
+		class: 1
+	}
+	edge: {	sourcename: "data_def_block"
+		targetname: "data_type"
+		class: 2
+	}
+	edge: {	sourcename: "data_def_block"
+		targetname: "arr_elem_block"
+		class: 2
+	}
+	edge: {	sourcename: "data_def_block"
+		targetname: "ASSIGN"
+		class: 2
+	}
+	edge: {	sourcename: "data_def_block"
+		targetname: "expr"
+		class: 2
+	}
+	edge: {	sourcename: "data_def_block"
+		targetname: "TERMINATOR"
+		label: "printf(\fi034 ** data define\fi092n\fi034);"
+		class: 2
+	}
+	node: {	title: "arr_elem_block"
+		label: "arr_elem_block"
+		/* number of buckets = 4 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "arr_elem_block"
+		targetname: "arr_elem"
+		class: 1
+	}
+	edge: {	sourcename: "arr_elem_block"
+		targetname: "arr_elem"
+		class: 2
+	}
+	edge: {	sourcename: "arr_elem_block"
+		targetname: "COMMA"
+		class: 2
+	}
+	edge: {	sourcename: "arr_elem_block"
+		targetname: "arr_elem_block"
+		class: 2
+	}
+	node: {	title: "do_while_block"
+		label: "do_while_block"
+		/* number of buckets = 10 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "DO"
+		class: 1
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "block"
+		class: 1
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "WHILE"
+		class: 1
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "condition"
+		class: 1
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "TERMINATOR"
+		class: 1
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "DO"
+		class: 2
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "block"
+		class: 2
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "WHILE"
+		class: 2
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "expr"
+		class: 2
+	}
+	edge: {	sourcename: "do_while_block"
+		targetname: "TERMINATOR"
+		label: "printf(\fi034 ** do while\fi092n\fi034);"
+		class: 2
+	}
+	node: {	title: "function_block"
+		label: "function_block"
+		/* number of buckets = 4 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "function_block"
+		targetname: "IDENT"
+		class: 1
+	}
+	edge: {	sourcename: "function_block"
+		targetname: "OP"
+		class: 1
+	}
+	edge: {	sourcename: "function_block"
+		targetname: "ident_const_block"
+		class: 1
+	}
+	edge: {	sourcename: "function_block"
+		targetname: "CP"
+		label: "printf(\fi034 ** function\fi092n\fi034);"
+		class: 1
+	}
+	node: {	title: "ident_const_block"
+		label: "ident_const_block"
+		/* number of buckets = 8 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "ident_const_block"
+		targetname: "ident_block"
+		class: 1
+	}
+	edge: {	sourcename: "ident_const_block"
+		targetname: "const_block"
+		class: 2
+	}
+	edge: {	sourcename: "ident_const_block"
+		targetname: "ident_block"
+		class: 3
+	}
+	edge: {	sourcename: "ident_const_block"
+		targetname: "COMMA"
+		class: 3
+	}
+	edge: {	sourcename: "ident_const_block"
+		targetname: "const_block"
+		class: 3
+	}
+	edge: {	sourcename: "ident_const_block"
+		targetname: "const_block"
+		class: 4
+	}
+	edge: {	sourcename: "ident_const_block"
+		targetname: "COMMA"
+		class: 4
+	}
+	edge: {	sourcename: "ident_const_block"
+		targetname: "ident_block"
+		class: 4
+	}
+	node: {	title: "function_def_block"
+		label: "function_def_block"
+		/* number of buckets = 10 */
+		/* bUsed = 1 */
+		/* type = 1 */
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "FUNCTION"
+		class: 1
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "IDENT"
+		class: 1
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "OP"
+		class: 1
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "arg_def_block"
+		class: 1
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "CP"
+		class: 1
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "OCB"
+		class: 1
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "term_block"
+		class: 1
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "CCB"
+		label: "printf(\fi034 ** function define\fi092n\fi034);"
+		class: 1
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "function_def_block"
+		class: 2
+	}
+	edge: {	sourcename: "function_def_block"
+		targetname: "function_def_block"
+		class: 2
+	}
+
+
+}

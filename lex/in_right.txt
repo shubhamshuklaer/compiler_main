@@ -1,0 +1,95 @@
+while($j>10){
+	$k=100;
+}
+
+$j=10;
+
+for($j=9;$j<20;$j=0){
+	$k=10;
+}
+
+;
+
+do{
+	$k=100;
+}while($j==10);
+
+($k==10)?$j=100:$j=10;	
+
+if($j==10){$k=10;;}
+
+if $j==10 $k=100;
+
+$k>10?$j=20:$j=0;
+
+$k==100;
+
+#define tt 2
+
+if($j==10){
+	if($k>2){
+		$j=100;
+	}
+}
+
+# single line comment
+
+/*
+	multiline 
+	comment
+*/
+
+do{
+	$t<>10?$k=10:{
+		if($j==10){
+			$k=100;
+		}
+	}
+}while($j==100);
+
+function a(int $d, char $g){
+	$d=$g;
+}
+
+int $d;
+
+int $sd[100];
+
+$c = a($c);
+
+char $t = c($d);
+
+int $rt = foo($d, $gh);
+
+@srt = foo(@a, 10);
+
+*c = $d;
+
+print ``ok`` > ``a.txt``;
+
+# if construct
+if($j==10)	
+{
+	$k=10;
+	$j=100;
+}
+
+# for loop
+for($i=0;$i<100;$j=12){
+	$i=10;
+	$j=10;
+}
+
+# while loop
+while $i==0{
+	$k=100;
+}
+
+# do while loop
+do{
+	$j=100;
+}while($m==0);
+
+# ternary block
+
+

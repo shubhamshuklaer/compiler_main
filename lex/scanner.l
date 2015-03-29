@@ -24,7 +24,7 @@ DIG		[0-9]
 "char" 										{printf("<keyword : \'char\'> "); return CHAR;}
 "float" 									{printf("<keyword : \'float\'> "); return FLOAT;}
 "double" 									{printf("<keyword : \'double\'> "); return DOUBLE;}
-(" "|"\t"|"\r"|"\s")*						{printf("");/* ignore */}
+(" "|"\t"|"\r"|"\s")*						{/* ignore */}
 ","											{printf("<operator : \',\'> ");return COMMA;}
 "+"											{printf("<operator : \'+\'> ");return ADD;}
 "-" 										{printf("<operator : \'-\'> ");return SUB;}
@@ -70,22 +70,20 @@ DIG		[0-9]
 "&="										{printf("<operator : \'&=\'> ");return BIN_AND_ASSIGN;}
 "^="										{printf("<operator : \'^=\'> ");return BIN_XOR_ASSIGN;}
 "|="										{printf("<operator : \'|=\'> ");return BIN_IOR_ASSIGN;}
-"`"											{printf("<keyword : \'`\'> ");return DOUBLE_BACKTICK;}
-"``"										{printf("<keyword : \'``\'> ");return BACKTICK;}
-"``"(_|\.|{ALPHA}|{DIG})*"``"					{printf("<keyword : \'text\'> "); return TEXT;}
+"`"."`"										{printf("<keyword : \'character\'> ");return CHARACTER;}
+"``"(_|\.|{ALPHA}|{DIG})*"``"				{printf("<keyword : \'string\'> "); return STRING;}
 "/*"(.|"\n")*"*/"							{printf("<plainText : \'/* */\'> "); yylval.type = MULTI_COMMENT; yylval.str=strdup(yytext); return MULTI_COMMENT;}
 "#define "									{printf("<preprocess : \'#define\'> "); yylval.str=strdup(yytext);return DEFINE;}
 "#ifdef "									{printf("<preprocess : \'#ifdef\'> ");  yylval.str=strdup(yytext);return IFDEF;}
 "#ifndef "									{printf("<preprocess : \'#ifndef\'> "); yylval.str=strdup(yytext);return IFNDEF;}
+"# ".*"\n"									{printf("<plainText : \'#\'> ");yylval.str=strdup(yytext);return COMMENT;}
 "function "									{printf("<keyword : \'function\'> "); return FUNCTION;}
 "print "									{printf("<keyword : \'print\'> "); return PRINT;}
-(_|{ALPHA})(_|{ALPHA}|{DIG})*				{yylval.str = strdup(yytext); printf("<identifier : \'%s\'> ",yylval.str); yylval.type = IDENT; return IDENT; }
+(_|{ALPHA})(_|{ALPHA}|{DIG})*				{yylval.str = strdup(yytext); printf("<fidentifier : \'%s\'> ",yylval.str); yylval.type = IDENT; return IDENT; }
 $(_|{ALPHA})(_|{ALPHA}|{DIG})*				{yylval.str = strdup(yytext); printf("<identifier : \'%s\'> ",yylval.str); yylval.type = VAR; return VAR; }
 @(_|{ALPHA})(_|{ALPHA}|{DIG})*				{yylval.str = strdup(yytext); printf("<pointer : \'%s\'> ",yylval.str); yylval.type = POINTER; return POINTER; }
 "*"(_|{ALPHA})(_|{ALPHA}|{DIG})*			{yylval.str = strdup(yytext); printf("<dref : \'%s\'> ",yylval.str); yylval.type = DREF; return DREF; }
 {DIG}+(\.{DIG}+)?							{printf("<constant : \'%d\'> ",atoi(yytext)); yylval.num=atoi(yytext);return NUM;}
-"# ".*"\n"									{printf("<plainText : \'#\'> ");yylval.str=strdup(yytext);return COMMENT;}
-.											{yylval.str=strdup(yytext);printf("<error : \'%s\'>",yytext);return SYN_ERROR;}
 %%
 
 /*
