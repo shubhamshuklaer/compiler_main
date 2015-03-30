@@ -6,6 +6,7 @@
 <identifier : '$a'> <operator : '='> <constant : '2'> <keyword : ';'> 
 <keyword : 'print'> <keyword : 'string'> <operator : '>'> <keyword : 'string'> <keyword : ';'> 
 <identifier : '$a'> <operator : '='> <constant : '2'> <keyword : ';'> 
+<identifier : '$a'> <operator : '='> <keyword : 'character'> <keyword : ';'> 
 <fidentifier : 'abc'> <keyword : '('> <constant : '2'> <operator : '+'> <constant : '2'> <operator : ','> <constant : '2'> <operator : '+'> <constant : '3'> <operator : ','> <fidentifier : 'abc'> <keyword : '('> <constant : '2'> <operator : '+'> <constant : '3'> <operator : ','> <fidentifier : 'bc'> <keyword : '('> <keyword : ')'> <keyword : ')'> <keyword : ')'> <keyword : ';'> 
 
 -----------------   TREE   ------------------
@@ -192,130 +193,158 @@ super_block
 									|
 									\___general_stmt
 									|   |
-									|   \___conditional_expr
+									|   \___assignment_block
 									|   |   |
-									|   |   \___expr
+									|   |   \___ass_var_block
+									|   |   |   |
+									|   |   |   \___var_block
+									|   |   |   	|
+									|   |   |   	\___VAR
+									|   |   |   		|
+									|   |   |   		\___$a
+									|   |   |
+									|   |   \___ASSIGN
+									|   |   |
+									|   |   \___conditional_expr
 									|   |   	|
-									|   |   	\___function_call_block
+									|   |   	\___expr
 									|   |   		|
-									|   |   		\___IDENT
-									|   |   		|
-									|   |   		\___OP
-									|   |   		|
-									|   |   		\___function_var_list
-									|   |   		|   |
-									|   |   		|   \___conditional_expr
-									|   |   		|   |   |
-									|   |   		|   |   \___expr
-									|   |   		|   |   	|
-									|   |   		|   |   	\___const_block
-									|   |   		|   |   	|   |
-									|   |   		|   |   	|   \___NUM
-									|   |   		|   |   	|   	|
-									|   |   		|   |   	|   	\___2
-									|   |   		|   |   	|
-									|   |   		|   |   	\___arith_binary_op
-									|   |   		|   |   	|   |
-									|   |   		|   |   	|   \___ADD
-									|   |   		|   |   	|
-									|   |   		|   |   	\___expr
-									|   |   		|   |   		|
-									|   |   		|   |   		\___const_block
-									|   |   		|   |   			|
-									|   |   		|   |   			\___NUM
-									|   |   		|   |   				|
-									|   |   		|   |   				\___2
-									|   |   		|   |
-									|   |   		|   \___COMMA
-									|   |   		|   |
-									|   |   		|   \___function_var_list
-									|   |   		|   	|
-									|   |   		|   	\___conditional_expr
-									|   |   		|   	|   |
-									|   |   		|   	|   \___expr
-									|   |   		|   	|   	|
-									|   |   		|   	|   	\___const_block
-									|   |   		|   	|   	|   |
-									|   |   		|   	|   	|   \___NUM
-									|   |   		|   	|   	|   	|
-									|   |   		|   	|   	|   	\___2
-									|   |   		|   	|   	|
-									|   |   		|   	|   	\___arith_binary_op
-									|   |   		|   	|   	|   |
-									|   |   		|   	|   	|   \___ADD
-									|   |   		|   	|   	|
-									|   |   		|   	|   	\___expr
-									|   |   		|   	|   		|
-									|   |   		|   	|   		\___const_block
-									|   |   		|   	|   			|
-									|   |   		|   	|   			\___NUM
-									|   |   		|   	|   				|
-									|   |   		|   	|   				\___3
-									|   |   		|   	|
-									|   |   		|   	\___COMMA
-									|   |   		|   	|
-									|   |   		|   	\___function_var_list
-									|   |   		|   		|
-									|   |   		|   		\___conditional_expr
-									|   |   		|   			|
-									|   |   		|   			\___expr
-									|   |   		|   				|
-									|   |   		|   				\___function_call_block
-									|   |   		|   					|
-									|   |   		|   					\___IDENT
-									|   |   		|   					|
-									|   |   		|   					\___OP
-									|   |   		|   					|
-									|   |   		|   					\___function_var_list
-									|   |   		|   					|   |
-									|   |   		|   					|   \___conditional_expr
-									|   |   		|   					|   |   |
-									|   |   		|   					|   |   \___expr
-									|   |   		|   					|   |   	|
-									|   |   		|   					|   |   	\___const_block
-									|   |   		|   					|   |   	|   |
-									|   |   		|   					|   |   	|   \___NUM
-									|   |   		|   					|   |   	|   	|
-									|   |   		|   					|   |   	|   	\___2
-									|   |   		|   					|   |   	|
-									|   |   		|   					|   |   	\___arith_binary_op
-									|   |   		|   					|   |   	|   |
-									|   |   		|   					|   |   	|   \___ADD
-									|   |   		|   					|   |   	|
-									|   |   		|   					|   |   	\___expr
-									|   |   		|   					|   |   		|
-									|   |   		|   					|   |   		\___const_block
-									|   |   		|   					|   |   			|
-									|   |   		|   					|   |   			\___NUM
-									|   |   		|   					|   |   				|
-									|   |   		|   					|   |   				\___3
-									|   |   		|   					|   |
-									|   |   		|   					|   \___COMMA
-									|   |   		|   					|   |
-									|   |   		|   					|   \___function_var_list
-									|   |   		|   					|   	|
-									|   |   		|   					|   	\___conditional_expr
-									|   |   		|   					|   		|
-									|   |   		|   					|   		\___expr
-									|   |   		|   					|   			|
-									|   |   		|   					|   			\___function_call_block
-									|   |   		|   					|   				|
-									|   |   		|   					|   				\___IDENT
-									|   |   		|   					|   				|
-									|   |   		|   					|   				\___OP
-									|   |   		|   					|   				|
-									|   |   		|   					|   				\___function_var_list
-									|   |   		|   					|   				|   |
-									|   |   		|   					|   				|   \___conditional_expr
-									|   |   		|   					|   				|   	|
-									|   |   		|   					|   				|   	\___expr
-									|   |   		|   					|   				|
-									|   |   		|   					|   				\___CP
-									|   |   		|   					|
-									|   |   		|   					\___CP
-									|   |   		|
-									|   |   		\___CP
+									|   |   		\___const_block
+									|   |   			|
+									|   |   			\___CHARACTER
+									|   |   				|
+									|   |   				\___-2-
 									|   |
 									|   \___TERMINATOR
 									|
-									\___/general_block
+									\___general_block
+										|
+										\___general_stmt
+										|   |
+										|   \___conditional_expr
+										|   |   |
+										|   |   \___expr
+										|   |   	|
+										|   |   	\___function_call_block
+										|   |   		|
+										|   |   		\___IDENT
+										|   |   		|
+										|   |   		\___OP
+										|   |   		|
+										|   |   		\___function_var_list
+										|   |   		|   |
+										|   |   		|   \___conditional_expr
+										|   |   		|   |   |
+										|   |   		|   |   \___expr
+										|   |   		|   |   	|
+										|   |   		|   |   	\___const_block
+										|   |   		|   |   	|   |
+										|   |   		|   |   	|   \___NUM
+										|   |   		|   |   	|   	|
+										|   |   		|   |   	|   	\___2
+										|   |   		|   |   	|
+										|   |   		|   |   	\___arith_binary_op
+										|   |   		|   |   	|   |
+										|   |   		|   |   	|   \___ADD
+										|   |   		|   |   	|
+										|   |   		|   |   	\___expr
+										|   |   		|   |   		|
+										|   |   		|   |   		\___const_block
+										|   |   		|   |   			|
+										|   |   		|   |   			\___NUM
+										|   |   		|   |   				|
+										|   |   		|   |   				\___2
+										|   |   		|   |
+										|   |   		|   \___COMMA
+										|   |   		|   |
+										|   |   		|   \___function_var_list
+										|   |   		|   	|
+										|   |   		|   	\___conditional_expr
+										|   |   		|   	|   |
+										|   |   		|   	|   \___expr
+										|   |   		|   	|   	|
+										|   |   		|   	|   	\___const_block
+										|   |   		|   	|   	|   |
+										|   |   		|   	|   	|   \___NUM
+										|   |   		|   	|   	|   	|
+										|   |   		|   	|   	|   	\___2
+										|   |   		|   	|   	|
+										|   |   		|   	|   	\___arith_binary_op
+										|   |   		|   	|   	|   |
+										|   |   		|   	|   	|   \___ADD
+										|   |   		|   	|   	|
+										|   |   		|   	|   	\___expr
+										|   |   		|   	|   		|
+										|   |   		|   	|   		\___const_block
+										|   |   		|   	|   			|
+										|   |   		|   	|   			\___NUM
+										|   |   		|   	|   				|
+										|   |   		|   	|   				\___3
+										|   |   		|   	|
+										|   |   		|   	\___COMMA
+										|   |   		|   	|
+										|   |   		|   	\___function_var_list
+										|   |   		|   		|
+										|   |   		|   		\___conditional_expr
+										|   |   		|   			|
+										|   |   		|   			\___expr
+										|   |   		|   				|
+										|   |   		|   				\___function_call_block
+										|   |   		|   					|
+										|   |   		|   					\___IDENT
+										|   |   		|   					|
+										|   |   		|   					\___OP
+										|   |   		|   					|
+										|   |   		|   					\___function_var_list
+										|   |   		|   					|   |
+										|   |   		|   					|   \___conditional_expr
+										|   |   		|   					|   |   |
+										|   |   		|   					|   |   \___expr
+										|   |   		|   					|   |   	|
+										|   |   		|   					|   |   	\___const_block
+										|   |   		|   					|   |   	|   |
+										|   |   		|   					|   |   	|   \___NUM
+										|   |   		|   					|   |   	|   	|
+										|   |   		|   					|   |   	|   	\___2
+										|   |   		|   					|   |   	|
+										|   |   		|   					|   |   	\___arith_binary_op
+										|   |   		|   					|   |   	|   |
+										|   |   		|   					|   |   	|   \___ADD
+										|   |   		|   					|   |   	|
+										|   |   		|   					|   |   	\___expr
+										|   |   		|   					|   |   		|
+										|   |   		|   					|   |   		\___const_block
+										|   |   		|   					|   |   			|
+										|   |   		|   					|   |   			\___NUM
+										|   |   		|   					|   |   				|
+										|   |   		|   					|   |   				\___3
+										|   |   		|   					|   |
+										|   |   		|   					|   \___COMMA
+										|   |   		|   					|   |
+										|   |   		|   					|   \___function_var_list
+										|   |   		|   					|   	|
+										|   |   		|   					|   	\___conditional_expr
+										|   |   		|   					|   		|
+										|   |   		|   					|   		\___expr
+										|   |   		|   					|   			|
+										|   |   		|   					|   			\___function_call_block
+										|   |   		|   					|   				|
+										|   |   		|   					|   				\___IDENT
+										|   |   		|   					|   				|
+										|   |   		|   					|   				\___OP
+										|   |   		|   					|   				|
+										|   |   		|   					|   				\___function_var_list
+										|   |   		|   					|   				|   |
+										|   |   		|   					|   				|   \___conditional_expr
+										|   |   		|   					|   				|   	|
+										|   |   		|   					|   				|   	\___expr
+										|   |   		|   					|   				|
+										|   |   		|   					|   				\___CP
+										|   |   		|   					|
+										|   |   		|   					\___CP
+										|   |   		|
+										|   |   		\___CP
+										|   |
+										|   \___TERMINATOR
+										|
+										\___/general_block

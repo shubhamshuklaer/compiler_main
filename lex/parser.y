@@ -380,14 +380,21 @@ if_else_block
 						}
 					|	IF OP if_condition CP OCB general_block CCB ELSE if_else_block{
 							$$ = mk_node("if_else_block");				
-							$1 = mk_node("INT");			
-							$1 = mk_node("INT");			
-							$1 = mk_node("INT");			
-							$1 = mk_node("INT");			
-							$1 = mk_node("INT");			
-							$1 = mk_node("INT");			
-							$1 = mk_node("INT");											
+							$1 = mk_node("IF");	
+							$2 = mk_node("OP");
+							$4 = mk_node("CP");
+							$5 = mk_node("OCB");
+							$7 = mk_node("CCB");
+							$8 = mk_node("ELSE");
 							mk_child($$, $1); 
+							mk_child($$, $2); 
+							mk_child($$, $3); 
+							mk_child($$, $4); 
+							mk_child($$, $5); 
+							mk_child($$, $6); 
+							mk_child($$, $7); 
+							mk_child($$, $8); 
+							mk_child($$, $9); 
 						}
 					;
 
