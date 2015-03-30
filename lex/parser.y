@@ -32,10 +32,8 @@
 %}
 
 %union {
-	int num;
-	char *str;
-	int type;
 	struct node *entry;
+	char *terminal_value;
 }
 
 %token IF ELSE WHILE DO FOR AND OR NOT TRUE FALSE
@@ -44,17 +42,15 @@
 %token BIN_NOT BIN_AND BIN_OR BIN_XOR BIN_LEFT BIN_RIGHT
 %token BIN_AND_ASSIGN BIN_IOR_ASSIGN BIN_XOR_ASSIGN
 %token ADD_ASSIGN SUB_ASSIGN MULT_ASSIGN DIV_ASSIGN MOD_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN
-%token NUM IDENT VAR POINTER DREF ASSIGN TERMINATOR COLON STRING CHARACTER
+%token NUM IDENT VAR POINTER DREF ASSIGN TERMINATOR STRING CHARACTER
 %token OP CP CB OB OCB CCB
 %token EQ NOTEQ GT LT GE LE
 
 
 %token COMMENT MULTI_COMMENT
-%token WHITESPACE
 %token DEFINE IFDEF IFNDEF
 %token FUNCTION
 %token COMMA 
-%token SYN_ERROR
 %token PRINT
 
 %right ASSIGN
@@ -113,7 +109,6 @@
 %type <entry> DREF 
 %type <entry> ASSIGN 
 %type <entry> TERMINATOR 
-%type <entry> COLON 
 %type <entry> STRING 
 %type <entry> CHARACTER
 %type <entry> OP 
@@ -128,11 +123,10 @@
 %type <entry> LT 
 %type <entry> GE 
 %type <entry> LE
-
+%type <entry> LTGT
 
 %type <entry> COMMENT 
 %type <entry> MULTI_COMMENT
-%type <entry> WHITESPACE
 %type <entry> DEFINE 
 %type <entry> IFDEF 
 %type <entry> IFNDEF
@@ -165,7 +159,6 @@
 %type <entry> function_call_block
 %type <entry> declaration_block
 %type <entry> var_list
-%type <entry> ass_var_list
 %type <entry> data_type
 %type <entry> var_block
 %type <entry> array_block
@@ -183,7 +176,8 @@
 %type <entry> bit_unary_op
 %type <entry> arith_assgn_op
 %type <entry> bit_assgn_op
-
+%type <entry> str
+%type <entry> function_var_list
 %%
 
 super_block								
@@ -234,22 +228,38 @@ defination_block
 							mk_child($$, $3); 
 							
 						}
+					|	IFDEF IDENT OCB start_block CCB{
+							$$ = mk_node("defination_block");
+							$1 = mk_node("IFDEF");
+							$2 = mk_node("IDENT");
+							$3 = mk_node("OCB");
+							$5 = mk_node("CCB");
+						}
+
+					|	IFNDEF IDENT OCB start_block CCB
+
 					;
 
 const_block 							
 					:	STRING{
+							struct node *temp = mk_node(yylval.terminal_value);
 							$$ = mk_node("const_block");	
 							$1 = mk_node("STRING");		
+							mk_child($1, temp);
 							mk_child($$, $1); 
 						}
 					|	NUM{
+							struct node *temp = mk_node(yylval.terminal_value);
 							$$ = mk_node("const_block");	
-							$1 = mk_node("NUM");		
+							$1 = mk_node("NUM");
+							mk_child($1, temp);		
 							mk_child($$, $1); 
 						}
 					|	CHARACTER{
+							struct node *temp = mk_node(yylval.terminal_value);
 							$$ = mk_node("const_block");	
 							$1 = mk_node("CHARACTER");		
+							mk_child($1, temp);
 							mk_child($$, $1); 
 						}
 					;
@@ -293,7 +303,14 @@ general_block
 							mk_child($$, $1); 											
 							mk_child($$, $2); 
 						}
+					|   error start_block {
+							$$ = mk_node("error");
+							mk_child($$, $2);
+							yyerrok;
+							yyclearin;
+						}
 					|	{
+							$$ = mk_node("/general_block");
 						}
 					;
 
@@ -601,7 +618,8 @@ function_def_block
 argument_list_block
 					:	data_type var_block COMMA argument_list_block{
 							$$ = mk_node("argument_list_block");			
-							$3 = mk_node("COMMA");														$1 = mk_node("INT");												
+							$3 = mk_node("COMMA");
+							$1 = mk_node("INT");												
 							mk_child($$, $1); 
 							mk_child($$, $2);
 							mk_child($$, $3);
@@ -621,7 +639,7 @@ general_stmt
 							$$ = mk_node("general_stmt");			
 							$2 = mk_node("TERMINATOR");												
 							mk_child($$, $1); 
-							mk_child($$, $1);
+							mk_child($$, $2);
 						}
 					|	assignment_block TERMINATOR  {
 							$$ = mk_node("general_stmt");		
@@ -629,24 +647,58 @@ general_stmt
 							mk_child($$, $1); 
 							mk_child($$, $2);
 						}
-					|	expr TERMINATOR{
+					|	conditional_expr TERMINATOR{
 							$$ = mk_node("general_stmt");		
 							$2 = mk_node("TERMINATOR");													
 							mk_child($$, $1); 
 							mk_child($$, $2);
 						}
+					|	PRINT str GT str TERMINATOR
+						{
+							$$ = mk_node("general_stmt");
+							$1 = mk_node("PRINT");
+							$3 = mk_node("GT");
+							$5 = mk_node("TERMINATOR");
+							mk_child($$, $1);
+							mk_child($$, $2);
+							mk_child($$, $3);
+							mk_child($$, $4);
+							mk_child($$, $5);
+						}
 					;
 
+str 				: STRING
+						{
+							struct node *temp = mk_node(yylval.terminal_value);
+							$$ = mk_node("STRING");
+							mk_child($$, temp);
+						}
+					;
 
 function_call_block
-					:	IDENT OP ass_var_list CP {
+					:	IDENT OP function_var_list CP {
 							$$ = mk_node("function_call_block");		
 							$1 = mk_node("IDENT");						
 							$2 = mk_node("OP");						
-							$3 = mk_node("CP");													
+							$4 = mk_node("CP");													
 							mk_child($$, $1); 
 							mk_child($$, $2);
 							mk_child($$, $3);
+							mk_child($$, $4);
+						}
+					;
+
+function_var_list   :  conditional_expr COMMA function_var_list
+					   {
+					   	 $$ = mk_node("function_var_list");
+					   	 $2 = mk_node("COMMA");
+					   	 mk_child($$, $1);
+					   	 mk_child($$, $2);
+					   	 mk_child($$, $3);
+					   }
+					| conditional_expr{
+							$$ = mk_node("function_var_list");
+							mk_child($$, $1);
 						}
 					;
 
@@ -683,30 +735,6 @@ var_list
 						}
 					;
 
-ass_var_list
-					:	ass_var_block COMMA ass_var_list{
-							$$ = mk_node("ass_var_list");					
-							$2 = mk_node("COMMA");												
-							mk_child($$, $1); 							
-							mk_child($$, $2);							
-							mk_child($$, $3);
-						}
-					|	ass_var_block{
-							$$ = mk_node("ass_var_list");												
-							mk_child($$, $1); 
-						}
-					|	const_block	COMMA ass_var_list{
-							$$ = mk_node("ass_var_list");			
-							$2 = mk_node("COMMA");														
-							mk_child($$, $1); 
-							mk_child($$, $2);
-							mk_child($$, $3);
-						}
-					|	const_block{
-							$$ = mk_node("ass_var_list");												
-							mk_child($$, $1); 
-						}
-					;
 
 data_type 	
 					:	INT{
@@ -738,23 +766,31 @@ data_type
 
 var_block 	
 					:	VAR{
+							struct node *temp = mk_node(yylval.terminal_value);
 							$$ = mk_node("var_block");			
 							$1 = mk_node("VAR");												
+							mk_child($1,temp);
 							mk_child($$, $1); 
 						}
 					|	POINTER{
+							struct node *temp = mk_node(yylval.terminal_value);
 							$$ = mk_node("var_block");			
 							$1 = mk_node("POINTER");												
-							mk_child($$, $1); 
+							mk_child($1,temp);
+							mk_child($$, $1);
+
 						}
 					;
 
 array_block 
-					:	var_block OB expr CB {//check for expr to return positive value. Run time check for negeative value.
+					:	var_block OB conditional_expr CB {//check for expr to return positive value. Run time check for negeative value.
 							$$ = mk_node("array_block");	
 							$2 = mk_node("OB");	
 							$4 = mk_node("CB");												
-							mk_child($$, $1); 
+							mk_child($$, $1);
+							mk_child($$, $2);
+							mk_child($$, $3);
+							mk_child($$, $4);
 						}
 					;
 
@@ -764,11 +800,13 @@ ass_var_block
 							mk_child($$, $1); 
 						}
 					|	DREF{
+							struct node *temp = mk_node(yylval.terminal_value);
 							$$ = mk_node("ass_var_block");		
-							$1 = mk_node("DREF");											
+							$1 = mk_node("DREF");
+							mk_child($1,temp);											
 							mk_child($$, $1); 
 						}
-					|	var_block OB expr CB {// check if expr is returning a index present in the array. 
+					|	var_block OB conditional_expr CB {// check if expr is returning a index present in the array. 
 							$$ = mk_node("ass_var_block");		
 							$2 = mk_node("OB");	
 							$4 = mk_node("CB");											
@@ -932,7 +970,7 @@ expr
 							mk_child($$, $2); 
 						}
 					|	{
-							
+							$$ = mk_node("expr");
 						}
 					;
 
@@ -993,6 +1031,11 @@ arith_condition_op
 							$$ = mk_node("arith_condition_op");
 							$1 = mk_node("LE");														
 							mk_child($$, $1); 
+						}
+					|	LTGT{
+							$$ = mk_node("arith_condition_op");
+							$1 = mk_node("LTGT");
+							mk_child($$,$1);
 						}
 					;
 

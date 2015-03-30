@@ -128,12 +128,10 @@ union YYSTYPE
 {
 #line 34 "parser.y" /* yacc.c:1909  */
 
-	int num;
-	char *str;
-	int type;
 	struct node *entry;
+	char *terminal_value;
 
-#line 137 "parser.hpp" /* yacc.c:1909  */
+#line 135 "parser.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

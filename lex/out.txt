@@ -1,22 +1,267 @@
+<keyword : 'int'> <identifier : '$a'> <keyword : '['> <constant : '10'> <operator : '*'> <constant : '20'> <keyword : ']'> <keyword : ';'> 
+<identifier : '$a'> <operator : '='> <constant : '2'> <keyword : ';'> 
+<keyword : 'print'> <keyword : 'string'> <operator : '>'> <keyword : 'string'> <keyword : ';'> 
+<identifier : '$a'> <operator : '='> <constant : '2'> <keyword : ';'> 
+<fidentifier : 'abc'> <keyword : '('> <constant : '2'> <operator : '+'> <constant : '2'> <operator : ','> <constant : '2'> <operator : '+'> <constant : '3'> <operator : ','> <fidentifier : 'abc'> <keyword : '('> <constant : '2'> <operator : '+'> <constant : '3'> <operator : ','> <fidentifier : 'bc'> <keyword : '('> <keyword : ')'> <keyword : ')'> <keyword : ')'> <keyword : ';'> 
 
-<keyword : 'int'> <identifier : '$a'> <keyword : '['> <constant : '2'> <keyword : ']'> <keyword : ';'> 
+-----------------   TREE   ------------------
 
-<identifier : '$a'> <keyword : '['> <constant : '1'> <operator : '*'> <constant : '2'> <operator : '+'> <constant : '3'> <keyword : ']'> <operator : '='> <fidentifier : 'abc'> <keyword : '('> <identifier : '$a'> <keyword : '['> <constant : '2'> <keyword : ']'> <operator : ','> <constant : '2'> <keyword : ')'> <operator : '+'> <constant : '2'> <keyword : ';'> 
-
-<keyword : 'for'> <keyword : '('> <identifier : '$i'> <operator : '='> <constant : '0'> <operator : ','> <identifier : '$j'> <operator : '='> <constant : '1'> <keyword : ';'> <identifier : '$i'> <operator : '<='> <constant : '2'> <operator : '&&'> <keyword : '('> <identifier : '$k'> <operator : '=='> <constant : '2'> <keyword : ')'> <keyword : ';'> <identifier : '$i'> <operator : '++'> <keyword : ')'> 
-<keyword : '{'> 
-<identifier : '$i'> <operator : '='> <keyword : '('> <keyword : '('> <identifier : '$i'> <operator : '+'> <identifier : '$a'> <keyword : ')'> <operator : '+'> <keyword : '('> <identifier : '$k'> <operator : '+'> <identifier : '$a'> <keyword : ')'> <keyword : ')'> <operator : '+'> <keyword : '('> <identifier : '$i'> <operator : '+'> <constant : '2'> <keyword : ')'> <keyword : ';'> 
-<plainText : '#'> <plainText : '#'> <identifier : '$j'> <operator : '*='> <identifier : '$i'> <operator : '+'> <constant : '2'> <keyword : ';'> 
-<keyword : '}'> 
-<keyword : 'int'> <pointer : '@a'> <keyword : ';'> 
-<pointer : '@a'> <operator : '='> <constant : '2'> <keyword : ';'> 
-<dref : '*a'> <operator : '='> <keyword : 'string'> <keyword : ';'> 
-<dref : '*c'> <operator : '='> <keyword : '('> <keyword : '('> <constant : '1'> <operator : '+'> <keyword : '('> <constant : '21'> <operator : '+'> <keyword : '('> <constant : '2'> <operator : '+'> <constant : '3'> <keyword : ')'> <keyword : ')'> <keyword : ')'> <keyword : ')'> <keyword : ';'> 
-<keyword : 'if'> <keyword : '('> <identifier : '$i'> <operator : '<'> <identifier : '$j'> <keyword : ')'> 
-<keyword : '{'> 
-<plainText : '#'> <keyword : '}'> 
-
-<keyword : 'while'> <keyword : '('> <constant : '2'> <keyword : ')'> 
-<keyword : '{'> 
-<plainText : '#'> <keyword : '}'> 
-root
+super_block
+|
+\___start_block
+	|
+	\___block
+		|
+		\___general_block
+			|
+			\___general_stmt
+			|   |
+			|   \___declaration_block
+			|   |   |
+			|   |   \___sdata_type
+			|   |   |   |
+			|   |   |   \___INT
+			|   |   |
+			|   |   \___var_list
+			|   |   	|
+			|   |   	\___array_block
+			|   |   		|
+			|   |   		\___var_block
+			|   |   		|   |
+			|   |   		|   \___VAR
+			|   |   		|   	|
+			|   |   		|   	\___$a
+			|   |   		|
+			|   |   		\___OB
+			|   |   		|
+			|   |   		\___conditional_expr
+			|   |   		|   |
+			|   |   		|   \___expr
+			|   |   		|   	|
+			|   |   		|   	\___const_block
+			|   |   		|   	|   |
+			|   |   		|   	|   \___NUM
+			|   |   		|   	|   	|
+			|   |   		|   	|   	\___10
+			|   |   		|   	|
+			|   |   		|   	\___arith_binary_op
+			|   |   		|   	|   |
+			|   |   		|   	|   \___MULT
+			|   |   		|   	|
+			|   |   		|   	\___expr
+			|   |   		|   		|
+			|   |   		|   		\___const_block
+			|   |   		|   			|
+			|   |   		|   			\___NUM
+			|   |   		|   				|
+			|   |   		|   				\___20
+			|   |   		|
+			|   |   		\___CB
+			|   |
+			|   \___TERMINATOR
+			|
+			\___general_block
+				|
+				\___general_stmt
+				|   |
+				|   \___assignment_block
+				|   |   |
+				|   |   \___ass_var_block
+				|   |   |   |
+				|   |   |   \___var_block
+				|   |   |   	|
+				|   |   |   	\___VAR
+				|   |   |   		|
+				|   |   |   		\___$a
+				|   |   |
+				|   |   \___ASSIGN
+				|   |   |
+				|   |   \___conditional_expr
+				|   |   	|
+				|   |   	\___expr
+				|   |   		|
+				|   |   		\___const_block
+				|   |   			|
+				|   |   			\___NUM
+				|   |   				|
+				|   |   				\___2
+				|   |
+				|   \___TERMINATOR
+				|
+				\___general_block
+					|
+					\___general_stmt
+					|   |
+					|   \___PRINT
+					|   |
+					|   \___STRING
+					|   |   |
+					|   |   \___--abc--
+					|   |
+					|   \___GT
+					|   |
+					|   \___STRING
+					|   |   |
+					|   |   \___--abc.txt--
+					|   |
+					|   \___TERMINATOR
+					|
+					\___general_block
+						|
+						\___general_stmt
+						|   |
+						|   \___assignment_block
+						|   |   |
+						|   |   \___ass_var_block
+						|   |   |   |
+						|   |   |   \___var_block
+						|   |   |   	|
+						|   |   |   	\___VAR
+						|   |   |   		|
+						|   |   |   		\___$a
+						|   |   |
+						|   |   \___ASSIGN
+						|   |   |
+						|   |   \___conditional_expr
+						|   |   	|
+						|   |   	\___expr
+						|   |   		|
+						|   |   		\___const_block
+						|   |   			|
+						|   |   			\___NUM
+						|   |   				|
+						|   |   				\___2
+						|   |
+						|   \___TERMINATOR
+						|
+						\___general_block
+							|
+							\___general_stmt
+							|   |
+							|   \___conditional_expr
+							|   |   |
+							|   |   \___expr
+							|   |   	|
+							|   |   	\___function_call_block
+							|   |   		|
+							|   |   		\___IDENT
+							|   |   		|
+							|   |   		\___OP
+							|   |   		|
+							|   |   		\___function_var_list
+							|   |   		|   |
+							|   |   		|   \___conditional_expr
+							|   |   		|   |   |
+							|   |   		|   |   \___expr
+							|   |   		|   |   	|
+							|   |   		|   |   	\___const_block
+							|   |   		|   |   	|   |
+							|   |   		|   |   	|   \___NUM
+							|   |   		|   |   	|   	|
+							|   |   		|   |   	|   	\___2
+							|   |   		|   |   	|
+							|   |   		|   |   	\___arith_binary_op
+							|   |   		|   |   	|   |
+							|   |   		|   |   	|   \___ADD
+							|   |   		|   |   	|
+							|   |   		|   |   	\___expr
+							|   |   		|   |   		|
+							|   |   		|   |   		\___const_block
+							|   |   		|   |   			|
+							|   |   		|   |   			\___NUM
+							|   |   		|   |   				|
+							|   |   		|   |   				\___2
+							|   |   		|   |
+							|   |   		|   \___COMMA
+							|   |   		|   |
+							|   |   		|   \___function_var_list
+							|   |   		|   	|
+							|   |   		|   	\___conditional_expr
+							|   |   		|   	|   |
+							|   |   		|   	|   \___expr
+							|   |   		|   	|   	|
+							|   |   		|   	|   	\___const_block
+							|   |   		|   	|   	|   |
+							|   |   		|   	|   	|   \___NUM
+							|   |   		|   	|   	|   	|
+							|   |   		|   	|   	|   	\___2
+							|   |   		|   	|   	|
+							|   |   		|   	|   	\___arith_binary_op
+							|   |   		|   	|   	|   |
+							|   |   		|   	|   	|   \___ADD
+							|   |   		|   	|   	|
+							|   |   		|   	|   	\___expr
+							|   |   		|   	|   		|
+							|   |   		|   	|   		\___const_block
+							|   |   		|   	|   			|
+							|   |   		|   	|   			\___NUM
+							|   |   		|   	|   				|
+							|   |   		|   	|   				\___3
+							|   |   		|   	|
+							|   |   		|   	\___COMMA
+							|   |   		|   	|
+							|   |   		|   	\___function_var_list
+							|   |   		|   		|
+							|   |   		|   		\___conditional_expr
+							|   |   		|   			|
+							|   |   		|   			\___expr
+							|   |   		|   				|
+							|   |   		|   				\___function_call_block
+							|   |   		|   					|
+							|   |   		|   					\___IDENT
+							|   |   		|   					|
+							|   |   		|   					\___OP
+							|   |   		|   					|
+							|   |   		|   					\___function_var_list
+							|   |   		|   					|   |
+							|   |   		|   					|   \___conditional_expr
+							|   |   		|   					|   |   |
+							|   |   		|   					|   |   \___expr
+							|   |   		|   					|   |   	|
+							|   |   		|   					|   |   	\___const_block
+							|   |   		|   					|   |   	|   |
+							|   |   		|   					|   |   	|   \___NUM
+							|   |   		|   					|   |   	|   	|
+							|   |   		|   					|   |   	|   	\___2
+							|   |   		|   					|   |   	|
+							|   |   		|   					|   |   	\___arith_binary_op
+							|   |   		|   					|   |   	|   |
+							|   |   		|   					|   |   	|   \___ADD
+							|   |   		|   					|   |   	|
+							|   |   		|   					|   |   	\___expr
+							|   |   		|   					|   |   		|
+							|   |   		|   					|   |   		\___const_block
+							|   |   		|   					|   |   			|
+							|   |   		|   					|   |   			\___NUM
+							|   |   		|   					|   |   				|
+							|   |   		|   					|   |   				\___3
+							|   |   		|   					|   |
+							|   |   		|   					|   \___COMMA
+							|   |   		|   					|   |
+							|   |   		|   					|   \___function_var_list
+							|   |   		|   					|   	|
+							|   |   		|   					|   	\___conditional_expr
+							|   |   		|   					|   		|
+							|   |   		|   					|   		\___expr
+							|   |   		|   					|   			|
+							|   |   		|   					|   			\___function_call_block
+							|   |   		|   					|   				|
+							|   |   		|   					|   				\___IDENT
+							|   |   		|   					|   				|
+							|   |   		|   					|   				\___OP
+							|   |   		|   					|   				|
+							|   |   		|   					|   				\___function_var_list
+							|   |   		|   					|   				|   |
+							|   |   		|   					|   				|   \___conditional_expr
+							|   |   		|   					|   				|   	|
+							|   |   		|   					|   				|   	\___expr
+							|   |   		|   					|   				|
+							|   |   		|   					|   				\___CP
+							|   |   		|   					|
+							|   |   		|   					\___CP
+							|   |   		|
+							|   |   		\___CP
+							|   |
+							|   \___TERMINATOR
+							|
+							\___/general_block
