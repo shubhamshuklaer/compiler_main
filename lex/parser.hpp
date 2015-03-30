@@ -52,9 +52,9 @@ extern int yydebug;
     FOR = 262,
     AND = 263,
     OR = 264,
-    NOT = 265,
-    TRUE = 266,
-    FALSE = 267,
+    NOT_1 = 265,
+    TRUE_1 = 266,
+    FALSE_1 = 267,
     INT = 268,
     LONG = 269,
     CHAR = 270,
@@ -92,32 +92,29 @@ extern int yydebug;
     DREF = 302,
     ASSIGN = 303,
     TERMINATOR = 304,
-    COLON = 305,
-    STRING = 306,
-    CHARACTER = 307,
-    OP = 308,
-    CP = 309,
-    CB = 310,
-    OB = 311,
-    OCB = 312,
-    CCB = 313,
-    EQ = 314,
-    NOTEQ = 315,
-    GT = 316,
-    LT = 317,
-    GE = 318,
-    LE = 319,
-    COMMENT = 320,
-    MULTI_COMMENT = 321,
-    WHITESPACE = 322,
-    DEFINE = 323,
-    IFDEF = 324,
-    IFNDEF = 325,
-    FUNCTION = 326,
-    COMMA = 327,
-    SYN_ERROR = 328,
-    PRINT = 329,
-    LTGT = 330
+    STRING = 305,
+    CHARACTER = 306,
+    OP = 307,
+    CP = 308,
+    CB = 309,
+    OB = 310,
+    OCB = 311,
+    CCB = 312,
+    EQ = 313,
+    NOTEQ = 314,
+    GT = 315,
+    LT = 316,
+    GE = 317,
+    LE = 318,
+    COMMENT = 319,
+    MULTI_COMMENT = 320,
+    DEFINE = 321,
+    IFDEF = 322,
+    IFNDEF = 323,
+    FUNCTION = 324,
+    COMMA = 325,
+    PRINT = 326,
+    LTGT = 327
   };
 #endif
 
@@ -126,12 +123,12 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 34 "parser.y" /* yacc.c:1909  */
+#line 40 "parser.y" /* yacc.c:1909  */
 
 	struct node *entry;
 	char *terminal_value;
 
-#line 135 "parser.hpp" /* yacc.c:1909  */
+#line 132 "parser.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

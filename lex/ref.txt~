@@ -8,4 +8,3 @@ bison --verbose -d -o parser.cpp  parser.y && lex -o scanner.cpp scanner.l && gc
 
 http://users.wpi.edu/~kal/compiler_labs/cgi-bin/semantics_lab.cgi#output
 
-sudo apt-get install libgraphviz-dev graphviz

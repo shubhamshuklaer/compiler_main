@@ -1,11 +1,13 @@
+Nonterminals useless in grammar
+
+   SYN_ERROR
+
+
 Terminals unused in grammar
 
    QUES
-   COLON
-   WHITESPACE
    IFDEF
    IFNDEF
-   SYN_ERROR
 
 
 Grammar
@@ -163,10 +165,10 @@ Grammar
   115 bit_condition_op: AND
   116                 | OR
 
-  117 bit_unary_condition_op: NOT
+  117 bit_unary_condition_op: NOT_1
 
-  118 fixed_condition: TRUE
-  119                | FALSE
+  118 fixed_condition: TRUE_1
+  119                | FALSE_1
 
   120 arith_binary_op: ADD
   121                | SUB
@@ -210,9 +212,9 @@ DO (261) 29
 FOR (262) 31
 AND (263) 115
 OR (264) 116
-NOT (265) 117
-TRUE (266) 118
-FALSE (267) 119
+NOT_1 (265) 117
+TRUE_1 (266) 118
+FALSE_1 (267) 119
 INT (268) 68
 LONG (269) 72
 CHAR (270) 71
@@ -250,128 +252,125 @@ POINTER (301) 74
 DREF (302) 77
 ASSIGN (303) 79 82
 TERMINATOR (304) 29 31 36 37 38 39 40 55 56 57 58
-COLON (305)
-STRING (306) 8 59
-CHARACTER (307) 10
-OP (308) 20 21 22 27 29 31 51 60 85 94 95 96
-CP (309) 20 21 22 27 29 31 51 60 85 94 95 96
-CB (310) 75 78
-OB (311) 75 78
-OCB (312) 20 21 22 27 29 31 51
-CCB (313) 20 21 22 27 29 31 51
-EQ (314) 108
-NOTEQ (315) 109
-GT (316) 58 110
-LT (317) 111
-GE (318) 112
-LE (319) 113
-COMMENT (320) 5
-MULTI_COMMENT (321) 6
-WHITESPACE (322)
-DEFINE (323) 7
-IFDEF (324)
-IFNDEF (325)
-FUNCTION (326) 51
-COMMA (327) 32 33 34 35 42 43 44 45 52 61 64 66
-SYN_ERROR (328)
-PRINT (329) 58
-LTGT (330) 114
+STRING (305) 8 59
+CHARACTER (306) 10
+OP (307) 20 21 22 27 29 31 51 60 85 94 95 96
+CP (308) 20 21 22 27 29 31 51 60 85 94 95 96
+CB (309) 75 78
+OB (310) 75 78
+OCB (311) 20 21 22 27 29 31 51
+CCB (312) 20 21 22 27 29 31 51
+EQ (313) 108
+NOTEQ (314) 109
+GT (315) 58 110
+LT (316) 111
+GE (317) 112
+LE (318) 113
+COMMENT (319) 5
+MULTI_COMMENT (320) 6
+DEFINE (321) 7
+IFDEF (322)
+IFNDEF (323)
+FUNCTION (324) 51
+COMMA (325) 32 33 34 35 42 43 44 45 52 61 64 66
+PRINT (326) 58
+LTGT (327) 114
 
 
 Nonterminals, with rules where they appear
 
-$accept (76)
+$accept (73)
     on left: 0
-super_block (77)
+super_block (74)
     on left: 1, on right: 0
-start_block (78)
+start_block (75)
     on left: 2 3 4, on right: 1 2 4 18
-comment_block (79)
+comment_block (76)
     on left: 5 6, on right: 4 13 17
-defination_block (80)
+defination_block (77)
     on left: 7, on right: 2 4
-const_block (81)
+const_block (78)
     on left: 8 9 10, on right: 7 92 97 98 101
-block (82)
+block (79)
     on left: 11 12 13, on right: 3 11 13
-general_block (83)
+general_block (80)
     on left: 14 15 16 17 18 19, on right: 12 14 15 16 17 20 21 22 27
     29 31 51
-if_else_block (84)
+if_else_block (81)
     on left: 20 21 22, on right: 16 22
-if_condition (85)
+if_condition (82)
     on left: 23, on right: 20 21 22
-loop_block (86)
+loop_block (83)
     on left: 24 25 26, on right: 15
-while_loop_block (87)
+while_loop_block (84)
     on left: 27, on right: 25
-while_condition (88)
+while_condition (85)
     on left: 28, on right: 27
-do_while_loop_block (89)
+do_while_loop_block (86)
     on left: 29, on right: 26
-do_while_condition (90)
+do_while_condition (87)
     on left: 30, on right: 29
-for_loop_block (91)
+for_loop_block (88)
     on left: 31, on right: 24
-for_initialization (92)
+for_initialization (89)
     on left: 32 33 34 35 36 37 38 39 40, on right: 31 32 33 34 35
-for_condition (93)
+for_condition (90)
     on left: 41, on right: 31
-for_update (94)
+for_update (91)
     on left: 42 43 44 45 46 47 48 49 50, on right: 31 42 43 44 45
-function_def_block (95)
+function_def_block (92)
     on left: 51, on right: 11 13
-argument_list_block (96)
+argument_list_block (93)
     on left: 52 53 54, on right: 51 52
-general_stmt (97)
+general_stmt (94)
     on left: 55 56 57 58, on right: 14
-str (98)
+str (95)
     on left: 59, on right: 58
-function_call_block (99)
+function_call_block (96)
     on left: 60, on right: 32 39 42 46 93 99 100
-function_var_list (100)
+function_var_list (97)
     on left: 61 62, on right: 60 61
-declaration_block (101)
+declaration_block (98)
     on left: 63, on right: 55
-var_list (102)
+var_list (99)
     on left: 64 65 66 67, on right: 63 64 66
-data_type (103)
+data_type (100)
     on left: 68 69 70 71 72, on right: 52 53 63
-var_block (104)
+var_block (101)
     on left: 73 74, on right: 52 53 64 65 75 76 78
-array_block (105)
+array_block (102)
     on left: 75, on right: 66 67
-ass_var_block (106)
+ass_var_block (103)
     on left: 76 77 78, on right: 34 35 37 38 44 45 48 49 79 80 81 82
     83 84 86 87 88 89 90 91
-assignment_block (107)
+assignment_block (104)
     on left: 79 80 81 82 83 84 85, on right: 33 36 43 47 56 82 83 84
     85
-expr (108)
+expr (105)
     on left: 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102,
     on right: 86 87 88 90 94 95 97 98 99 100 103 104 105 107
-conditional_expr (109)
+conditional_expr (106)
     on left: 103 104 105 106 107, on right: 23 28 30 41 57 61 62 75
     78 79 80 81 94 95 96 103 104
-arith_condition_op (110)
+arith_condition_op (107)
     on left: 108 109 110 111 112 113 114, on right: 103
-bit_condition_op (111)
+bit_condition_op (108)
     on left: 115 116, on right: 104
-bit_unary_condition_op (112)
+bit_unary_condition_op (109)
     on left: 117, on right: 107
-fixed_condition (113)
+fixed_condition (110)
     on left: 118 119, on right: 106
-arith_binary_op (114)
+arith_binary_op (111)
     on left: 120 121 122 123 124 125, on right: 86 94 97 99
-arith_unary_op (115)
+arith_unary_op (112)
     on left: 126 127, on right: 34 35 37 38 44 45 48 49 87 90
-bit_binary_op (116)
+bit_binary_op (113)
     on left: 128 129 130 131 132, on right: 88 95 98 100
-bit_unary_op (117)
+bit_unary_op (114)
     on left: 133, on right: 89 101
-arith_assgn_op (118)
+arith_assgn_op (115)
     on left: 134 135 136 137 138 139 140, on right: 80 83
-bit_assgn_op (119)
+bit_assgn_op (116)
     on left: 141 142 143, on right: 81 84
 
 
@@ -384,9 +383,9 @@ State 0
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -458,9 +457,9 @@ State 1
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -555,21 +554,21 @@ State 5
 
 State 6
 
-  117 bit_unary_condition_op: NOT .
+  117 bit_unary_condition_op: NOT_1 .
 
     $default  reduce using rule 117 (bit_unary_condition_op)
 
 
 State 7
 
-  118 fixed_condition: TRUE .
+  118 fixed_condition: TRUE_1 .
 
     $default  reduce using rule 118 (fixed_condition)
 
 
 State 8
 
-  119 fixed_condition: FALSE .
+  119 fixed_condition: FALSE_1 .
 
     $default  reduce using rule 119 (fixed_condition)
 
@@ -686,9 +685,9 @@ State 24
    95     | OP . conditional_expr CP bit_binary_op expr
    96     | OP . conditional_expr CP
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -778,9 +777,9 @@ State 32
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -850,9 +849,9 @@ State 33
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -962,9 +961,9 @@ State 37
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -1030,9 +1029,9 @@ State 38
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -1119,9 +1118,9 @@ State 42
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -1190,9 +1189,9 @@ State 43
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -1461,9 +1460,9 @@ State 57
    21              | IF OP . if_condition CP OCB general_block CCB ELSE OCB general_block CCB
    22              | IF OP . if_condition CP OCB general_block CCB ELSE if_else_block
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -1495,9 +1494,9 @@ State 58
 
    27 while_loop_block: WHILE OP . while_condition CP OCB general_block CCB
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -1534,9 +1533,9 @@ State 59
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -1617,9 +1616,9 @@ State 61
 
    60 function_call_block: IDENT OP . function_var_list CP
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -1711,9 +1710,9 @@ State 69
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -1779,9 +1778,9 @@ State 70
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -1860,9 +1859,9 @@ State 72
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -2084,9 +2083,9 @@ State 89
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -2253,9 +2252,9 @@ State 98
 
    78 ass_var_block: var_block OB . conditional_expr CB
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -2357,9 +2356,9 @@ State 109
    79 assignment_block: ass_var_block ASSIGN . conditional_expr
    82                 | ass_var_block ASSIGN . assignment_block
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -2473,9 +2472,9 @@ State 113
    80 assignment_block: ass_var_block arith_assgn_op . conditional_expr
    83                 | ass_var_block arith_assgn_op . assignment_block
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -2508,9 +2507,9 @@ State 114
    81 assignment_block: ass_var_block bit_assgn_op . conditional_expr
    84                 | ass_var_block bit_assgn_op . assignment_block
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -2612,9 +2611,9 @@ State 125
 
   103 conditional_expr: expr arith_condition_op . conditional_expr
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -2645,9 +2644,9 @@ State 126
 
   104 conditional_expr: expr bit_condition_op . conditional_expr
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -2687,9 +2686,9 @@ State 128
    95     | OP . conditional_expr CP bit_binary_op expr
    96     | OP . conditional_expr CP
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -2854,9 +2853,9 @@ State 141
 
    31 for_loop_block: FOR OP for_initialization . for_condition TERMINATOR for_update CP OCB general_block CCB
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -3071,9 +3070,9 @@ State 159
 
    75 array_block: var_block OB . conditional_expr CB
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -3362,9 +3361,9 @@ State 188
 
    61 function_var_list: conditional_expr COMMA . function_var_list
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -3510,9 +3509,9 @@ State 198
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -3577,9 +3576,9 @@ State 199
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -3806,9 +3805,9 @@ State 217
 
    29 do_while_loop_block: DO OCB general_block CCB WHILE OP . do_while_condition CP TERMINATOR
 
-    NOT        shift, and go to state 6
-    TRUE       shift, and go to state 7
-    FALSE      shift, and go to state 8
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
     INC        shift, and go to state 14
     DEC        shift, and go to state 15
     BIN_NOT    shift, and go to state 16
@@ -3929,9 +3928,9 @@ State 225
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -4147,9 +4146,9 @@ State 240
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11
@@ -4279,9 +4278,9 @@ State 246
     WHILE          shift, and go to state 3
     DO             shift, and go to state 4
     FOR            shift, and go to state 5
-    NOT            shift, and go to state 6
-    TRUE           shift, and go to state 7
-    FALSE          shift, and go to state 8
+    NOT_1          shift, and go to state 6
+    TRUE_1         shift, and go to state 7
+    FALSE_1        shift, and go to state 8
     INT            shift, and go to state 9
     LONG           shift, and go to state 10
     CHAR           shift, and go to state 11

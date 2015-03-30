@@ -5,6 +5,8 @@
 	
 	#include <stdio.h>
 	#include <string.h>
+    #include <graphviz/cgraph.h>
+    /*#include <graphviz/ingraphs.h>*/
 
 	#include "header.h"
 	int yylex(void);
@@ -16,6 +18,7 @@
 		struct node *child[MAX_CHILD], *left_sib, *right_sib;
 		char *name;
 		int cur_childs;
+        int graph_node_id;
 	};
 
 	struct node *root;
@@ -27,6 +30,9 @@
 	void printtree(node *root, int level);
 
 	node *init_tree();
+    
+    Agraph_t *syntax_graph;
+    int node_id,edge_id;
 
 	// #define YYSTYPE struct node *
 %}
@@ -36,7 +42,7 @@
 	char *terminal_value;
 }
 
-%token IF ELSE WHILE DO FOR AND OR NOT TRUE FALSE
+%token IF ELSE WHILE DO FOR AND OR NOT_1 TRUE_1 FALSE_1
 %token INT LONG CHAR FLOAT DOUBLE
 %token ADD SUB MULT DIV EXP MOD INC DEC QUES
 %token BIN_NOT BIN_AND BIN_OR BIN_XOR BIN_LEFT BIN_RIGHT
@@ -58,7 +64,7 @@
 %left LT GT LE GE LTGT EQ NOTEQ
 %left ADD SUB
 %left MULT DIV
-%left NOT
+%left NOT_1
 
 %start super_block
 
@@ -69,9 +75,9 @@
 %type <entry> FOR 
 %type <entry> AND 
 %type <entry> OR 
-%type <entry> NOT 
-%type <entry> TRUE 
-%type <entry> FALSE
+%type <entry> NOT_1 
+%type <entry> TRUE_1 
+%type <entry> FALSE_1
 %type <entry> INT 
 %type <entry> LONG 
 %type <entry> CHAR 
@@ -132,7 +138,7 @@
 %type <entry> IFNDEF
 %type <entry> FUNCTION
 %type <entry> COMMA 
-%type <entry> SYN_ERROR
+
 %type <entry> PRINT
 
 %type <entry> super_block
@@ -228,15 +234,6 @@ defination_block
 							mk_child($$, $3); 
 							
 						}
-					|	IFDEF IDENT OCB start_block CCB{
-							$$ = mk_node("defination_block");
-							$1 = mk_node("IFDEF");
-							$2 = mk_node("IDENT");
-							$3 = mk_node("OCB");
-							$5 = mk_node("CCB");
-						}
-
-					|	IFNDEF IDENT OCB start_block CCB
 
 					;
 
@@ -1053,22 +1050,22 @@ bit_condition_op
 					;
 
 bit_unary_condition_op
-					:	NOT{
+					:	NOT_1{
 							$$ = mk_node("bit_unary_condition_op");
-							$1 = mk_node("NOT");														
+							$1 = mk_node("NOT_1");														
 							mk_child($$, $1); 
 						}
 					;
 
 fixed_condition
-					:	TRUE{
+					:	TRUE_1{
 							$$ = mk_node("fixed_condition");
-							$1 = mk_node("TRUE");												
+							$1 = mk_node("TRUE_1");												
 							mk_child($$, $1); 
 						}
-					|	FALSE{
+					|	FALSE_1{
 							$$ = mk_node("fixed_condition");
-							$1 = mk_node("FALSE");												
+							$1 = mk_node("FALSE_1");												
 							mk_child($$, $1); 
 						}
 					;
@@ -1222,6 +1219,9 @@ int main(){
 	#if YYDEBUG
 	    yydebug = 1;
 	#endif
+    node_id=0;
+    edge_id=0;
+    syntax_graph=agopen("G", Agdirected, NULL);
 	root = init_tree();
 
 	//yylex();
@@ -1229,19 +1229,23 @@ int main(){
 
 	printf("\n\n-----------------   TREE   ------------------\n\n");
 	printtree(root, 0);
+    FILE *fp=fopen("syntax_graph.gv","w+");
+    agwrite(syntax_graph,fp);
+    fclose(fp);
 	return 0;
 }
 
 node *init_tree(){
-	node *tmp = (node *)malloc(sizeof(node));
-	for (int i = 0; i < MAX_CHILD; ++i){
-		tmp->child[i] = NULL;
-	}
-	tmp->left_sib = NULL;
-	tmp->right_sib = NULL;
-	tmp->name = (char *)malloc(20*sizeof(char));
-	strcpy(tmp->name, "super_block");
-	tmp->cur_childs = 0;
+	/*node *tmp = (node *)malloc(sizeof(node));*/
+	/*for (int i = 0; i < MAX_CHILD; ++i){*/
+		/*tmp->child[i] = NULL;*/
+	/*}*/
+	/*tmp->left_sib = NULL;*/
+	/*tmp->right_sib = NULL;*/
+	/*tmp->name = (char *)malloc(20*sizeof(char));*/
+	/*strcpy(tmp->name, "super_block");*/
+	/*tmp->cur_childs = 0;*/
+    node *tmp=mk_node("super_block");
 
 	for (int i = 0; i < MAX_LEVELS; ++i){
 		levels[i] = false;
@@ -1259,12 +1263,26 @@ struct node *mk_node(const char *name){
 	for (int i = 0; i < MAX_CHILD; ++i){
 		tmp->child[i] = NULL;
 	}
+    char buf[255];
+    sprintf(buf,"%s_%d",tmp->name,node_id);
+    agnode(syntax_graph,(char *)buf,TRUE);
+    tmp->graph_node_id=node_id;
+    node_id++;
 	return tmp;
 }
 
 void mk_child(node *par, node *ch){
 	par->child[par->cur_childs] = ch;
 	par->cur_childs++;
+    Agnode_t *par_node,*child_node;
+    char buf[255];
+    sprintf(buf,"%s_%d",par->name,par->graph_node_id);
+    par_node=agnode(syntax_graph,(char *)buf,FALSE);
+    sprintf(buf,"%s_%d",ch->name,ch->graph_node_id);
+    child_node=agnode(syntax_graph,(char *)buf,FALSE);
+    sprintf(buf,"%d",edge_id);
+    agedge(syntax_graph,par_node,child_node,(char *)buf,TRUE);
+    edge_id++;
 }
 
 void mk_sibling(node *from, node *to, bool right){
