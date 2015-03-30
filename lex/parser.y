@@ -32,7 +32,7 @@
 	node *init_tree();
     
     Agraph_t *syntax_graph;
-    int node_id,edge_id;
+    int node_id,edge_id,creation_id;
 
     Agnode_t * make_graph_node(node *);
 
@@ -1254,6 +1254,7 @@ int main(){
 	#endif
     node_id=0;
     edge_id=0;
+    creation_id=0;
     syntax_graph=agopen("G", Agdirected, NULL);
 	root = init_tree();
 
@@ -1305,13 +1306,14 @@ struct node *mk_node(const char *name){
 void mk_child(node *par, node *ch){
 	par->child[par->cur_childs] = ch;
 	par->cur_childs++;
-    Agnode_t *par_node,*child_node;
-    child_node=make_graph_node(ch);
-    par_node=make_graph_node(par);
-    char buf[50];
-    sprintf(buf,"%d",edge_id);
-    agedge(syntax_graph,par_node,child_node,(char *)buf,TRUE);
-    edge_id++;
+    /*Agnode_t *par_node,*child_node;*/
+    /*par_node=make_graph_node(par);*/
+    /*child_node=make_graph_node(ch);*/
+    /*char buf[50];*/
+    /*sprintf(buf,"%d",edge_id);*/
+    /*agedge(syntax_graph,par_node,child_node,(char *)buf,true);*/
+    /*printf("creating egde %s -> %s\n",par_node->name,child_node->name);*/
+    /*edge_id++;*/
 }
 
 void mk_sibling(node *from, node *to, bool right){
@@ -1346,8 +1348,15 @@ void printtree(node *root, int level){
 	printf("%s\n", root->name);
 
 	levels[level] = true;
+    Agnode_t *graph_root,*graph_child;
+    graph_root=make_graph_node(root);
+    char buf[50];
 	for (int i = 0; i < root->cur_childs; ++i){
-		if(root->cur_childs == i+1){
+        graph_child=make_graph_node(root->child[i]);
+        sprintf(buf,"%d",edge_id);
+        agedge(syntax_graph,graph_root,graph_child,(char *)buf,true);
+        edge_id++;
+        if(root->cur_childs == i+1){
 			levels[level] = false;
 		}
 		printtree(root->child[i], level+1);
@@ -1359,5 +1368,6 @@ void printtree(node *root, int level){
 Agnode_t * make_graph_node(node *cur_node){
 	char buf[255];
     sprintf(buf,"%s_%d",cur_node->name,cur_node->graph_node_id);
-    return agnode(syntax_graph,(char *)buf,TRUE);   
+    Agnode_t *new_node= agnode(syntax_graph,(char *)buf,TRUE);
+    return new_node;   
 }
