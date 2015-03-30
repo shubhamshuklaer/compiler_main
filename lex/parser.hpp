@@ -52,9 +52,9 @@ extern int yydebug;
     FOR = 262,
     AND = 263,
     OR = 264,
-    NOT = 265,
-    TRUE = 266,
-    FALSE = 267,
+    NOT_1 = 265,
+    TRUE_1 = 266,
+    FALSE_1 = 267,
     INT = 268,
     LONG = 269,
     CHAR = 270,
@@ -126,7 +126,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 34 "parser.y" /* yacc.c:1909  */
+#line 40 "parser.y" /* yacc.c:1909  */
 
 	int num;
 	char *str;

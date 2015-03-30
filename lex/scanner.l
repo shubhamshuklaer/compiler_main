@@ -17,8 +17,8 @@ DIG		[0-9]
 "while" 									{printf("<keyword : \'while\'> ");return WHILE;}
 "do" 										{printf("<keyword : \'do\'> ");return DO;}
 "for" 										{printf("<keyword : \'for\'> ");return FOR;}
-"true" 										{printf("<keyword : \'true\'> ");return TRUE;}
-"false" 									{printf("<keyword : \'false\'> ");return FALSE;}
+"true" 										{printf("<keyword : \'true\'> ");return TRUE_1;}
+"false" 									{printf("<keyword : \'false\'> ");return FALSE_1;}
 "int" 										{printf("<keyword : \'int\'> ");  return INT;}
 "long"										{printf("<keyword : \'long\'> "); return LONG;}
 "char" 										{printf("<keyword : \'char\'> "); return CHAR;}
@@ -53,7 +53,7 @@ DIG		[0-9]
 "--"										{printf("<operator : \'--\'> ");return DEC;}
 "&&"										{printf("<operator : \'&&\'> ");return AND;}		
 "||"										{printf("<operator : \'||\'> ");return OR;}
-"!"											{printf("<operator : \'!\'> ");return NOT;}
+"!"											{printf("<operator : \'!\'> ");return NOT_1;}
 "~"											{printf("<operator : \'~\'> ");return BIN_NOT;}
 "&"											{printf("<operator : \'&\'> ");return BIN_AND;}
 "|"											{printf("<operator : \'|\'> ");return BIN_OR;}

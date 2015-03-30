@@ -162,10 +162,10 @@ Grammar
   113 bit_condition_op: AND
   114                 | OR
 
-  115 bit_unary_condition_op: NOT
+  115 bit_unary_condition_op: NOT_1
 
-  116 fixed_condition: TRUE
-  117                | FALSE
+  116 fixed_condition: TRUE_1
+  117                | FALSE_1
 
   118 arith_binary_op: ADD
   119                | SUB
@@ -209,9 +209,9 @@ DO (261) 28
 FOR (262) 30
 AND (263) 113
 OR (264) 114
-NOT (265) 115
-TRUE (266) 116
-FALSE (267) 117
+NOT_1 (265) 115
+TRUE_1 (266) 116
+FALSE_1 (267) 117
 INT (268) 67
 LONG (269) 71
 CHAR (270) 70
@@ -571,9 +571,9 @@ State 20
    94     | OP . conditional_expr CP bit_binary_op expr
    95     | OP . conditional_expr CP
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -1166,9 +1166,9 @@ State 48
    20              | IF OP . if_condition CP OCB general_block CCB ELSE OCB general_block CCB
    21              | IF OP . if_condition CP OCB general_block CCB ELSE if_else_block
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -1200,9 +1200,9 @@ State 49
 
    26 while_loop_block: WHILE OP . while_condition CP OCB general_block CCB
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -1320,21 +1320,21 @@ State 52
 
 State 53
 
-  115 bit_unary_condition_op: NOT .
+  115 bit_unary_condition_op: NOT_1 .
 
     $default  reduce using rule 115 (bit_unary_condition_op)
 
 
 State 54
 
-  116 fixed_condition: TRUE .
+  116 fixed_condition: TRUE_1 .
 
     $default  reduce using rule 116 (fixed_condition)
 
 
 State 55
 
-  117 fixed_condition: FALSE .
+  117 fixed_condition: FALSE_1 .
 
     $default  reduce using rule 117 (fixed_condition)
 
@@ -2012,9 +2012,9 @@ State 104
    78 assignment_block: ass_var_block ASSIGN . conditional_expr
    81                 | ass_var_block ASSIGN . assignment_block
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -2128,9 +2128,9 @@ State 108
    79 assignment_block: ass_var_block arith_assgn_op . conditional_expr
    82                 | ass_var_block arith_assgn_op . assignment_block
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -2163,9 +2163,9 @@ State 109
    80 assignment_block: ass_var_block bit_assgn_op . conditional_expr
    83                 | ass_var_block bit_assgn_op . assignment_block
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -2254,9 +2254,9 @@ State 115
    94     | OP . conditional_expr CP bit_binary_op expr
    95     | OP . conditional_expr CP
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -2373,9 +2373,9 @@ State 124
 
    30 for_loop_block: FOR OP for_initialization . for_condition TERMINATOR for_update CP OCB general_block CCB
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -2558,9 +2558,9 @@ State 141
 
   102 conditional_expr: expr arith_condition_op . conditional_expr
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -2591,9 +2591,9 @@ State 142
 
   103 conditional_expr: expr bit_condition_op . conditional_expr
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
@@ -3408,9 +3408,9 @@ State 211
 
    28 do_while_loop_block: DO OCB general_block CCB WHILE OP . do_while_condition CP TERMINATOR
 
-    NOT        shift, and go to state 53
-    TRUE       shift, and go to state 54
-    FALSE      shift, and go to state 55
+    NOT_1      shift, and go to state 53
+    TRUE_1     shift, and go to state 54
+    FALSE_1    shift, and go to state 55
     INC        shift, and go to state 10
     DEC        shift, and go to state 11
     BIN_NOT    shift, and go to state 12
