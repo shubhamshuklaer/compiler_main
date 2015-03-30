@@ -44,7 +44,7 @@
 
 %token IF ELSE WHILE DO FOR AND OR NOT_1 TRUE_1 FALSE_1
 %token INT LONG CHAR FLOAT DOUBLE
-%token ADD SUB MULT DIV EXP MOD INC DEC QUES
+%token ADD SUB MULT DIV EXP MOD INC DEC
 %token BIN_NOT BIN_AND BIN_OR BIN_XOR BIN_LEFT BIN_RIGHT
 %token BIN_AND_ASSIGN BIN_IOR_ASSIGN BIN_XOR_ASSIGN
 %token ADD_ASSIGN SUB_ASSIGN MULT_ASSIGN DIV_ASSIGN MOD_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN
@@ -91,7 +91,6 @@
 %type <entry> MOD 
 %type <entry> INC 
 %type <entry> DEC 
-%type <entry> QUES
 %type <entry> BIN_NOT 
 %type <entry> BIN_AND 
 %type <entry> BIN_OR 
@@ -234,7 +233,32 @@ defination_block
 							mk_child($$, $3); 
 							
 						}
-
+					| IFDEF IDENT OCB start_block CCB 
+						{
+							$$ = mk_node("defination_block");
+							$1 = mk_node("IFDEF");
+							$2 = mk_node("IDENT");
+							$3 = mk_node("OCB");
+							$5 = mk_node("CCB");
+							mk_child($$, $1); 
+							mk_child($$, $2); 
+							mk_child($$, $3); 
+							mk_child($$, $4); 
+							mk_child($$, $5); 
+						}
+					| IFNDEF IDENT OCB start_block CCB
+						{
+							$$ = mk_node("defination_block");
+							$1 = mk_node("IFNDEF");
+							$2 = mk_node("IDENT");
+							$3 = mk_node("OCB");
+							$5 = mk_node("CCB");
+							mk_child($$, $1); 
+							mk_child($$, $2); 
+							mk_child($$, $3); 
+							mk_child($$, $4); 
+							mk_child($$, $5); 
+						}
 					;
 
 const_block 							
