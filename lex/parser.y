@@ -34,6 +34,8 @@
     Agraph_t *syntax_graph;
     int node_id,edge_id;
 
+    Agnode_t * make_graph_node(node *);
+
 	// #define YYSTYPE struct node *
 %}
 
@@ -1287,11 +1289,9 @@ struct node *mk_node(const char *name){
 	for (int i = 0; i < MAX_CHILD; ++i){
 		tmp->child[i] = NULL;
 	}
-    char buf[255];
-    sprintf(buf,"%s_%d",tmp->name,node_id);
-    agnode(syntax_graph,(char *)buf,TRUE);
-    tmp->graph_node_id=node_id;
-    node_id++;
+	tmp->graph_node_id=node_id;
+	node_id++;
+    
 	return tmp;
 }
 
@@ -1299,11 +1299,9 @@ void mk_child(node *par, node *ch){
 	par->child[par->cur_childs] = ch;
 	par->cur_childs++;
     Agnode_t *par_node,*child_node;
-    char buf[255];
-    sprintf(buf,"%s_%d",par->name,par->graph_node_id);
-    par_node=agnode(syntax_graph,(char *)buf,FALSE);
-    sprintf(buf,"%s_%d",ch->name,ch->graph_node_id);
-    child_node=agnode(syntax_graph,(char *)buf,FALSE);
+    child_node=make_graph_node(ch);
+    par_node=make_graph_node(par);
+    char buf[50];
     sprintf(buf,"%d",edge_id);
     agedge(syntax_graph,par_node,child_node,(char *)buf,TRUE);
     edge_id++;
@@ -1349,4 +1347,10 @@ void printtree(node *root, int level){
 	}
 	levels[level] = false;
 	
+}
+
+Agnode_t * make_graph_node(node *cur_node){
+	char buf[255];
+    sprintf(buf,"%s_%d",cur_node->name,cur_node->graph_node_id);
+    return agnode(syntax_graph,(char *)buf,TRUE);   
 }
