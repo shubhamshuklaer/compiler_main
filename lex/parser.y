@@ -4,6 +4,8 @@
 	#define MAX_LEVELS 30
 	
 	#include <stdio.h>
+	#include <iostream>
+	#include <sym_table.h>
 	#include <string.h>
     #include <graphviz/cgraph.h>
     /*#include <graphviz/ingraphs.h>*/
