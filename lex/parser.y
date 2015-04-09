@@ -329,7 +329,6 @@ general_block
 					|   error start_block {
 							$$ = mk_node("error");
 							mk_child($$, $2);
-							yyerrok;
 							yyclearin;
 						}
 					|	{
