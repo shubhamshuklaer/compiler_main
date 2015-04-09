@@ -122,7 +122,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 42 "parser.y" /* yacc.c:1909  */
+#line 43 "parser.y" /* yacc.c:1909  */
 
 	struct node *entry;
 	char *terminal_value;
