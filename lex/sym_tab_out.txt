@@ -1,0 +1,26 @@
+ggafdgfasd100
+Insertion successfull
+Insertion successfull
+Printing the symbol table
+*********************************
+Element name : __main__
+  func Def
+         Arg list : 	
+           Ret type 
+Function symbol table
+Printing the symbol table
+*********************************
+     Element name : $a
+                       Var Def
+                              data type int
+                               var_type 0
+                               arr_size 0
+*********************************
+*********************************
+     Element name : $b
+                       Var Def
+                              data type int
+                               var_type 2
+                               arr_size 100
+*********************************
+*********************************
