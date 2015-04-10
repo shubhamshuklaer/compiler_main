@@ -1,6 +1,7 @@
 #include <iostream>
 #include "sym_table.h"
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -20,6 +21,9 @@ int main(){
 	check_func_type_code();
 	insert_var_in_fst_code();
 	check_var_type_code();
+	ofstream sym_tab_out("sym_tab_out.txt");
+	gst_obj->print(sym_tab_out);
+	sym_tab_out.close();
 
 	return 0;
 }
@@ -29,10 +33,10 @@ void func_insertion_code(){
 	int ret_val;
 	//inserting a func 
 	// double foo(int,float)
-	vector<string> _arg_type_list;
-	_arg_type_list.push_back("int");
-	_arg_type_list.push_back("float");
-	func_def *_fd=new func_def(_arg_type_list,"double");
+	vector<pair<string,string> > _arg_list;
+	_arg_list.push_back(pair<string,string>("int","$a"));
+	_arg_list.push_back(pair<string,string>("float","$b"));
+	func_def *_fd=new func_def(_arg_list,"double");
 	ret_val=gst_obj->insert("foo",_fd);
 
 	if(ret_val==0){
@@ -48,10 +52,10 @@ void check_func_type_code(){
 	//create a func_def obj with arugments which you wanna check for correctness
 	
 	//take eg of func double foo(int,float)
-	vector<string> _arg_type_list;
-	_arg_type_list.push_back("float");
-	_arg_type_list.push_back("float");
-	func_def *_fd=new func_def(_arg_type_list,"float");
+	vector<pair<string,string> > _arg_list;
+	_arg_list.push_back(pair<string,string>("int",""));
+	_arg_list.push_back(pair<string,string>("float",""));
+	func_def *_fd=new func_def(_arg_list,"double");
 
 	ret_val=gst_obj->check_type("foo",_fd);
 	if(ret_val==0){
@@ -96,7 +100,7 @@ void check_var_type_code(){
 	if(fe==NULL){
 		cout<<"func named foo not found"<<endl;
 	}else{
-		ret_val=fe->check_type("abc",new var_def("int"));
+		ret_val=fe->check_type("abc",new var_def("int",0,0));
 		if(ret_val==0){
 			cout<<"var type match"<<endl;
 		}else if(ret_val==elem_not_found){

@@ -1,26 +1,16 @@
-ggafdgfasd100
-Insertion successfull
-Insertion successfull
 Printing the symbol table
 *********************************
-Element name : __main__
+Element name : foo
   func Def
-         Arg list : 	
-           Ret type 
+         Arg list : $a(int)	$b(float)	
+           Ret type double
 Function symbol table
 Printing the symbol table
 *********************************
-     Element name : $a
+     Element name : abc
                        Var Def
                               data type int
                                var_type 0
                                arr_size 0
-*********************************
-*********************************
-     Element name : $b
-                       Var Def
-                              data type int
-                               var_type 2
-                               arr_size 100
 *********************************
 *********************************
