@@ -106,7 +106,7 @@ class func_def{
 				out_stream<<setw(width)<<it->first<<endl;
 				it->second->print(out_stream,width+step_width);
 			}
-			out_stream<<setw(width)<<"Ret type "<<ret_type<<endl;
+			out_stream<<setw(width)<<"Ret type : "<<ret_type<<endl;
 		}
 };
 
@@ -204,14 +204,11 @@ class sym_table{
 		}
 
 		void print(ofstream &out_stream,int width=0){
-			out_stream<<"Printing the symbol table"<<endl;
 			typename map<string,T*>::iterator it;
 
 			for(it=st_map->begin();it!=st_map->end();it++){
-				out_stream<<setw(width)<<"****"<<endl;
-				out_stream<<setw(width)<<"Element name : "<<it->first<<endl;
+				out_stream<<setw(width)<<"key : "<<it->first<<endl;
 				it->second->print(out_stream,width+step_width);
-				out_stream<<setw(width)<<"****"<<endl;
 			}
 		}
 };
@@ -247,7 +244,7 @@ int func_elem::check_type(func_def *_fd){
 
 void func_elem::print(ofstream &out_stream,int width=0){
 	fd->print(out_stream,width);
-	out_stream<<setw(width)<<"Function symbol table"<<endl;
+	out_stream<<setw(width)<<"FST   : "<<endl;
 	width+=step_width;
 	fst->print(out_stream,width);
 
