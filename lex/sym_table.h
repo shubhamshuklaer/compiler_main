@@ -208,10 +208,10 @@ class sym_table{
 			typename map<string,T*>::iterator it;
 
 			for(it=st_map->begin();it!=st_map->end();it++){
-				out_stream<<setw(width)<<"*********************************"<<endl;
+				out_stream<<setw(width)<<"****"<<endl;
 				out_stream<<setw(width)<<"Element name : "<<it->first<<endl;
 				it->second->print(out_stream,width+step_width);
-				out_stream<<setw(width)<<"*********************************"<<endl;
+				out_stream<<setw(width)<<"****"<<endl;
 			}
 		}
 };

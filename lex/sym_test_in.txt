@@ -1,2 +1,11 @@
 int $a,$b[100];
 $a=5;
+function abc(int $d,float $c){
+	$d=10;
+}
+
+function efg(int $d,float $c){
+	$d=11;
+}
+
+int $e;

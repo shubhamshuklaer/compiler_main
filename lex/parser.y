@@ -655,7 +655,6 @@ function_def_block
 							mk_child($$, $6);
 							mk_child($$, $7);
 							mk_child($$, $8);
-							func_name=main_func_name;
 						}
 					;
 
@@ -663,7 +662,6 @@ ident
 				  :    IDENT{
 						$$ = mk_node("IDENT");
 						struct node *temp = mk_node(yylval.terminal_value);
-						func_name=string(yylval.terminal_value);
 						mk_child($$,temp);
 						}
 					;
@@ -1391,28 +1389,35 @@ void printtree(node *root, int level){
 	if(strcmp(root->name,"declaration_block")==0){
 		data_type=string(root->child[0]->child[0]->name);	
 		transform(data_type.begin(),data_type.end(),data_type.begin(),::tolower);
-		struct node *var_list_child=root->child[1]->child[0];
-		if(strcmp(var_list_child->name,"var_block")==0){
-			struct node *var_block_child=var_list_child->child[0];
-			string var_name=string(var_block_child->child[0]->name);
-			if(strcmp(var_block_child->name,"VAR")==0){
-				insert_var_in_symbol_table(func_name,var_name,data_type);	
-			}else if(strcmp(var_block_child->name,"POINTER")==0){
-				insert_var_in_symbol_table(func_name,var_name,data_type,1);	
-			}
-		}else if(strcmp(var_list_child->name,"array_block")==0){
-			struct node *var_block=var_list_child->child[0];
-			struct node *arr_size_block=var_list_child->child[2];
+		struct node *var_list_block=root->child[1];
+		while(var_list_block!=NULL){
+			struct node *var_list_child=var_list_block->child[0];
+			if(strcmp(var_list_child->name,"var_block")==0){
+				struct node *var_block_child=var_list_child->child[0];
+				string var_name=string(var_block_child->child[0]->name);
+				if(strcmp(var_block_child->name,"VAR")==0){
+					insert_var_in_symbol_table(func_name,var_name,data_type);	
+				}else if(strcmp(var_block_child->name,"POINTER")==0){
+					insert_var_in_symbol_table(func_name,var_name,data_type,1);	
+				}
+			}else if(strcmp(var_list_child->name,"array_block")==0){
+				struct node *var_block=var_list_child->child[0];
+				struct node *arr_size_block=var_list_child->child[2];
 
-			struct node *var_block_child=var_block->child[0];
-			string var_name=string(var_block_child->child[0]->name);
-			
-			int arr_size=atoi(arr_size_block->child[0]->name);
-			if(strcmp(var_block_child->name,"VAR")==0){
-				insert_var_in_symbol_table(func_name,var_name,data_type,2,arr_size);	
-			}else if(strcmp(var_block_child->name,"POINTER")==0){
-				insert_var_in_symbol_table(func_name,var_name,data_type,3,arr_size);	
+				struct node *var_block_child=var_block->child[0];
+				string var_name=string(var_block_child->child[0]->name);
+				
+				int arr_size=atoi(arr_size_block->child[0]->name);
+				if(strcmp(var_block_child->name,"VAR")==0){
+					insert_var_in_symbol_table(func_name,var_name,data_type,2,arr_size);	
+				}else if(strcmp(var_block_child->name,"POINTER")==0){
+					insert_var_in_symbol_table(func_name,var_name,data_type,3,arr_size);	
+				}
 			}
+			if(var_list_block->cur_childs==3)
+				var_list_block=var_list_block->child[2];
+			else
+				var_list_block=NULL;
 		}
 	}else if(strcmp(root->name,"function_def_block")==0){
 		struct node *func_name_node=root->child[1];
@@ -1424,11 +1429,20 @@ void printtree(node *root, int level){
 			//Finding the data type
 			struct node *data_type_node=argument_list_block->child[0];
 			string tdt;
-			tdt=string(root->child[0]->child[0]->name);	
+			var_def *temp_def;
+			tdt=string(data_type_node->name);	
 			transform(tdt.begin(),tdt.end(),tdt.begin(),::tolower);
 			
 			//Finding the variable name
-			struct node *var_block_node=argument_list_block->child[1];
+			struct node *var_block_child=argument_list_block->child[1]->child[0];
+			string var_name=string(var_block_child->child[0]->name);
+			if(strcmp(var_block_child->name,"VAR")==0){
+				temp_def=new var_def(tdt);
+			}else if(strcmp(var_block_child->name,"POINTER")==0){
+				temp_def=new var_def(tdt,1);
+			}
+			temp_arg_list.push_back(pair<string,var_def*>(var_name,temp_def));
+			////////////////////////////////////
 			if(argument_list_block->cur_childs==4)
 				argument_list_block=argument_list_block->child[3];
 			else
