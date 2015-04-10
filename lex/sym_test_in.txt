@@ -2,10 +2,12 @@ int $a,$b[100];
 $a=5;
 function abc(int $d,float $c){
 	$d=10;
+	float $e[10],$f[100];
 }
 
 function efg(int $d,float $c){
+	int $e[10];
 	$d=11;
 }
 
-int $e;
+int $f,$e[10];

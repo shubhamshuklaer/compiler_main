@@ -110,13 +110,14 @@
 	string func_name=main_func_name;
 	string garbage_dt="garbage";
 	string data_type=garbage_dt;
+	struct node* func_terminator_node;
 
 	void insert_var_in_symbol_table(string func_name,string var_name,string data_type,int var_type=0,int arr_size=0);
 	sym_table<func_elem,func_def> *gst_obj;
 	ofstream sym_tab_out("sym_tab_out.txt");
 	// #define YYSTYPE struct node *
 
-#line 120 "parser.cpp" /* yacc.c:339  */
+#line 121 "parser.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -228,12 +229,12 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 55 "parser.y" /* yacc.c:355  */
+#line 56 "parser.y" /* yacc.c:355  */
 
 	struct node *entry;
 	char *terminal_value;
 
-#line 237 "parser.cpp" /* yacc.c:355  */
+#line 238 "parser.cpp" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -248,7 +249,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 252 "parser.cpp" /* yacc.c:358  */
+#line 253 "parser.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -552,21 +553,21 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   206,   206,   213,   218,   222,   231,   236,   244,   253,
-     266,   282,   289,   296,   306,   311,   315,   324,   329,   334,
-     339,   344,   349,   356,   372,   395,   416,   423,   427,   431,
-     438,   457,   465,   488,   496,   518,   526,   533,   541,   549,
-     555,   562,   569,   575,   583,   590,   597,   604,   612,   620,
-     624,   628,   633,   638,   643,   662,   669,   678,   683,   688,
-     694,   700,   706,   720,   729,   741,   749,   756,   764,   771,
-     775,   782,   790,   795,   800,   805,   810,   818,   825,   836,
-     848,   856,   860,   867,   880,   888,   895,   901,   908,   914,
-     920,   931,   937,   943,   949,   954,   960,   964,   968,   972,
-     983,   993,  1001,  1007,  1013,  1019,  1025,  1030,  1036,  1041,
-    1046,  1050,  1054,  1063,  1068,  1073,  1078,  1083,  1088,  1093,
-    1101,  1106,  1114,  1122,  1127,  1135,  1140,  1145,  1150,  1155,
-    1160,  1168,  1173,  1181,  1186,  1191,  1196,  1201,  1209,  1217,
-    1222,  1227,  1232,  1237,  1242,  1247,  1255,  1260,  1265
+       0,   207,   207,   214,   219,   223,   232,   237,   245,   254,
+     267,   283,   290,   297,   307,   312,   316,   325,   330,   335,
+     340,   345,   350,   357,   373,   396,   417,   424,   428,   432,
+     439,   458,   466,   489,   497,   519,   527,   534,   542,   550,
+     556,   563,   570,   576,   584,   591,   598,   605,   613,   621,
+     625,   629,   634,   639,   644,   663,   670,   679,   684,   689,
+     695,   701,   707,   721,   730,   742,   750,   757,   765,   772,
+     776,   783,   791,   796,   801,   806,   811,   819,   826,   837,
+     849,   857,   861,   868,   881,   889,   896,   902,   909,   915,
+     921,   932,   938,   944,   950,   955,   961,   965,   969,   973,
+     984,   994,  1002,  1008,  1014,  1020,  1026,  1031,  1037,  1042,
+    1047,  1051,  1055,  1064,  1069,  1074,  1079,  1084,  1089,  1094,
+    1102,  1107,  1115,  1123,  1128,  1136,  1141,  1146,  1151,  1156,
+    1161,  1169,  1174,  1182,  1187,  1192,  1197,  1202,  1210,  1218,
+    1223,  1228,  1233,  1238,  1243,  1248,  1256,  1261,  1266
 };
 #endif
 
@@ -1644,66 +1645,66 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 206 "parser.y" /* yacc.c:1646  */
+#line 207 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = root;
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1653 "parser.cpp" /* yacc.c:1646  */
+#line 1654 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 213 "parser.y" /* yacc.c:1646  */
+#line 214 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("start_block");
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1663 "parser.cpp" /* yacc.c:1646  */
+#line 1664 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 218 "parser.y" /* yacc.c:1646  */
+#line 219 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("start_block");
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 1672 "parser.cpp" /* yacc.c:1646  */
+#line 1673 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 222 "parser.y" /* yacc.c:1646  */
+#line 223 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("start_block");
 							mk_child((yyval.entry), (yyvsp[-2].entry));
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 1683 "parser.cpp" /* yacc.c:1646  */
+#line 1684 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 231 "parser.y" /* yacc.c:1646  */
+#line 232 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("comment_block");	
 							(yyvsp[0].entry) = mk_node("COMMENT");		
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1693 "parser.cpp" /* yacc.c:1646  */
+#line 1694 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 236 "parser.y" /* yacc.c:1646  */
+#line 237 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("comment_block");	
 							(yyvsp[0].entry) = mk_node("MULTI_COMMENT");		
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1703 "parser.cpp" /* yacc.c:1646  */
+#line 1704 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 244 "parser.y" /* yacc.c:1646  */
+#line 245 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("defination_block");	
 							(yyvsp[-2].entry) = mk_node("DEFINE");			
@@ -1713,11 +1714,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 							
 						}
-#line 1717 "parser.cpp" /* yacc.c:1646  */
+#line 1718 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 254 "parser.y" /* yacc.c:1646  */
+#line 255 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("defination_block");
 							(yyvsp[-4].entry) = mk_node("IFDEF");
@@ -1730,11 +1731,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1734 "parser.cpp" /* yacc.c:1646  */
+#line 1735 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 267 "parser.y" /* yacc.c:1646  */
+#line 268 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("defination_block");
 							(yyvsp[-4].entry) = mk_node("IFNDEF");
@@ -1747,11 +1748,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1751 "parser.cpp" /* yacc.c:1646  */
+#line 1752 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 282 "parser.y" /* yacc.c:1646  */
+#line 283 "parser.y" /* yacc.c:1646  */
     {
 							struct node *temp = mk_node(yylval.terminal_value);
 							(yyval.entry) = mk_node("const_block");	
@@ -1759,11 +1760,11 @@ yyreduce:
 							mk_child((yyvsp[0].entry), temp);
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1763 "parser.cpp" /* yacc.c:1646  */
+#line 1764 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 289 "parser.y" /* yacc.c:1646  */
+#line 290 "parser.y" /* yacc.c:1646  */
     {
 							struct node *temp = mk_node(yylval.terminal_value);
 							(yyval.entry) = mk_node("const_block");	
@@ -1771,11 +1772,11 @@ yyreduce:
 							mk_child((yyvsp[0].entry), temp);		
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1775 "parser.cpp" /* yacc.c:1646  */
+#line 1776 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 296 "parser.y" /* yacc.c:1646  */
+#line 297 "parser.y" /* yacc.c:1646  */
     {
 							struct node *temp = mk_node(yylval.terminal_value);
 							(yyval.entry) = mk_node("const_block");	
@@ -1783,99 +1784,99 @@ yyreduce:
 							mk_child((yyvsp[0].entry), temp);
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1787 "parser.cpp" /* yacc.c:1646  */
+#line 1788 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 306 "parser.y" /* yacc.c:1646  */
+#line 307 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("block");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 											
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1797 "parser.cpp" /* yacc.c:1646  */
+#line 1798 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 311 "parser.y" /* yacc.c:1646  */
+#line 312 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("block");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1806 "parser.cpp" /* yacc.c:1646  */
+#line 1807 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 315 "parser.y" /* yacc.c:1646  */
+#line 316 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("block");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 											
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 											
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1817 "parser.cpp" /* yacc.c:1646  */
+#line 1818 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 324 "parser.y" /* yacc.c:1646  */
+#line 325 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("general_block");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 											
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1827 "parser.cpp" /* yacc.c:1646  */
+#line 1828 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 329 "parser.y" /* yacc.c:1646  */
+#line 330 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("general_block");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 											
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1837 "parser.cpp" /* yacc.c:1646  */
+#line 1838 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 334 "parser.y" /* yacc.c:1646  */
+#line 335 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("general_block");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 											
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1847 "parser.cpp" /* yacc.c:1646  */
+#line 1848 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 339 "parser.y" /* yacc.c:1646  */
+#line 340 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("general_block");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 											
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1857 "parser.cpp" /* yacc.c:1646  */
+#line 1858 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 344 "parser.y" /* yacc.c:1646  */
+#line 345 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("error");
 							mk_child((yyval.entry), (yyvsp[0].entry));
 							yyclearin;
 						}
-#line 1867 "parser.cpp" /* yacc.c:1646  */
+#line 1868 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 349 "parser.y" /* yacc.c:1646  */
+#line 350 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("/general_block");
 						}
-#line 1875 "parser.cpp" /* yacc.c:1646  */
+#line 1876 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 356 "parser.y" /* yacc.c:1646  */
+#line 357 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("if_else_block");				
 							(yyvsp[-6].entry) = mk_node("IF");			
@@ -1892,11 +1893,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 							
 						}
-#line 1896 "parser.cpp" /* yacc.c:1646  */
+#line 1897 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 372 "parser.y" /* yacc.c:1646  */
+#line 373 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("if_else_block");				
 							(yyvsp[-10].entry) = mk_node("IF");			
@@ -1920,11 +1921,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 							
 						}
-#line 1924 "parser.cpp" /* yacc.c:1646  */
+#line 1925 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 395 "parser.y" /* yacc.c:1646  */
+#line 396 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("if_else_block");				
 							(yyvsp[-8].entry) = mk_node("IF");	
@@ -1943,47 +1944,47 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1947 "parser.cpp" /* yacc.c:1646  */
+#line 1948 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 416 "parser.y" /* yacc.c:1646  */
+#line 417 "parser.y" /* yacc.c:1646  */
     {//explicit check for NILL condition
 							(yyval.entry) = mk_node("if_condition");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1956 "parser.cpp" /* yacc.c:1646  */
+#line 1957 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 423 "parser.y" /* yacc.c:1646  */
+#line 424 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("loop_block");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1965 "parser.cpp" /* yacc.c:1646  */
+#line 1966 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 427 "parser.y" /* yacc.c:1646  */
+#line 428 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("loop_block");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1974 "parser.cpp" /* yacc.c:1646  */
+#line 1975 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 431 "parser.y" /* yacc.c:1646  */
+#line 432 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("loop_block");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 1983 "parser.cpp" /* yacc.c:1646  */
+#line 1984 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 438 "parser.y" /* yacc.c:1646  */
+#line 439 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("while_loop_block");		
 							(yyvsp[-6].entry) = mk_node("WHILE");			
@@ -2000,21 +2001,21 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry));
 							 
 						}
-#line 2004 "parser.cpp" /* yacc.c:1646  */
+#line 2005 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 457 "parser.y" /* yacc.c:1646  */
+#line 458 "parser.y" /* yacc.c:1646  */
     {//explicit check for NILL condition
 							(yyval.entry) = mk_node("while_condition");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 							
 						}
-#line 2014 "parser.cpp" /* yacc.c:1646  */
+#line 2015 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 465 "parser.y" /* yacc.c:1646  */
+#line 466 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("do_while_loop_block");		
 							(yyvsp[-8].entry) = mk_node("DO");			
@@ -2035,21 +2036,21 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry));
 							
 						}
-#line 2039 "parser.cpp" /* yacc.c:1646  */
+#line 2040 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 488 "parser.y" /* yacc.c:1646  */
+#line 489 "parser.y" /* yacc.c:1646  */
     {// explicit check for NILL condition 
 							(yyval.entry) = mk_node("do_while_condition");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 							
 						}
-#line 2049 "parser.cpp" /* yacc.c:1646  */
+#line 2050 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 496 "parser.y" /* yacc.c:1646  */
+#line 497 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_loop_block");		
 							(yyvsp[-9].entry) = mk_node("FOR");			
@@ -2069,11 +2070,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							
 						}
-#line 2073 "parser.cpp" /* yacc.c:1646  */
+#line 2074 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 518 "parser.y" /* yacc.c:1646  */
+#line 519 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");				
 							(yyvsp[-1].entry) = mk_node("COMMA");										
@@ -2082,11 +2083,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry));
 							
 						}
-#line 2086 "parser.cpp" /* yacc.c:1646  */
+#line 2087 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 526 "parser.y" /* yacc.c:1646  */
+#line 527 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");				
 							(yyvsp[-1].entry) = mk_node("COMMA");										
@@ -2094,11 +2095,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2098 "parser.cpp" /* yacc.c:1646  */
+#line 2099 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 533 "parser.y" /* yacc.c:1646  */
+#line 534 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");				
 							(yyvsp[-1].entry) = mk_node("COMMA");											
@@ -2107,11 +2108,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2111 "parser.cpp" /* yacc.c:1646  */
+#line 2112 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 541 "parser.y" /* yacc.c:1646  */
+#line 542 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");					
 							(yyvsp[-1].entry) = mk_node("COMMA");										
@@ -2120,22 +2121,22 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2124 "parser.cpp" /* yacc.c:1646  */
+#line 2125 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 549 "parser.y" /* yacc.c:1646  */
+#line 550 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");				
 							(yyvsp[0].entry) = mk_node("TERMINATOR");											
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2135 "parser.cpp" /* yacc.c:1646  */
+#line 2136 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 555 "parser.y" /* yacc.c:1646  */
+#line 556 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");					
 							(yyvsp[0].entry) = mk_node("TERMINATOR");										
@@ -2143,11 +2144,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2147 "parser.cpp" /* yacc.c:1646  */
+#line 2148 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 562 "parser.y" /* yacc.c:1646  */
+#line 563 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");					
 							(yyvsp[0].entry) = mk_node("TERMINATOR");											
@@ -2155,41 +2156,41 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2159 "parser.cpp" /* yacc.c:1646  */
+#line 2160 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 569 "parser.y" /* yacc.c:1646  */
+#line 570 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");				
 							(yyvsp[0].entry) = mk_node("TERMINATOR");
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2170 "parser.cpp" /* yacc.c:1646  */
+#line 2171 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 575 "parser.y" /* yacc.c:1646  */
+#line 576 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_initialization");		
 							(yyvsp[0].entry) = mk_node("TERMINATOR");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2180 "parser.cpp" /* yacc.c:1646  */
+#line 2181 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 583 "parser.y" /* yacc.c:1646  */
+#line 584 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_condition");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2189 "parser.cpp" /* yacc.c:1646  */
+#line 2190 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 590 "parser.y" /* yacc.c:1646  */
+#line 591 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_update");						
 							(yyvsp[-1].entry) = mk_node("COMMA");									
@@ -2197,11 +2198,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2201 "parser.cpp" /* yacc.c:1646  */
+#line 2202 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 597 "parser.y" /* yacc.c:1646  */
+#line 598 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_update");						
 							(yyvsp[-1].entry) = mk_node("COMMA");									
@@ -2209,11 +2210,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2213 "parser.cpp" /* yacc.c:1646  */
+#line 2214 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 604 "parser.y" /* yacc.c:1646  */
+#line 605 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_update");						
 							(yyvsp[-1].entry) = mk_node("COMMA");										
@@ -2222,11 +2223,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2226 "parser.cpp" /* yacc.c:1646  */
+#line 2227 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 612 "parser.y" /* yacc.c:1646  */
+#line 613 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_update");						
 							(yyvsp[-1].entry) = mk_node("COMMA");										
@@ -2235,56 +2236,56 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2239 "parser.cpp" /* yacc.c:1646  */
+#line 2240 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 620 "parser.y" /* yacc.c:1646  */
+#line 621 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_update");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2248 "parser.cpp" /* yacc.c:1646  */
+#line 2249 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 624 "parser.y" /* yacc.c:1646  */
+#line 625 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_update");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2257 "parser.cpp" /* yacc.c:1646  */
+#line 2258 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 628 "parser.y" /* yacc.c:1646  */
+#line 629 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_update");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2267 "parser.cpp" /* yacc.c:1646  */
+#line 2268 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 633 "parser.y" /* yacc.c:1646  */
+#line 634 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("for_update");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2277 "parser.cpp" /* yacc.c:1646  */
+#line 2278 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 638 "parser.y" /* yacc.c:1646  */
+#line 639 "parser.y" /* yacc.c:1646  */
     {
 						}
-#line 2284 "parser.cpp" /* yacc.c:1646  */
+#line 2285 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 643 "parser.y" /* yacc.c:1646  */
+#line 644 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("function_def_block");						
 							(yyvsp[-7].entry) = mk_node("FUNCTION");			
@@ -2301,21 +2302,21 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2305 "parser.cpp" /* yacc.c:1646  */
+#line 2306 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 662 "parser.y" /* yacc.c:1646  */
+#line 663 "parser.y" /* yacc.c:1646  */
     {
 						(yyval.entry) = mk_node("IDENT");
 						struct node *temp = mk_node(yylval.terminal_value);
 						mk_child((yyval.entry),temp);
 						}
-#line 2315 "parser.cpp" /* yacc.c:1646  */
+#line 2316 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 669 "parser.y" /* yacc.c:1646  */
+#line 670 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("argument_list_block");			
 							(yyvsp[-1].entry) = mk_node("COMMA");
@@ -2325,61 +2326,61 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2329 "parser.cpp" /* yacc.c:1646  */
+#line 2330 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 678 "parser.y" /* yacc.c:1646  */
+#line 679 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("argument_list_block");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2339 "parser.cpp" /* yacc.c:1646  */
+#line 2340 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 683 "parser.y" /* yacc.c:1646  */
+#line 684 "parser.y" /* yacc.c:1646  */
     {
 						}
-#line 2346 "parser.cpp" /* yacc.c:1646  */
+#line 2347 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 688 "parser.y" /* yacc.c:1646  */
+#line 689 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("general_stmt");			
 							(yyvsp[0].entry) = mk_node("TERMINATOR");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2357 "parser.cpp" /* yacc.c:1646  */
+#line 2358 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 694 "parser.y" /* yacc.c:1646  */
+#line 695 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("general_stmt");		
 							(yyvsp[0].entry) = mk_node("TERMINATOR");													
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2368 "parser.cpp" /* yacc.c:1646  */
+#line 2369 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 700 "parser.y" /* yacc.c:1646  */
+#line 701 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("general_stmt");		
 							(yyvsp[0].entry) = mk_node("TERMINATOR");													
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2379 "parser.cpp" /* yacc.c:1646  */
+#line 2380 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 707 "parser.y" /* yacc.c:1646  */
+#line 708 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("general_stmt");
 							(yyvsp[-4].entry) = mk_node("PRINT");
@@ -2391,21 +2392,21 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2395 "parser.cpp" /* yacc.c:1646  */
+#line 2396 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 721 "parser.y" /* yacc.c:1646  */
+#line 722 "parser.y" /* yacc.c:1646  */
     {
 							struct node *temp = mk_node(yylval.terminal_value);
 							(yyval.entry) = mk_node("STRING");
 							mk_child((yyval.entry), temp);
 						}
-#line 2405 "parser.cpp" /* yacc.c:1646  */
+#line 2406 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 729 "parser.y" /* yacc.c:1646  */
+#line 730 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("function_call_block");		
 							(yyvsp[-3].entry) = mk_node("IDENT");						
@@ -2416,11 +2417,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2420 "parser.cpp" /* yacc.c:1646  */
+#line 2421 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 742 "parser.y" /* yacc.c:1646  */
+#line 743 "parser.y" /* yacc.c:1646  */
     {
 					   	 (yyval.entry) = mk_node("function_var_list");
 					   	 (yyvsp[-1].entry) = mk_node("COMMA");
@@ -2428,30 +2429,30 @@ yyreduce:
 					   	 mk_child((yyval.entry), (yyvsp[-1].entry));
 					   	 mk_child((yyval.entry), (yyvsp[0].entry));
 					   }
-#line 2432 "parser.cpp" /* yacc.c:1646  */
+#line 2433 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 749 "parser.y" /* yacc.c:1646  */
+#line 750 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("function_var_list");
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2441 "parser.cpp" /* yacc.c:1646  */
+#line 2442 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 756 "parser.y" /* yacc.c:1646  */
+#line 757 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("declaration_block");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2451 "parser.cpp" /* yacc.c:1646  */
+#line 2452 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 764 "parser.y" /* yacc.c:1646  */
+#line 765 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("var_list");			
 							(yyvsp[-1].entry) = mk_node("COMMA");												
@@ -2459,20 +2460,20 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2463 "parser.cpp" /* yacc.c:1646  */
+#line 2464 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 771 "parser.y" /* yacc.c:1646  */
+#line 772 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("var_list");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2472 "parser.cpp" /* yacc.c:1646  */
+#line 2473 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 775 "parser.y" /* yacc.c:1646  */
+#line 776 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("var_list");				
 							(yyvsp[-1].entry) = mk_node("COMMA");											
@@ -2480,70 +2481,70 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2484 "parser.cpp" /* yacc.c:1646  */
+#line 2485 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 782 "parser.y" /* yacc.c:1646  */
+#line 783 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("var_list");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2493 "parser.cpp" /* yacc.c:1646  */
+#line 2494 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 790 "parser.y" /* yacc.c:1646  */
+#line 791 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("data_type");		
 							(yyvsp[0].entry) = mk_node("INT");									
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2503 "parser.cpp" /* yacc.c:1646  */
+#line 2504 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 795 "parser.y" /* yacc.c:1646  */
+#line 796 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("data_type");			
 							(yyvsp[0].entry) = mk_node("FLOAT");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2513 "parser.cpp" /* yacc.c:1646  */
+#line 2514 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 800 "parser.y" /* yacc.c:1646  */
+#line 801 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("data_type");		
 							(yyvsp[0].entry) = mk_node("DOUBLE");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2523 "parser.cpp" /* yacc.c:1646  */
+#line 2524 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 805 "parser.y" /* yacc.c:1646  */
+#line 806 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("data_type");			
 							(yyvsp[0].entry) = mk_node("CHAR");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2533 "parser.cpp" /* yacc.c:1646  */
+#line 2534 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 810 "parser.y" /* yacc.c:1646  */
+#line 811 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("data_type");			
 							(yyvsp[0].entry) = mk_node("LONG");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2543 "parser.cpp" /* yacc.c:1646  */
+#line 2544 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 818 "parser.y" /* yacc.c:1646  */
+#line 819 "parser.y" /* yacc.c:1646  */
     {
 							struct node *temp = mk_node(yylval.terminal_value);
 							(yyval.entry) = mk_node("var_block");			
@@ -2551,11 +2552,11 @@ yyreduce:
 							mk_child((yyvsp[0].entry),temp);
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2555 "parser.cpp" /* yacc.c:1646  */
+#line 2556 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 825 "parser.y" /* yacc.c:1646  */
+#line 826 "parser.y" /* yacc.c:1646  */
     {
 							struct node *temp = mk_node(yylval.terminal_value);
 							(yyval.entry) = mk_node("var_block");			
@@ -2564,11 +2565,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry));
 
 						}
-#line 2568 "parser.cpp" /* yacc.c:1646  */
+#line 2569 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 836 "parser.y" /* yacc.c:1646  */
+#line 837 "parser.y" /* yacc.c:1646  */
     {//check for expr to return positive value. Run time check for negeative value.
 							(yyval.entry) = mk_node("array_block");	
 							(yyvsp[-2].entry) = mk_node("OB");	
@@ -2578,30 +2579,30 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2582 "parser.cpp" /* yacc.c:1646  */
+#line 2583 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 848 "parser.y" /* yacc.c:1646  */
+#line 849 "parser.y" /* yacc.c:1646  */
     {
 							struct node *temp=mk_node(yyval.terminal_value);
 							(yyval.entry) = mk_node("NUM");
 							mk_child((yyval.entry),temp);
 						}
-#line 2592 "parser.cpp" /* yacc.c:1646  */
+#line 2593 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 856 "parser.y" /* yacc.c:1646  */
+#line 857 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("ass_var_block");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2601 "parser.cpp" /* yacc.c:1646  */
+#line 2602 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 860 "parser.y" /* yacc.c:1646  */
+#line 861 "parser.y" /* yacc.c:1646  */
     {
 							struct node *temp = mk_node(yylval.terminal_value);
 							(yyval.entry) = mk_node("ass_var_block");		
@@ -2609,11 +2610,11 @@ yyreduce:
 							mk_child((yyvsp[0].entry),temp);											
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2613 "parser.cpp" /* yacc.c:1646  */
+#line 2614 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 867 "parser.y" /* yacc.c:1646  */
+#line 868 "parser.y" /* yacc.c:1646  */
     {// check if expr is returning a index present in the array. 
 							(yyval.entry) = mk_node("ass_var_block");		
 							(yyvsp[-2].entry) = mk_node("OB");	
@@ -2624,11 +2625,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 							
 						}
-#line 2628 "parser.cpp" /* yacc.c:1646  */
+#line 2629 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 880 "parser.y" /* yacc.c:1646  */
+#line 881 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("assignment_block");	
 							(yyvsp[-1].entry) = mk_node("ASSIGN");													
@@ -2637,11 +2638,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry));
 							 
 						}
-#line 2641 "parser.cpp" /* yacc.c:1646  */
+#line 2642 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 888 "parser.y" /* yacc.c:1646  */
+#line 889 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("assignment_block");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
@@ -2649,22 +2650,22 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[0].entry));
 							
 						}
-#line 2653 "parser.cpp" /* yacc.c:1646  */
+#line 2654 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 895 "parser.y" /* yacc.c:1646  */
+#line 896 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("assignment_block");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2664 "parser.cpp" /* yacc.c:1646  */
+#line 2665 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 901 "parser.y" /* yacc.c:1646  */
+#line 902 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("assignment_block");												
 							(yyvsp[-1].entry) = mk_node("ASSIGN");													
@@ -2672,33 +2673,33 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2676 "parser.cpp" /* yacc.c:1646  */
+#line 2677 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 908 "parser.y" /* yacc.c:1646  */
+#line 909 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("assignment_block");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2687 "parser.cpp" /* yacc.c:1646  */
+#line 2688 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 914 "parser.y" /* yacc.c:1646  */
+#line 915 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("assignment_block");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2698 "parser.cpp" /* yacc.c:1646  */
+#line 2699 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 920 "parser.y" /* yacc.c:1646  */
+#line 921 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("assignment_block");	
 							(yyval.entry) = mk_node("expr");	
@@ -2707,92 +2708,92 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2711 "parser.cpp" /* yacc.c:1646  */
+#line 2712 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 931 "parser.y" /* yacc.c:1646  */
+#line 932 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2722 "parser.cpp" /* yacc.c:1646  */
+#line 2723 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 937 "parser.y" /* yacc.c:1646  */
+#line 938 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2733 "parser.cpp" /* yacc.c:1646  */
+#line 2734 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 943 "parser.y" /* yacc.c:1646  */
+#line 944 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2744 "parser.cpp" /* yacc.c:1646  */
+#line 2745 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 949 "parser.y" /* yacc.c:1646  */
+#line 950 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2754 "parser.cpp" /* yacc.c:1646  */
+#line 2755 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 954 "parser.y" /* yacc.c:1646  */
+#line 955 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2765 "parser.cpp" /* yacc.c:1646  */
+#line 2766 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 960 "parser.y" /* yacc.c:1646  */
+#line 961 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2774 "parser.cpp" /* yacc.c:1646  */
+#line 2775 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 964 "parser.y" /* yacc.c:1646  */
+#line 965 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2783 "parser.cpp" /* yacc.c:1646  */
+#line 2784 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 968 "parser.y" /* yacc.c:1646  */
+#line 969 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2792 "parser.cpp" /* yacc.c:1646  */
+#line 2793 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 972 "parser.y" /* yacc.c:1646  */
+#line 973 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");	
 							(yyvsp[-4].entry) = mk_node("OP");	
@@ -2804,11 +2805,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2808 "parser.cpp" /* yacc.c:1646  */
+#line 2809 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 983 "parser.y" /* yacc.c:1646  */
+#line 984 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");	
 							(yyvsp[-4].entry) = mk_node("OP");	
@@ -2819,11 +2820,11 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry));
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2823 "parser.cpp" /* yacc.c:1646  */
+#line 2824 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 993 "parser.y" /* yacc.c:1646  */
+#line 994 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");	
 							(yyvsp[-2].entry) = mk_node("OP");	
@@ -2832,482 +2833,482 @@ yyreduce:
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2836 "parser.cpp" /* yacc.c:1646  */
+#line 2837 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 1001 "parser.y" /* yacc.c:1646  */
+#line 1002 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2847 "parser.cpp" /* yacc.c:1646  */
+#line 2848 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 1007 "parser.y" /* yacc.c:1646  */
+#line 1008 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2858 "parser.cpp" /* yacc.c:1646  */
+#line 2859 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 1013 "parser.y" /* yacc.c:1646  */
+#line 1014 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2869 "parser.cpp" /* yacc.c:1646  */
+#line 2870 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 1019 "parser.y" /* yacc.c:1646  */
+#line 1020 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 							
 							mk_child((yyval.entry), (yyvsp[0].entry));
 						}
-#line 2880 "parser.cpp" /* yacc.c:1646  */
+#line 2881 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 1025 "parser.y" /* yacc.c:1646  */
+#line 1026 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2890 "parser.cpp" /* yacc.c:1646  */
+#line 2891 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 1030 "parser.y" /* yacc.c:1646  */
+#line 1031 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("expr");
 						}
-#line 2898 "parser.cpp" /* yacc.c:1646  */
+#line 2899 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 1036 "parser.y" /* yacc.c:1646  */
+#line 1037 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("conditional_expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 						}
-#line 2908 "parser.cpp" /* yacc.c:1646  */
+#line 2909 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 109:
-#line 1041 "parser.y" /* yacc.c:1646  */
+#line 1042 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("conditional_expr");												
 							mk_child((yyval.entry), (yyvsp[-2].entry)); 
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 						}
-#line 2918 "parser.cpp" /* yacc.c:1646  */
+#line 2919 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 1046 "parser.y" /* yacc.c:1646  */
+#line 1047 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("conditional_expr");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2927 "parser.cpp" /* yacc.c:1646  */
+#line 2928 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 1050 "parser.y" /* yacc.c:1646  */
+#line 1051 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("conditional_expr");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2936 "parser.cpp" /* yacc.c:1646  */
+#line 2937 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 1054 "parser.y" /* yacc.c:1646  */
+#line 1055 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("conditional_expr");												
 							mk_child((yyval.entry), (yyvsp[-1].entry)); 
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 							
 						}
-#line 2947 "parser.cpp" /* yacc.c:1646  */
+#line 2948 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 1063 "parser.y" /* yacc.c:1646  */
+#line 1064 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_condition_op");
 							(yyvsp[0].entry) = mk_node("EQ");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2957 "parser.cpp" /* yacc.c:1646  */
+#line 2958 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 1068 "parser.y" /* yacc.c:1646  */
+#line 1069 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_condition_op");
 							(yyvsp[0].entry) = mk_node("NOTEQ");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2967 "parser.cpp" /* yacc.c:1646  */
+#line 2968 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 1073 "parser.y" /* yacc.c:1646  */
+#line 1074 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_condition_op");
 							(yyvsp[0].entry) = mk_node("GT");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2977 "parser.cpp" /* yacc.c:1646  */
+#line 2978 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 116:
-#line 1078 "parser.y" /* yacc.c:1646  */
+#line 1079 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_condition_op");
 							(yyvsp[0].entry) = mk_node("LT");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2987 "parser.cpp" /* yacc.c:1646  */
+#line 2988 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 117:
-#line 1083 "parser.y" /* yacc.c:1646  */
+#line 1084 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_condition_op");
 							(yyvsp[0].entry) = mk_node("GE");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 2997 "parser.cpp" /* yacc.c:1646  */
+#line 2998 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 1088 "parser.y" /* yacc.c:1646  */
+#line 1089 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_condition_op");
 							(yyvsp[0].entry) = mk_node("LE");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3007 "parser.cpp" /* yacc.c:1646  */
+#line 3008 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 1093 "parser.y" /* yacc.c:1646  */
+#line 1094 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_condition_op");
 							(yyvsp[0].entry) = mk_node("LTGT");
 							mk_child((yyval.entry),(yyvsp[0].entry));
 						}
-#line 3017 "parser.cpp" /* yacc.c:1646  */
+#line 3018 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 1101 "parser.y" /* yacc.c:1646  */
+#line 1102 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_condition_op");
 							(yyvsp[0].entry) = mk_node("AND");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3027 "parser.cpp" /* yacc.c:1646  */
+#line 3028 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 1106 "parser.y" /* yacc.c:1646  */
+#line 1107 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_condition_op");
 							(yyvsp[0].entry) = mk_node("OR");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3037 "parser.cpp" /* yacc.c:1646  */
+#line 3038 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 122:
-#line 1114 "parser.y" /* yacc.c:1646  */
+#line 1115 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_unary_condition_op");
 							(yyvsp[0].entry) = mk_node("NOT_1");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3047 "parser.cpp" /* yacc.c:1646  */
+#line 3048 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 1122 "parser.y" /* yacc.c:1646  */
+#line 1123 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("fixed_condition");
 							(yyvsp[0].entry) = mk_node("TRUE_1");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3057 "parser.cpp" /* yacc.c:1646  */
+#line 3058 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 124:
-#line 1127 "parser.y" /* yacc.c:1646  */
+#line 1128 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("fixed_condition");
 							(yyvsp[0].entry) = mk_node("FALSE_1");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3067 "parser.cpp" /* yacc.c:1646  */
+#line 3068 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 1135 "parser.y" /* yacc.c:1646  */
+#line 1136 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_binary_op");
 							(yyvsp[0].entry) = mk_node("ADD");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3077 "parser.cpp" /* yacc.c:1646  */
+#line 3078 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 126:
-#line 1140 "parser.y" /* yacc.c:1646  */
+#line 1141 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_binary_op");
 							(yyvsp[0].entry) = mk_node("SUB");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3087 "parser.cpp" /* yacc.c:1646  */
+#line 3088 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 127:
-#line 1145 "parser.y" /* yacc.c:1646  */
+#line 1146 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_binary_op");
 							(yyvsp[0].entry) = mk_node("MULT");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3097 "parser.cpp" /* yacc.c:1646  */
+#line 3098 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 128:
-#line 1150 "parser.y" /* yacc.c:1646  */
+#line 1151 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_binary_op");
 							(yyvsp[0].entry) = mk_node("DIV");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3107 "parser.cpp" /* yacc.c:1646  */
+#line 3108 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 129:
-#line 1155 "parser.y" /* yacc.c:1646  */
+#line 1156 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_binary_op");
 							(yyvsp[0].entry) = mk_node("EXP");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3117 "parser.cpp" /* yacc.c:1646  */
+#line 3118 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 130:
-#line 1160 "parser.y" /* yacc.c:1646  */
+#line 1161 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_binary_op");
 							(yyvsp[0].entry) = mk_node("MOD");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3127 "parser.cpp" /* yacc.c:1646  */
+#line 3128 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 131:
-#line 1168 "parser.y" /* yacc.c:1646  */
+#line 1169 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_unary_op");
 							(yyvsp[0].entry) = mk_node("INC");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3137 "parser.cpp" /* yacc.c:1646  */
+#line 3138 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 1173 "parser.y" /* yacc.c:1646  */
+#line 1174 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_unary_op");
 							(yyvsp[0].entry) = mk_node("DEC");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3147 "parser.cpp" /* yacc.c:1646  */
+#line 3148 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 133:
-#line 1181 "parser.y" /* yacc.c:1646  */
+#line 1182 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_binary_op");
 							(yyvsp[0].entry) = mk_node("BIN_AND");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3157 "parser.cpp" /* yacc.c:1646  */
+#line 3158 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 134:
-#line 1186 "parser.y" /* yacc.c:1646  */
+#line 1187 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_binary_op");
 							(yyvsp[0].entry) = mk_node("BIN_OR");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3167 "parser.cpp" /* yacc.c:1646  */
+#line 3168 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 135:
-#line 1191 "parser.y" /* yacc.c:1646  */
+#line 1192 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_binary_op");
 							(yyvsp[0].entry) = mk_node("BIN_XOR");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3177 "parser.cpp" /* yacc.c:1646  */
+#line 3178 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 136:
-#line 1196 "parser.y" /* yacc.c:1646  */
+#line 1197 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_binary_op");
 							(yyvsp[0].entry) = mk_node("BIN_LEFT");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3187 "parser.cpp" /* yacc.c:1646  */
+#line 3188 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 137:
-#line 1201 "parser.y" /* yacc.c:1646  */
+#line 1202 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_binary_op");
 							(yyvsp[0].entry) = mk_node("BIN_RIGHT");														
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3197 "parser.cpp" /* yacc.c:1646  */
+#line 3198 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 138:
-#line 1209 "parser.y" /* yacc.c:1646  */
+#line 1210 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_unary_op");		
 							(yyvsp[0].entry) = mk_node("ADD_ASSIGN");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3207 "parser.cpp" /* yacc.c:1646  */
+#line 3208 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 139:
-#line 1217 "parser.y" /* yacc.c:1646  */
+#line 1218 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_assgn_op");
 							(yyvsp[0].entry) = mk_node("ADD_ASSIGN");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3217 "parser.cpp" /* yacc.c:1646  */
+#line 3218 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 140:
-#line 1222 "parser.y" /* yacc.c:1646  */
+#line 1223 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_assgn_op");
 							(yyvsp[0].entry) = mk_node("SUB_ASSIGN");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3227 "parser.cpp" /* yacc.c:1646  */
+#line 3228 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 141:
-#line 1227 "parser.y" /* yacc.c:1646  */
+#line 1228 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_assgn_op");
 							(yyvsp[0].entry) = mk_node("MULT_ASSIGN");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3237 "parser.cpp" /* yacc.c:1646  */
+#line 3238 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 1232 "parser.y" /* yacc.c:1646  */
+#line 1233 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_assgn_op");
 							(yyvsp[0].entry) = mk_node("DIV_ASSIGN");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3247 "parser.cpp" /* yacc.c:1646  */
+#line 3248 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 143:
-#line 1237 "parser.y" /* yacc.c:1646  */
+#line 1238 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_assgn_op");
 							(yyvsp[0].entry) = mk_node("MOD_ASSIGN");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3257 "parser.cpp" /* yacc.c:1646  */
+#line 3258 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 1242 "parser.y" /* yacc.c:1646  */
+#line 1243 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_assgn_op");
 							(yyvsp[0].entry) = mk_node("LEFT_ASSIGN");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3267 "parser.cpp" /* yacc.c:1646  */
+#line 3268 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 145:
-#line 1247 "parser.y" /* yacc.c:1646  */
+#line 1248 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("arith_assgn_op");
 							(yyvsp[0].entry) = mk_node("RIGHT_ASSIGN");													
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3277 "parser.cpp" /* yacc.c:1646  */
+#line 3278 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 146:
-#line 1255 "parser.y" /* yacc.c:1646  */
+#line 1256 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_assgn_op");
 							(yyvsp[0].entry) = mk_node("BIN_AND_ASSIGN");											
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3287 "parser.cpp" /* yacc.c:1646  */
+#line 3288 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 147:
-#line 1260 "parser.y" /* yacc.c:1646  */
+#line 1261 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_assgn_op");	
 							(yyvsp[0].entry) = mk_node("BIN_IOR_ASSIGN");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3297 "parser.cpp" /* yacc.c:1646  */
+#line 3298 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 148:
-#line 1265 "parser.y" /* yacc.c:1646  */
+#line 1266 "parser.y" /* yacc.c:1646  */
     {
 							(yyval.entry) = mk_node("bit_assgn_op");	
 							(yyvsp[0].entry) = mk_node("BIN_XOR_ASSIGN");												
 							mk_child((yyval.entry), (yyvsp[0].entry)); 
 						}
-#line 3307 "parser.cpp" /* yacc.c:1646  */
+#line 3308 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 3311 "parser.cpp" /* yacc.c:1646  */
+#line 3312 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -3535,7 +3536,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1273 "parser.y" /* yacc.c:1906  */
+#line 1274 "parser.y" /* yacc.c:1906  */
 
 
 void yyerror(const char *err){
@@ -3689,6 +3690,8 @@ void printtree(node *root, int level){
 		struct node *func_name_node=root->child[1];
 		struct node *argument_list_block=root->child[3];
 		string temp_func_name=string(func_name_node->child[0]->name);
+		func_name=temp_func_name;
+		func_terminator_node=root->child[7];//the CCB
 		vector<pair<string,var_def*> > temp_arg_list;
 		//Now finding the argument list
 		while(argument_list_block!=NULL){
@@ -3716,6 +3719,8 @@ void printtree(node *root, int level){
 		}	
 		////////////////////////////////////////
 		gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
+	}else if(root==func_terminator_node){
+		func_name=main_func_name;
 	}
 
 	for (int i = 0; i < root->cur_childs; ++i){

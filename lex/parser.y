@@ -45,6 +45,7 @@
 	string func_name=main_func_name;
 	string garbage_dt="garbage";
 	string data_type=garbage_dt;
+	struct node* func_terminator_node;
 
 	void insert_var_in_symbol_table(string func_name,string var_name,string data_type,int var_type=0,int arr_size=0);
 	sym_table<func_elem,func_def> *gst_obj;
@@ -1423,6 +1424,8 @@ void printtree(node *root, int level){
 		struct node *func_name_node=root->child[1];
 		struct node *argument_list_block=root->child[3];
 		string temp_func_name=string(func_name_node->child[0]->name);
+		func_name=temp_func_name;
+		func_terminator_node=root->child[7];//the CCB
 		vector<pair<string,var_def*> > temp_arg_list;
 		//Now finding the argument list
 		while(argument_list_block!=NULL){
@@ -1450,6 +1453,8 @@ void printtree(node *root, int level){
 		}	
 		////////////////////////////////////////
 		gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
+	}else if(root==func_terminator_node){
+		func_name=main_func_name;
 	}
 
 	for (int i = 0; i < root->cur_childs; ++i){

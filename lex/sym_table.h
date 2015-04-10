@@ -15,7 +15,7 @@ const int func_wrong_num_args=-4;
 const int func_wrong_arg_type=-5;
 const int var_wrong_type=-6;
 
-const int step_width=10;
+const int step_width=15;
 
 template <typename T,typename R>
 class sym_table;
