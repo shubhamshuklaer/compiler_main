@@ -57,24 +57,29 @@ class var_def{
 
 class func_def{
 	public:
-		vector<pair<string,string> > arg_list;
+		//string is the variable name and var_def is the var_def obj for that variable
+		vector<pair<string,var_def*> > arg_list;
 		string ret_type;
 
-		func_def(vector<pair<string,string> > _arg_list,string _ret_type){
-			vector<pair<string,string> >::iterator it;
+		func_def(vector<pair<string,var_def *> > _arg_list,string _ret_type){
+			vector<pair<string,var_def *> >::iterator it;
 			for(it=_arg_list.begin();it!=_arg_list.end();it++)
 				arg_list.push_back(*it);
 			ret_type=_ret_type;
 		}
 		
 		func_def(func_def *fd){
-			vector<pair<string,string> >::iterator it;
+			vector<pair<string,var_def*> >::iterator it;
 			for(it=fd->arg_list.begin();it!=fd->arg_list.end();it++)
 				arg_list.push_back(*it);
 			ret_type=fd->ret_type;
 		}
 
 		~func_def(){
+			vector<pair<string,var_def*> >::iterator it;
+			for(it=arg_list.begin();it!=arg_list.end();it++)
+				delete it->second;
+
 		}
 
 		int check_type(func_def *_fd){
@@ -85,7 +90,7 @@ class func_def{
 			
 			int len=arg_list.size();
 			for(int i=0;i<len;i++){
-				if(arg_list[i].first!=_fd->arg_list[i].first)
+				if(arg_list[i].second->check_type(_fd->arg_list[i].second)!=0)
 					return func_wrong_arg_type;
 			}
 
@@ -95,11 +100,12 @@ class func_def{
 		void print(ofstream &out_stream,int width=0){
 			out_stream<<setw(width)<<"func Def"<<endl;
 			width+=step_width;
-			out_stream<<setw(width)<<"Arg list : ";
-			vector<pair<string,string> >::iterator it;
-			for(it=arg_list.begin();it!=arg_list.end();it++)
-				out_stream<<it->second<<"("<<it->first<<")"<<"\t";
-			out_stream<<endl;
+			out_stream<<setw(width)<<"Arg list : "<<endl;
+			vector<pair<string,var_def*> >::iterator it;
+			for(it=arg_list.begin();it!=arg_list.end();it++){
+				out_stream<<setw(width)<<it->first<<endl;
+				it->second->print(out_stream,width+step_width);
+			}
 			out_stream<<setw(width)<<"Ret type "<<ret_type<<endl;
 		}
 };

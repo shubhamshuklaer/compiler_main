@@ -1290,7 +1290,7 @@ int main(){
     syntax_graph=agopen(graph_name, Agdirected, NULL);
 	root = init_tree();
 	gst_obj=new sym_table<func_elem,func_def>;
-	vector<pair<string,string> > temp_vctr {pair<string,string>("__main__","__main__")};
+	vector<pair<string,var_def*> > temp_vctr {pair<string,var_def*>("__main__",new var_def(""))};
 	gst_obj->insert(main_func_name,new func_def(temp_vctr,""));
 
 	//yylex();
@@ -1418,7 +1418,23 @@ void printtree(node *root, int level){
 		struct node *func_name_node=root->child[1];
 		struct node *argument_list_block=root->child[3];
 		string temp_func_name=string(func_name_node->child[0]->name);
-		vector<pair<string,string> > temp_arg_list;
+		vector<pair<string,var_def*> > temp_arg_list;
+		//Now finding the argument list
+		while(argument_list_block!=NULL){
+			//Finding the data type
+			struct node *data_type_node=argument_list_block->child[0];
+			string tdt;
+			tdt=string(root->child[0]->child[0]->name);	
+			transform(tdt.begin(),tdt.end(),tdt.begin(),::tolower);
+			
+			//Finding the variable name
+			struct node *var_block_node=argument_list_block->child[1];
+			if(argument_list_block->cur_childs==4)
+				argument_list_block=argument_list_block->child[3];
+			else
+				argument_list_block=NULL;
+		}	
+		////////////////////////////////////////
 		gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
 	}
 
