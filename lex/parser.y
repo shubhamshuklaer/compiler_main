@@ -643,7 +643,6 @@ function_def_block
 					:	FUNCTION ident OP argument_list_block CP OCB general_block CCB{
 							$$ = mk_node("function_def_block");						
 							$1 = mk_node("FUNCTION");			
-							$2 = mk_node("IDENT");			
 							$3 = mk_node("OP");			
 							$5 = mk_node("CP");			
 							$6 = mk_node("OCB");			
@@ -656,6 +655,7 @@ function_def_block
 							mk_child($$, $6);
 							mk_child($$, $7);
 							mk_child($$, $8);
+							func_name=main_func_name;
 						}
 					;
 
@@ -663,6 +663,7 @@ ident
 				  :    IDENT{
 						$$ = mk_node("IDENT");
 						struct node *temp = mk_node(yylval.terminal_value);
+						func_name=string(yylval.terminal_value);
 						mk_child($$,temp);
 						}
 					;
@@ -1289,7 +1290,7 @@ int main(){
     syntax_graph=agopen(graph_name, Agdirected, NULL);
 	root = init_tree();
 	gst_obj=new sym_table<func_elem,func_def>;
-	vector<string> temp_vctr {""};
+	vector<pair<string,string> > temp_vctr {pair<string,string>("__main__","__main__")};
 	gst_obj->insert(main_func_name,new func_def(temp_vctr,""));
 
 	//yylex();
@@ -1387,11 +1388,10 @@ void printtree(node *root, int level){
     Agnode_t *graph_root,*graph_child;
     graph_root=make_graph_node(root);
     char buf[50];
-	if(strcmp(root->name,"data_type")==0){
-		data_type=string(root->child[0]->name);	
+	if(strcmp(root->name,"declaration_block")==0){
+		data_type=string(root->child[0]->child[0]->name);	
 		transform(data_type.begin(),data_type.end(),data_type.begin(),::tolower);
-	}else if(strcmp(root->name,"var_list")==0){
-		struct node *var_list_child=root->child[0];
+		struct node *var_list_child=root->child[1]->child[0];
 		if(strcmp(var_list_child->name,"var_block")==0){
 			struct node *var_block_child=var_list_child->child[0];
 			string var_name=string(var_block_child->child[0]->name);
@@ -1414,6 +1414,12 @@ void printtree(node *root, int level){
 				insert_var_in_symbol_table(func_name,var_name,data_type,3,arr_size);	
 			}
 		}
+	}else if(strcmp(root->name,"function_def_block")==0){
+		struct node *func_name_node=root->child[1];
+		struct node *argument_list_block=root->child[3];
+		string temp_func_name=string(func_name_node->child[0]->name);
+		vector<pair<string,string> > temp_arg_list;
+		gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
 	}
 
 	for (int i = 0; i < root->cur_childs; ++i){

@@ -57,20 +57,20 @@ class var_def{
 
 class func_def{
 	public:
-		vector<string> arg_type_list;
+		vector<pair<string,string> > arg_list;
 		string ret_type;
 
-		func_def(vector<string> _arg_type_list,string _ret_type){
-			vector<string>::iterator it;
-			for(it=_arg_type_list.begin();it!=_arg_type_list.end();it++)
-				arg_type_list.push_back(*it);
+		func_def(vector<pair<string,string> > _arg_list,string _ret_type){
+			vector<pair<string,string> >::iterator it;
+			for(it=_arg_list.begin();it!=_arg_list.end();it++)
+				arg_list.push_back(*it);
 			ret_type=_ret_type;
 		}
 		
 		func_def(func_def *fd){
-			vector<string>::iterator it;
-			for(it=fd->arg_type_list.begin();it!=fd->arg_type_list.end();it++)
-				arg_type_list.push_back(*it);
+			vector<pair<string,string> >::iterator it;
+			for(it=fd->arg_list.begin();it!=fd->arg_list.end();it++)
+				arg_list.push_back(*it);
 			ret_type=fd->ret_type;
 		}
 
@@ -80,12 +80,12 @@ class func_def{
 		int check_type(func_def *_fd){
 			if(_fd->ret_type!=ret_type)	
 				return func_wrong_ret_type;
-			if(_fd->arg_type_list.size()!=arg_type_list.size())
+			if(_fd->arg_list.size()!=arg_list.size())
 				return func_wrong_num_args;
 			
-			int len=arg_type_list.size();
+			int len=arg_list.size();
 			for(int i=0;i<len;i++){
-				if(arg_type_list[i]!=_fd->arg_type_list[i])
+				if(arg_list[i].first!=_fd->arg_list[i].first)
 					return func_wrong_arg_type;
 			}
 
@@ -96,9 +96,9 @@ class func_def{
 			out_stream<<setw(width)<<"func Def"<<endl;
 			width+=step_width;
 			out_stream<<setw(width)<<"Arg list : ";
-			vector<string>::iterator it;
-			for(it=arg_type_list.begin();it!=arg_type_list.end();it++)
-				out_stream<<*it<<"\t";
+			vector<pair<string,string> >::iterator it;
+			for(it=arg_list.begin();it!=arg_list.end();it++)
+				out_stream<<it->second<<"("<<it->first<<")"<<"\t";
 			out_stream<<endl;
 			out_stream<<setw(width)<<"Ret type "<<ret_type<<endl;
 		}
