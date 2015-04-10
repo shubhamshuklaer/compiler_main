@@ -5,9 +5,13 @@
 	
 	#include <stdio.h>
 	#include <iostream>
-	#include <sym_table.h>
+	#include "sym_table.h"
 	#include <string.h>
     #include <graphviz/cgraph.h>
+	#include <vector>
+	#include <fstream>
+	#include <algorithm>
+	using namespace std;
     /*#include <graphviz/ingraphs.h>*/
 
 	#include "header.h"
@@ -37,7 +41,14 @@
     int node_id,edge_id,creation_id;
 
     Agnode_t * make_graph_node(node *);
+	string main_func_name="__main__";
+	string func_name=main_func_name;
+	string garbage_dt="garbage";
+	string data_type=garbage_dt;
 
+	void insert_var_in_symbol_table(string func_name,string var_name,string data_type,int var_type=0,int arr_size=0);
+	sym_table<func_elem,func_def> *gst_obj;
+	ofstream sym_tab_out("sym_tab_out.txt");
 	// #define YYSTYPE struct node *
 %}
 
@@ -187,6 +198,8 @@
 %type <entry> bit_assgn_op
 %type <entry> str
 %type <entry> function_var_list
+%type <entry> ident
+%type <entry> num
 %%
 
 super_block								
@@ -627,7 +640,7 @@ for_update
 					; 
 
 function_def_block
-					:	FUNCTION IDENT OP argument_list_block CP OCB general_block CCB{
+					:	FUNCTION ident OP argument_list_block CP OCB general_block CCB{
 							$$ = mk_node("function_def_block");						
 							$1 = mk_node("FUNCTION");			
 							$2 = mk_node("IDENT");			
@@ -646,6 +659,13 @@ function_def_block
 						}
 					;
 
+ident
+				  :    IDENT{
+						$$ = mk_node("IDENT");
+						struct node *temp = mk_node(yylval.terminal_value);
+						mk_child($$,temp);
+						}
+					;
 argument_list_block
 					:	data_type var_block COMMA argument_list_block{
 							$$ = mk_node("argument_list_block");			
@@ -769,7 +789,7 @@ var_list
 
 data_type 	
 					:	INT{
-							$$ = mk_node("sdata_type");		
+							$$ = mk_node("data_type");		
 							$1 = mk_node("INT");									
 							mk_child($$, $1); 
 						}
@@ -814,7 +834,7 @@ var_block
 					;
 
 array_block 
-					:	var_block OB conditional_expr CB {//check for expr to return positive value. Run time check for negeative value.
+					:	var_block OB num CB {//check for expr to return positive value. Run time check for negeative value.
 							$$ = mk_node("array_block");	
 							$2 = mk_node("OB");	
 							$4 = mk_node("CB");												
@@ -824,6 +844,14 @@ array_block
 							mk_child($$, $4);
 						}
 					;
+
+num
+					:	NUM{
+							struct node *temp=mk_node(yyval.terminal_value);
+							$$ = mk_node("NUM");
+							mk_child($$,temp);
+						}
+						;
 
 ass_var_block
 					:	var_block{
@@ -1256,8 +1284,13 @@ int main(){
     node_id=0;
     edge_id=0;
     creation_id=0;
-    syntax_graph=agopen("G", Agdirected, NULL);
+	char graph_name[1];
+	graph_name[0]='G';
+    syntax_graph=agopen(graph_name, Agdirected, NULL);
 	root = init_tree();
+	gst_obj=new sym_table<func_elem,func_def>;
+	vector<string> temp_vctr {""};
+	gst_obj->insert(main_func_name,new func_def(temp_vctr,""));
 
 	//yylex();
 	yyparse();
@@ -1267,6 +1300,8 @@ int main(){
     FILE *fp=fopen("syntax_graph.gv","w+");
     agwrite(syntax_graph,fp);
     fclose(fp);
+	gst_obj->print(sym_tab_out);
+	sym_tab_out.close();
 	return 0;
 }
 
@@ -1352,6 +1387,35 @@ void printtree(node *root, int level){
     Agnode_t *graph_root,*graph_child;
     graph_root=make_graph_node(root);
     char buf[50];
+	if(strcmp(root->name,"data_type")==0){
+		data_type=string(root->child[0]->name);	
+		transform(data_type.begin(),data_type.end(),data_type.begin(),::tolower);
+	}else if(strcmp(root->name,"var_list")==0){
+		struct node *var_list_child=root->child[0];
+		if(strcmp(var_list_child->name,"var_block")==0){
+			struct node *var_block_child=var_list_child->child[0];
+			string var_name=string(var_block_child->child[0]->name);
+			if(strcmp(var_block_child->name,"VAR")==0){
+				insert_var_in_symbol_table(func_name,var_name,data_type);	
+			}else if(strcmp(var_block_child->name,"POINTER")==0){
+				insert_var_in_symbol_table(func_name,var_name,data_type,1);	
+			}
+		}else if(strcmp(var_list_child->name,"array_block")==0){
+			struct node *var_block=var_list_child->child[0];
+			struct node *arr_size_block=var_list_child->child[2];
+
+			struct node *var_block_child=var_block->child[0];
+			string var_name=string(var_block_child->child[0]->name);
+			
+			int arr_size=atoi(arr_size_block->child[0]->name);
+			if(strcmp(var_block_child->name,"VAR")==0){
+				insert_var_in_symbol_table(func_name,var_name,data_type,2,arr_size);	
+			}else if(strcmp(var_block_child->name,"POINTER")==0){
+				insert_var_in_symbol_table(func_name,var_name,data_type,3,arr_size);	
+			}
+		}
+	}
+
 	for (int i = 0; i < root->cur_childs; ++i){
         graph_child=make_graph_node(root->child[i]);
         sprintf(buf,"%d",edge_id);
@@ -1371,4 +1435,20 @@ Agnode_t * make_graph_node(node *cur_node){
     sprintf(buf,"%s_%d",cur_node->name,cur_node->graph_node_id);
     Agnode_t *new_node= agnode(syntax_graph,(char *)buf,TRUE);
     return new_node;   
+}
+
+
+void insert_var_in_symbol_table(string func_name,string var_name,string data_type,int var_type,int arr_size){
+	int ret_val;
+	func_elem *fe=gst_obj->lookup(func_name);
+	if(fe==NULL){
+		sym_tab_out<<"func named "<<func_name<<" not found"<<endl;
+	}else{
+		ret_val=fe->insert(var_name,new var_def(data_type,var_type,arr_size));
+		if(ret_val==0){
+			sym_tab_out<<"Insertion successfull"<<endl;
+		}else if(ret_val==elem_already_exist){
+			sym_tab_out<<"var named "<<var_name<<" already exist"<<endl;	
+		}
+	}
 }

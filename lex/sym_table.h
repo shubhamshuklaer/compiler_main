@@ -3,6 +3,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -13,28 +15,43 @@ const int func_wrong_num_args=-4;
 const int func_wrong_arg_type=-5;
 const int var_wrong_type=-6;
 
+const int step_width=10;
+
 template <typename T,typename R>
 class sym_table;
 
 class var_def{
 	public:
-		string type;
+		string data_type;
+		int var_type;//0 means normal_var 1 mearns pointer 2 means arr 3 means pointer array
+		int arr_size;//valid for arr
 
-		var_def(string _type){
-			type=_type;
+		var_def(string _data_type,int _var_type=0,int _arr_size=0){
+			data_type=_data_type;
+			var_type=_var_type;
+			arr_size=_arr_size;
 		}
 
 		var_def(var_def *_vd){
-			type=_vd->type;
+			data_type=_vd->data_type;
+			var_type=_vd->var_type;
+			arr_size=_vd->arr_size;
 		}
 
 		~var_def(){
 		}
 		int check_type(var_def *_vd){
-			if(type==_vd->type)
+			if(data_type==_vd->data_type)
 				return 0;
 			else
 				return var_wrong_type;
+		}
+		void print(ofstream &out_stream,int width=0){
+			out_stream<<setw(width)<<"Var Def"<<endl;
+			width+=step_width;
+			out_stream<<setw(width)<<"data type "<<data_type<<endl;
+			out_stream<<setw(width)<<"var_type "<<var_type<<endl;
+			out_stream<<setw(width)<<"arr_size "<<arr_size<<endl;
 		}
 };
 
@@ -74,6 +91,17 @@ class func_def{
 
 			return 0;
 		}
+
+		void print(ofstream &out_stream,int width=0){
+			out_stream<<setw(width)<<"func Def"<<endl;
+			width+=step_width;
+			out_stream<<setw(width)<<"Arg list : ";
+			vector<string>::iterator it;
+			for(it=arg_type_list.begin();it!=arg_type_list.end();it++)
+				out_stream<<*it<<"\t";
+			out_stream<<endl;
+			out_stream<<setw(width)<<"Ret type "<<ret_type<<endl;
+		}
 };
 
 
@@ -92,6 +120,10 @@ class var_elem{
 		~var_elem(){
 			delete vd;
 		}
+
+		void print(ofstream &out_stream,int width=0){
+			vd->print(out_stream,width);
+		}
 };
 
 
@@ -109,6 +141,7 @@ class func_elem{
 		int check_type(string,var_def*);
 		int insert(string,var_def*);
 		var_elem *lookup(string);
+		void print(ofstream &,int);
 };
 
 
@@ -163,6 +196,18 @@ class sym_table{
 		~sym_table(){
 			delete st_map;
 		}
+
+		void print(ofstream &out_stream,int width=0){
+			out_stream<<"Printing the symbol table"<<endl;
+			typename map<string,T*>::iterator it;
+
+			for(it=st_map->begin();it!=st_map->end();it++){
+				out_stream<<setw(width)<<"*********************************"<<endl;
+				out_stream<<setw(width)<<"Element name : "<<it->first<<endl;
+				it->second->print(out_stream,width+step_width);
+				out_stream<<setw(width)<<"*********************************"<<endl;
+			}
+		}
 };
 
 
@@ -194,4 +239,11 @@ int func_elem::check_type(func_def *_fd){
 	return fd->check_type(_fd);
 }
 
+void func_elem::print(ofstream &out_stream,int width=0){
+	fd->print(out_stream,width);
+	out_stream<<setw(width)<<"Function symbol table"<<endl;
+	width+=step_width;
+	fst->print(out_stream,width);
+
+}
 #endif
