@@ -56,7 +56,8 @@
 	sym_table<func_elem,func_def> *gst_obj;
 	ofstream sym_tab_out("sym_tab_out.txt");
 	void get_symbol_table_data();
-	bool dont_sym=false;
+	bool syntax_err=false;
+	bool semantic_err=false;
 	// #define YYSTYPE struct node *
 
 	void code_generation_traversal(node *root,int i);
@@ -386,7 +387,7 @@ general_block
 							mk_child($$, $2); 
 						}
 					|   error start_block {
-							dont_sym=true;
+							syntax_err=true;
 							$$ = mk_node("error");
 							mk_child($$, $2);
 							yyclearin;
@@ -1354,6 +1355,7 @@ bit_assgn_op
 
 void yyerror(const char *err){
 	printf(" ** %s\n",err);
+	syntax_err=true;
 }
 
 int main(){
@@ -1376,17 +1378,24 @@ int main(){
 
 	printf("\n\n-----------------   TREE   ------------------\n\n");
 	printtree(root, 0);
-	type_check(root, 0);
+	if(!syntax_err){
+		type_check(root, 0);
+		gst_obj->print(sym_tab_out);
+			if(!semantic_err){
+				get_symbol_table_data();
+				code_generation_traversal(root,0);
+				fcout<<"jr $ra";
+			}else{
+				cout<<"Semantic error"<<endl;
+			}
+	}else{
+		cout<<"Syntax err"<<endl;
+	}
+
     FILE *fp=fopen("syntax_graph.gv","w+");
     agwrite(syntax_graph,fp);
     fclose(fp);
-	gst_obj->print(sym_tab_out);
-	get_symbol_table_data();
 	sym_tab_out.close();
-
-	code_generation_traversal(root,0);
-	fcout<<"jr $ra";
-
 	return 0;
 }
 
@@ -1474,7 +1483,7 @@ void printtree(node *root, int level){
     Agnode_t *graph_root,*graph_child;
     graph_root=make_graph_node(root);
     char buf[50];
-	if(!dont_sym){
+	if(!syntax_err){
 		if(strcmp(root->name,"declaration_block")==0){
 			data_type=string(root->child[0]->child[0]->name);	
 			transform(data_type.begin(),data_type.end(),data_type.begin(),::tolower);
@@ -1541,7 +1550,15 @@ void printtree(node *root, int level){
 					argument_list_block=NULL;
 			}	
 			////////////////////////////////////////
-			gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
+			int temp_ret_val=gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
+
+			if(temp_ret_val==0){
+				sym_tab_out<<"Everything fine"<<endl;
+			}else if(temp_ret_val==elem_already_exist){
+				semantic_err=true;
+				sym_tab_out<<"function named foo already exist"<<endl;
+			}
+
 			vector<pair<string,var_def*> >::iterator it;
 			for(it=temp_arg_list.begin();it!=temp_arg_list.end();it++){
 				insert_var_in_symbol_table(func_name,it->first,it->second->data_type,it->second->var_type,it->second->arr_size);	
@@ -1677,11 +1694,13 @@ void insert_var_in_symbol_table(string func_name,string var_name,string data_typ
 	func_elem *fe=gst_obj->lookup(func_name);
 	if(fe==NULL){
 		sym_tab_out<<"func named "<<func_name<<" not found"<<endl;
+		semantic_err=true;
 	}else{
 		ret_val=fe->insert(var_name,new var_def(data_type,var_type,arr_size));
 		if(ret_val==0){
 			sym_tab_out<<"Insertion successfull"<<endl;
 		}else if(ret_val==elem_already_exist){
+			semantic_err=true;
 			sym_tab_out<<"var named "<<var_name<<" already exist"<<endl;	
 		}
 	}
