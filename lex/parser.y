@@ -26,6 +26,7 @@
 		int cur_childs;
         int graph_node_id;
         char *type;
+        int var_type;
 	};
 
 	struct node *root;
@@ -49,7 +50,7 @@
 	string data_type=garbage_dt;
 	struct node* func_terminator_node;
 
-	string cur_scope;
+	string cur_scope = main_func_name;
 
 	void insert_var_in_symbol_table(string func_name,string var_name,string data_type,int var_type=0,int arr_size=0);
 	sym_table<func_elem,func_def> *gst_obj;
@@ -292,7 +293,7 @@ const_block
 							$1 = mk_node("STRING");		
 							mk_child($1, temp);
 							mk_child($$, $1); 
-							
+							strcpy($$->type, "string");
 						}
 					|	NUM{
 							struct node *temp = mk_node(yylval.terminal_value);
@@ -300,7 +301,7 @@ const_block
 							$1 = mk_node("NUM");
 							mk_child($1, temp);		
 							mk_child($$, $1); 
-							
+							strcpy($$->type, "int");
 						}
 					|	CHARACTER{
 							struct node *temp = mk_node(yylval.terminal_value);
@@ -308,7 +309,7 @@ const_block
 							$1 = mk_node("CHARACTER");		
 							mk_child($1, temp);
 							mk_child($$, $1); 
-							
+							strcpy($$->type, "char");
 						}
 					;
 
@@ -739,17 +740,6 @@ general_stmt
 					}
 					;
 
-<<<<<<< HEAD
-str 				: 	STRING{
-							struct node *temp = mk_node(yylval.terminal_value);
-							$$ = mk_node("str");
-							$1 = mk_node("STRING");
-							mk_child($$, temp);
-							
-						}
-					;
-=======
->>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 function_call_block
 					:	IDENT OP function_var_list CP {
@@ -1497,8 +1487,6 @@ void printtree(node *root, int level){
 		}
 	}else if(root==func_terminator_node){
 		func_name=main_func_name;
-	}else if(strcmp(root->name,"assignment_block")==0){
-		
 	}
 
 	for (int i = 0; i < root->cur_childs; ++i){
@@ -1514,17 +1502,13 @@ void printtree(node *root, int level){
 	}
 	levels[level] = false;
 
-	if(strcmp(root->name,"assignment_block")==0){
-		
-	}
-	
 }
 
 void type_check(node *root, int level){
 
 	if(strcmp(root->name,"function_def_block")==0){
 		if(strcmp(root->child[0]->name, "FUNCTION")==0){
-			cur_scope = root->child[2]->name;
+			cur_scope = root->child[1]->child[0]->name;
 		}
 	}
 
@@ -1544,77 +1528,135 @@ void type_check(node *root, int level){
 			if(strcmp(root->child[1]->name, "arith_condition_op")==0 ||
 				strcmp(root->child[1]->name, "bit_condition_op")==0){
 
-				if(strcmp(root->child[0]->type, "bool") != 0){
-					printf("expr of type boolean expected\n");
-				}else if(strcmp(root->child[2]->type, "bool") != 0){
-					printf("expr of type boolean expected\n");
+				if(strcmp(root->child[0]->type, "notdef")==0){
+					printf("type not defined 0");
+				}else if(strcmp(root->child[2]->type, "notdef")==0){
+					printf("type not defined 2");
+				}else if(strcmp(root->child[2]->type, root->child[0]->type) != 0){
+					cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+					// cout << root->child[0]->name << ":" << root->child[0]->type << endl;
+					printf("type mismatch error\n");
+				}else if(strcmp(root->child[2]->type, root->child[0]->type) == 0){
+					// printf("type match\n");
+					strcpy(root->type, root->child[2]->type);
 				}
 			}else if(strcmp(root->child[0]->name, "bit_unary_condition_op")==0){
-				if(strcmp(root->child[1]->type, "bool") != 0){
-					printf("expr of type boolean expected\n");
+				strcpy(root->type, root->child[1]->type);
+			}
+		}
+		if(root->cur_childs == 1){
+			if(strcmp(root->child[0]->name, "expr")==0){
+				if(strcmp(root->child[0]->type, "notdef")==0){
+					cout << root->child[0]->name << " : notdef" << endl;
+				}else{
+					cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
 				}
+				strcpy(root->type, root->child[0]->type);
+			}else if(strcmp(root->child[0]->name, "fixed_condition")==0){
+				if(strcmp(root->child[0]->type, "notdef")==0){
+					cout << root->child[0]->name << " : notdef" << endl;
+				}else{
+					cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
+				}
+				strcpy(root->type, root->child[0]->type);
 			}
 		}
-		if(strcmp(root->child[0]->name, "expr")==0){
-			if(strcmp(root->child[0]->type, "bool") != 0){
-				printf("expr of type boolean expected\n");
-			}
-		}else if(strcmp(root->child[0]->name, "fixed_condition")==0){
-			if(strcmp(root->child[0]->type, "bool") != 0){
-				printf("expr of type boolean expected\n");
-			}
-		}
-		strcpy(root->type, "bool");
+		
 	}else if(strcmp(root->name,"expr")==0){
 		if(root->cur_childs > 1){
-			if(strcmp(root->child[1]->name, "arith_binary_op")==0){
-				if(strcmp(root->child[0]->type, "int") != 0){
-					printf("expr of type integer expected\n");
-				}else if(strcmp(root->child[2]->type, "int") != 0){
-					printf("expr of type integer expected\n");
+			if(strcmp(root->child[1]->name, "arith_binary_op")==0 ||
+				strcmp(root->child[1]->name, "bit_binary_op")==0){
+
+				if(strcmp(root->child[0]->type, "notdef")==0){
+					printf("type not defined 0\n");
+				}else if(strcmp(root->child[2]->type, "notdef")==0){
+					printf("type not defined 2\n");
+					// cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+					// cout << root->child[0]->name << ":" << root->child[0]->type << endl;
+					
+				}else if(strcmp(root->child[2]->type, root->child[0]->type) != 0){
+					cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+					cout << root->child[0]->name << ":" << root->child[0]->type << endl;
+					printf("type mismatch error\n");
+				}else if(strcmp(root->child[2]->type, root->child[0]->type) == 0){
+					// printf("type match\n");
+
 				}
-			}else if(strcmp(root->child[1]->name, "bit_binary_op")==0){
-				if(strcmp(root->child[0]->type, "int") != 0){
-					printf("expr of type integer expected\n");
-				}
-				if(root->cur_childs > 1){
-					if(strcmp(root->child[2]->type, "int") != 0){
-						printf("expr of type integer expected\n");
-					}
-				}
-				
 			}else if(strcmp(root->child[0]->name, "bit_unary_op")==0){
-				if(strcmp(root->child[1]->type, "int") != 0){
-					printf("expr of type integer expected\n");
+				strcpy(root->type, root->child[1]->type);
+			}else if(strcmp(root->child[1]->name, "conditional_expr")==0){
+			
+				if(root->cur_childs > 3){
+					if(strcmp(root->child[1]->type, "notdef")==0){
+						printf("type not defined 1\n");
+					}else if(strcmp(root->child[4]->type, "notdef")==0){
+						printf("type not defined 4\n");
+					}else if(strcmp(root->child[4]->type, root->child[1]->type) != 0){
+						cout << root->child[4]->name << ":" << root->child[4]->type << endl;
+						cout << root->child[1]->name << ":" << root->child[1]->type << endl;
+						
+						printf("type mismatch error\n");
+					}else if(strcmp(root->child[4]->type, root->child[1]->type) == 0){
+						// printf("type match\n");
+						strcpy(root->type, root->child[4]->type);
+					}
 				}
 			}
 		}
-		if(strcmp(root->child[0]->name, "ass_var_block")==0 ||
-			strcmp(root->child[0]->name, "const_block")==0){
-			if(strcmp(root->child[0]->type, "int") != 0){
-				printf("expr of type integer expected\n");
-			}
-		}else if(strcmp(root->child[1]->name, "conditional_expr")==0){
-			if(strcmp(root->child[1]->type, "cond") != 0){
-				printf("expr of type integer expected\n");
-			}
-			if(root->cur_childs > 3){
-				if(strcmp(root->child[1]->type, "cond") != 0 &&
-					strcmp(root->child[1]->type, "integer") != 0){
-					printf("either integer or conditional expr expected\n");
+		if(root->cur_childs == 1){
+			if(strcmp(root->child[0]->name, "ass_var_block")==0 ||
+				strcmp(root->child[0]->name, "const_block")==0){
+				if(strcmp(root->child[0]->type, "notdef")==0){
+					cout << root->child[0]->name << " : notdef" << endl;
+				}else{
+					cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
 				}
+				strcpy(root->type, root->child[0]->type);
 			}
 		}
 	}else if(strcmp(root->name,"assignment_block")==0){
+		if(strcmp(root->child[1]->name,"ASSIGN")==0 ||
+			strcmp(root->child[1]->name,"arith_assgn_op")==0 ||
+			strcmp(root->child[1]->name,"bit_assgn_op")==0){
 
+			if(strcmp(root->child[0]->type, "notdef")==0){
+				printf("type not defined 0\n");
+			}else if(strcmp(root->child[2]->type, "notdef")==0){
+				printf("type not defined 2\n");
+				cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+				cout << root->child[0]->name << ":" << root->child[0]->type << endl;
+			}else if(strcmp(root->child[2]->type, root->child[0]->type) != 0){
+				cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+				cout << root->child[0]->name << ":" << root->child[0]->type << endl;
+				
+				printf("type mismatch error\n");
+			}else if(strcmp(root->child[2]->type, root->child[0]->type) == 0){
+				// printf("type match\n");
+				strcpy(root->type, root->child[2]->type);
+			}
+		}
 	}else if(strcmp(root->name,"ass_var_block")==0){
+		strcpy(root->type, root->child[0]->type);
+		root->var_type = root->child[0]->var_type;
 		
 	}else if(strcmp(root->name,"var_block")==0){
-		func_elem *fe=gst_obj->lookup(cur_scope);
-		if(fe){
-			int ret_val=fe->check_type(yylval.terminal_value,new var_def("int",0,0));
+		if(strcmp(root->child[0]->name,"VAR")==0){
+			func_elem *fe=gst_obj->lookup(cur_scope);
+			if(fe==NULL){
+				cout<<"null dereferencing error"<<endl;
+			}else{
+				var_def *vd=fe->get_type(root->child[0]->child[0]->name);
+				strcpy(root->child[0]->child[0]->type, vd->data_type.c_str());
+				strcpy(root->child[0]->type, vd->data_type.c_str());
+				strcpy(root->type, vd->data_type.c_str());
+				root->child[0]->child[0]->var_type = vd->var_type;
+				root->child[0]->var_type = vd->var_type;
+				root->var_type = vd->var_type;	
+			}
+			cout << root->child[0]->child[0]->name << ":" << root->child[0]->child[0]->type << ":" << root->child[0]->child[0]->var_type << endl;
+			
 		}
-		strcpy($1->type, )
+		
 	}
 	
 }

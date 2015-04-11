@@ -6,6 +6,7 @@ abc_c :  .byte '0'
 abc_d :  .word 0
 abc_e :  .byte 0,0
 abc_f :  .byte 0,0,0,0,0
+b_a :  .word 0
 efg_c :  .byte '0'
 efg_d :  .word 0
 efg_e :  .word '0','0','0','0','0','0','0','0','0','0'
