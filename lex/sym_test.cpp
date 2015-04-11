@@ -11,6 +11,7 @@ void func_insertion_code();
 void check_func_type_code();
 void insert_var_in_fst_code();
 void check_var_type_code();
+void get_type();
 
 int main(){
 
@@ -21,6 +22,7 @@ int main(){
 	check_func_type_code();
 	insert_var_in_fst_code();
 	check_var_type_code();
+	get_type();
 	ofstream sym_tab_out("sym_tab_out.txt");
 	gst_obj->print(sym_tab_out);
 	sym_tab_out.close();
@@ -109,4 +111,14 @@ void check_var_type_code(){
 			cout<<"var worong type"<<endl;	
 		}
 	}
+}
+
+
+void get_type(){
+	func_elem *fe=gst_obj->lookup("foo");
+	var_def *vd=fe->get_type("abc");
+	ofstream temp_text("temp_text.txt");
+	if(vd!=NULL)
+		vd->print(temp_text);
+	temp_text.close();
 }

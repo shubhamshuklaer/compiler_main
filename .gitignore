@@ -8,6 +8,8 @@ lex/parser.hpp
 lex/scanner.cpp
 lex/out.png
 lex/sym_tab_out.txt
-
+lex/temp_text.txt
+lex/sym_test
+lex/sym_tab_out.txt
 lex/syntax_graph.gav
 lex/syntax_graph.gv
