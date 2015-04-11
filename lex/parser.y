@@ -25,6 +25,7 @@
 		char *name;
 		int cur_childs;
         int graph_node_id;
+        string type;
 	};
 
 	struct node *root;
@@ -285,6 +286,7 @@ const_block
 							$1 = mk_node("STRING");		
 							mk_child($1, temp);
 							mk_child($$, $1); 
+							$$->type = "string";
 						}
 					|	NUM{
 							struct node *temp = mk_node(yylval.terminal_value);
@@ -292,6 +294,7 @@ const_block
 							$1 = mk_node("NUM");
 							mk_child($1, temp);		
 							mk_child($$, $1); 
+							$$->type = "int";
 						}
 					|	CHARACTER{
 							struct node *temp = mk_node(yylval.terminal_value);
@@ -299,6 +302,7 @@ const_block
 							$1 = mk_node("CHARACTER");		
 							mk_child($1, temp);
 							mk_child($$, $1); 
+							$$->type = "char";
 						}
 					;
 
@@ -719,11 +723,12 @@ general_stmt
 						}
 					;
 
-str 				: STRING
-						{
+str 				: 	STRING{
 							struct node *temp = mk_node(yylval.terminal_value);
-							$$ = mk_node("STRING");
+							$$ = mk_node("str");
+							$1 = mk_node("STRING")
 							mk_child($$, temp);
+							$$->type = "string"
 						}
 					;
 
@@ -849,8 +854,10 @@ array_block
 num
 					:	NUM{
 							struct node *temp=mk_node(yyval.terminal_value);
-							$$ = mk_node("NUM");
+							$$ = mk_node("num");
+							$1 = mk_node("NUM");
 							mk_child($$,temp);
+							$$->type = "int";
 						}
 						;
 
@@ -1431,8 +1438,13 @@ void printtree(node *root, int level){
 			levels[level] = false;
 		}
 		printtree(root->child[i], level+1);
+
 	}
 	levels[level] = false;
+
+	if(strcmp(root->name,"assignment_block")==0){
+		
+	}
 	
 }
 

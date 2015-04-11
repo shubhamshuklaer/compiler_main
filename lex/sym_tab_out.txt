@@ -1,13 +1,14 @@
+Insertion successfull
 Printing the symbol table
 *********************************
-Element name : foo
+Element name : __main__
   func Def
-         Arg list : $a(int)	$b(float)	
-           Ret type double
+         Arg list : __main__(__main__)	
+           Ret type 
 Function symbol table
 Printing the symbol table
 *********************************
-     Element name : abc
+     Element name : $a
                        Var Def
                               data type int
                                var_type 0
