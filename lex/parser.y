@@ -25,7 +25,7 @@
 		char *name;
 		int cur_childs;
         int graph_node_id;
-        string type;
+        char *type;
 	};
 
 	struct node *root;
@@ -35,7 +35,8 @@
 	void mk_sibling(node *from, node *to, bool right);
 
 	void printtree(node *root, int level);
-
+	void type_check(node *root, int level);
+	
 	node *init_tree();
     
     Agraph_t *syntax_graph;
@@ -47,6 +48,8 @@
 	string garbage_dt="garbage";
 	string data_type=garbage_dt;
 	struct node* func_terminator_node;
+
+	string cur_scope;
 
 	void insert_var_in_symbol_table(string func_name,string var_name,string data_type,int var_type=0,int arr_size=0);
 	sym_table<func_elem,func_def> *gst_obj;
@@ -290,7 +293,7 @@ const_block
 							$1 = mk_node("STRING");		
 							mk_child($1, temp);
 							mk_child($$, $1); 
-							$$->type = "string";
+							
 						}
 					|	NUM{
 							struct node *temp = mk_node(yylval.terminal_value);
@@ -298,7 +301,7 @@ const_block
 							$1 = mk_node("NUM");
 							mk_child($1, temp);		
 							mk_child($$, $1); 
-							$$->type = "int";
+							
 						}
 					|	CHARACTER{
 							struct node *temp = mk_node(yylval.terminal_value);
@@ -306,7 +309,7 @@ const_block
 							$1 = mk_node("CHARACTER");		
 							mk_child($1, temp);
 							mk_child($$, $1); 
-							$$->type = "char";
+							
 						}
 					;
 
@@ -835,6 +838,7 @@ var_block
 							$1 = mk_node("VAR");												
 							mk_child($1,temp);
 							mk_child($$, $1); 
+
 						}
 					|	POINTER{
 							struct node *temp = mk_node(yylval.terminal_value);
@@ -864,8 +868,7 @@ num
 							$$ = mk_node("num");
 							$1 = mk_node("NUM");
 							mk_child($$,temp);
-							strcpy($$->type , "int");
-			
+							strcpy($1->type, "int");
 						}
 						;
 
@@ -889,7 +892,6 @@ ass_var_block
 							mk_child($$, $2); 
 							mk_child($$, $3); 
 							mk_child($$, $4); 
-							
 						}
 					;
 
@@ -900,6 +902,7 @@ assignment_block
 							mk_child($$, $1);
 							mk_child($$, $2);
 							mk_child($$, $3);
+
 							 
 						}
 					|	ass_var_block arith_assgn_op conditional_expr{
@@ -950,33 +953,25 @@ expr
 							mk_child($$, $1); 
 							mk_child($$, $2); 
 							mk_child($$, $3); 
-						}
-					|	ass_var_block arith_unary_op expr{
-							$$ = mk_node("expr");												
-							mk_child($$, $1); 
-							mk_child($$, $2); 
-							mk_child($$, $3); 
+							
 						}
 					|	ass_var_block bit_binary_op expr{
 							$$ = mk_node("expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
 							mk_child($$, $3); 
+							
 						}
 					|	bit_unary_op ass_var_block {
 							$$ = mk_node("expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
-						}
-					|	arith_unary_op ass_var_block expr{
-							$$ = mk_node("expr");												
-							mk_child($$, $1); 
-							mk_child($$, $2); 
-							mk_child($$, $3); 
+							
 						}
 					|	ass_var_block{
 							$$ = mk_node("expr");												
 							mk_child($$, $1); 
+							
 						}
 					|	const_block{
 							$$ = mk_node("expr");												
@@ -996,6 +991,7 @@ expr
 							mk_child($$, $3);
 							mk_child($$, $4);
 							mk_child($$, $5);
+							
 						}
 					|	OP conditional_expr CP bit_binary_op expr{
 							$$ = mk_node("expr");	
@@ -1006,6 +1002,7 @@ expr
 							mk_child($$, $3);
 							mk_child($$, $4);
 							mk_child($$, $5);
+							
 						}
 					|	OP conditional_expr CP{
 							$$ = mk_node("expr");	
@@ -1014,35 +1011,41 @@ expr
 							mk_child($$, $1); 
 							mk_child($$, $2); 
 							mk_child($$, $3);
+							
 						}
 					|	const_block arith_binary_op expr{
 							$$ = mk_node("expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
 							mk_child($$, $3);
+							
 						}
 					|	const_block bit_binary_op expr{
 							$$ = mk_node("expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
 							mk_child($$, $3);
+							
 						}
 					|	function_call_block arith_binary_op expr{
 							$$ = mk_node("expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
 							mk_child($$, $3);
+							
 						}
 					|	function_call_block bit_binary_op expr{
 							$$ = mk_node("expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 							
 							mk_child($$, $3);
+							
 						}
 					|	bit_unary_op const_block{
 							$$ = mk_node("expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
+							
 						}
 					|	{
 							$$ = mk_node("expr");
@@ -1054,24 +1057,29 @@ conditional_expr
 							$$ = mk_node("conditional_expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
+							
 						}
 					|	expr bit_condition_op conditional_expr{
 							$$ = mk_node("conditional_expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
+							
 						}
 					|	expr{
 							$$ = mk_node("conditional_expr");												
 							mk_child($$, $1); 
+							
 						}
 					|	fixed_condition{
 							$$ = mk_node("conditional_expr");												
 							mk_child($$, $1); 
+							
 						}
 					|	bit_unary_condition_op expr{
 							$$ = mk_node("conditional_expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
+							
 							
 						}
 					; 
@@ -1225,7 +1233,7 @@ bit_binary_op
 bit_unary_op 	
 					:	BIN_NOT{
 							$$ = mk_node("bit_unary_op");		
-							$1 = mk_node("ADD_ASSIGN");												
+							$1 = mk_node("BIN_NOT");												
 							mk_child($$, $1); 
 						}
 					;
@@ -1313,6 +1321,7 @@ int main(){
 
 	printf("\n\n-----------------   TREE   ------------------\n\n");
 	printtree(root, 0);
+	type_check(root, 0);
     FILE *fp=fopen("syntax_graph.gv","w+");
     agwrite(syntax_graph,fp);
     fclose(fp);
@@ -1345,6 +1354,8 @@ struct node *mk_node(const char *name){
 	tmp->name = (char *)malloc(20*sizeof(char));
 	strcpy(tmp->name, name);
 	tmp->cur_childs = 0;
+	tmp->type = (char *)malloc(50*sizeof(char));
+	strcpy(tmp->type, "notdef");
 	tmp->left_sib = NULL;
 	tmp->right_sib = NULL;
 	for (int i = 0; i < MAX_CHILD; ++i){
@@ -1480,6 +1491,7 @@ void printtree(node *root, int level){
 			func_name=main_func_name;
 		}
 	}
+
 	for (int i = 0; i < root->cur_childs; ++i){
         graph_child=make_graph_node(root->child[i]);
         sprintf(buf,"%d",edge_id);
@@ -1492,9 +1504,103 @@ void printtree(node *root, int level){
 
 	}
 	levels[level] = false;
+	
+}
 
-	if(strcmp(root->name,"assignment_block")==0){
+void type_check(node *root, int level){
+
+	if(strcmp(root->name,"function_def_block")==0){
+		if(strcmp(root->child[0]->name, "FUNCTION")==0){
+			cur_scope = root->child[2]->name;
+		}
+	}
+
+	for (int i = 0; i < root->cur_childs; ++i){
+		type_check(root->child[i], level+1);
+	}
+
+	if(strcmp(root->name,"function_def_block")==0){
+		if(strcmp(root->child[7]->name, "CCB")==0){
+			cur_scope = main_func_name;
+		}
+	}
+	if(strcmp(root->name,"function_call_block")==0){
+
+	}else if(strcmp(root->name,"conditional_expr")==0){
+		if(root->cur_childs > 1){
+			if(strcmp(root->child[1]->name, "arith_condition_op")==0 ||
+				strcmp(root->child[1]->name, "bit_condition_op")==0){
+
+				if(strcmp(root->child[0]->type, "bool") != 0){
+					printf("expr of type boolean expected\n");
+				}else if(strcmp(root->child[2]->type, "bool") != 0){
+					printf("expr of type boolean expected\n");
+				}
+			}else if(strcmp(root->child[0]->name, "bit_unary_condition_op")==0){
+				if(strcmp(root->child[1]->type, "bool") != 0){
+					printf("expr of type boolean expected\n");
+				}
+			}
+		}
+		if(strcmp(root->child[0]->name, "expr")==0){
+			if(strcmp(root->child[0]->type, "bool") != 0){
+				printf("expr of type boolean expected\n");
+			}
+		}else if(strcmp(root->child[0]->name, "fixed_condition")==0){
+			if(strcmp(root->child[0]->type, "bool") != 0){
+				printf("expr of type boolean expected\n");
+			}
+		}
+		strcpy(root->type, "bool");
+	}else if(strcmp(root->name,"expr")==0){
+		if(root->cur_childs > 1){
+			if(strcmp(root->child[1]->name, "arith_binary_op")==0){
+				if(strcmp(root->child[0]->type, "int") != 0){
+					printf("expr of type integer expected\n");
+				}else if(strcmp(root->child[2]->type, "int") != 0){
+					printf("expr of type integer expected\n");
+				}
+			}else if(strcmp(root->child[1]->name, "bit_binary_op")==0){
+				if(strcmp(root->child[0]->type, "int") != 0){
+					printf("expr of type integer expected\n");
+				}
+				if(root->cur_childs > 1){
+					if(strcmp(root->child[2]->type, "int") != 0){
+						printf("expr of type integer expected\n");
+					}
+				}
+				
+			}else if(strcmp(root->child[0]->name, "bit_unary_op")==0){
+				if(strcmp(root->child[1]->type, "int") != 0){
+					printf("expr of type integer expected\n");
+				}
+			}
+		}
+		if(strcmp(root->child[0]->name, "ass_var_block")==0 ||
+			strcmp(root->child[0]->name, "const_block")==0){
+			if(strcmp(root->child[0]->type, "int") != 0){
+				printf("expr of type integer expected\n");
+			}
+		}else if(strcmp(root->child[1]->name, "conditional_expr")==0){
+			if(strcmp(root->child[1]->type, "cond") != 0){
+				printf("expr of type integer expected\n");
+			}
+			if(root->cur_childs > 3){
+				if(strcmp(root->child[1]->type, "cond") != 0 &&
+					strcmp(root->child[1]->type, "integer") != 0){
+					printf("either integer or conditional expr expected\n");
+				}
+			}
+		}
+	}else if(strcmp(root->name,"assignment_block")==0){
+
+	}else if(strcmp(root->name,"ass_var_block")==0){
 		
+	}else if(strcmp(root->name,"var_block")==0){
+		func_elem *fe=gst_obj->lookup(cur_scope);
+		if(fe){
+			int ret_val=fe->check_type(yylval.terminal_value,new var_def("int",0,0));
+		}
 	}
 	
 }

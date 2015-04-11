@@ -318,7 +318,11 @@ void func_elem::print_data(ofstream &data_stream,string prefix=""){
 }
 
 var_def *func_elem::get_type(string key){
-	var_elem *ve=fst->lookup(key);	
-	return ve->get_type();
+	var_elem *ve=fst->lookup(key);
+	if(ve!=NULL){
+		return ve->get_type();
+	}else{
+		return NULL;
+	}
 }
 #endif
