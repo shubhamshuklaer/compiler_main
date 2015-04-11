@@ -1609,13 +1609,14 @@ void type_check(node *root, int level){
 				strcmp(root->child[1]->name, "bit_condition_op")==0){
 
 				if(strcmp(root->child[0]->type, "notdef")==0){
-					printf("type not defined 0");
+					// printf("type not defined 0");
 				}else if(strcmp(root->child[2]->type, "notdef")==0){
-					printf("type not defined 2");
+					// printf("type not defined 2");
 				}else if(strcmp(root->child[2]->type, root->child[0]->type) != 0){
-					cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+					// cout << root->child[2]->name << ":" << root->child[2]->type << endl;
 					// cout << root->child[0]->name << ":" << root->child[0]->type << endl;
 					printf("type mismatch error\n");
+					semantic_err = true;
 				}else if(strcmp(root->child[2]->type, root->child[0]->type) == 0){
 					// printf("type match\n");
 					strcpy(root->type, root->child[2]->type);
@@ -1627,16 +1628,16 @@ void type_check(node *root, int level){
 		if(root->cur_childs == 1){
 			if(strcmp(root->child[0]->name, "expr")==0){
 				if(strcmp(root->child[0]->type, "notdef")==0){
-					cout << root->child[0]->name << " : notdef" << endl;
+					// cout << root->child[0]->name << " : notdef" << endl;
 				}else{
-					cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
+					// cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
 				}
 				strcpy(root->type, root->child[0]->type);
 			}else if(strcmp(root->child[0]->name, "fixed_condition")==0){
 				if(strcmp(root->child[0]->type, "notdef")==0){
-					cout << root->child[0]->name << " : notdef" << endl;
+					// cout << root->child[0]->name << " : notdef" << endl;
 				}else{
-					cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
+					// cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
 				}
 				strcpy(root->type, root->child[0]->type);
 			}
@@ -1655,9 +1656,10 @@ void type_check(node *root, int level){
 					// cout << root->child[0]->name << ":" << root->child[0]->type << endl;
 					
 				}else if(strcmp(root->child[2]->type, root->child[0]->type) != 0){
-					cout << root->child[2]->name << ":" << root->child[2]->type << endl;
-					cout << root->child[0]->name << ":" << root->child[0]->type << endl;
+					// cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+					// cout << root->child[0]->name << ":" << root->child[0]->type << endl;
 					printf("type mismatch error\n");
+					semantic_err = true;
 				}else if(strcmp(root->child[2]->type, root->child[0]->type) == 0){
 					// printf("type match\n");
 
@@ -1672,10 +1674,11 @@ void type_check(node *root, int level){
 					}else if(strcmp(root->child[4]->type, "notdef")==0){
 						printf("type not defined 4\n");
 					}else if(strcmp(root->child[4]->type, root->child[1]->type) != 0){
-						cout << root->child[4]->name << ":" << root->child[4]->type << endl;
-						cout << root->child[1]->name << ":" << root->child[1]->type << endl;
+						// cout << root->child[4]->name << ":" << root->child[4]->type << endl;
+						// cout << root->child[1]->name << ":" << root->child[1]->type << endl;
 						
 						printf("type mismatch error\n");
+						semantic_err = true;
 					}else if(strcmp(root->child[4]->type, root->child[1]->type) == 0){
 						// printf("type match\n");
 						strcpy(root->type, root->child[4]->type);
@@ -1687,9 +1690,9 @@ void type_check(node *root, int level){
 			if(strcmp(root->child[0]->name, "ass_var_block")==0 ||
 				strcmp(root->child[0]->name, "const_block")==0){
 				if(strcmp(root->child[0]->type, "notdef")==0){
-					cout << root->child[0]->name << " : notdef" << endl;
+					// cout << root->child[0]->name << " : notdef" << endl;
 				}else{
-					cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
+					// cout << root->child[0]->type << ":" << root->child[0]->name << "->" << root->name << endl;
 				}
 				strcpy(root->type, root->child[0]->type);
 			}
@@ -1703,13 +1706,14 @@ void type_check(node *root, int level){
 				printf("type not defined 0\n");
 			}else if(strcmp(root->child[2]->type, "notdef")==0){
 				printf("type not defined 2\n");
-				cout << root->child[2]->name << ":" << root->child[2]->type << endl;
-				cout << root->child[0]->name << ":" << root->child[0]->type << endl;
+				// cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+				// cout << root->child[0]->name << ":" << root->child[0]->type << endl;
 			}else if(strcmp(root->child[2]->type, root->child[0]->type) != 0){
-				cout << root->child[2]->name << ":" << root->child[2]->type << endl;
-				cout << root->child[0]->name << ":" << root->child[0]->type << endl;
+				// cout << root->child[2]->name << ":" << root->child[2]->type << endl;
+				// cout << root->child[0]->name << ":" << root->child[0]->type << endl;
 				
 				printf("type mismatch error\n");
+				semantic_err = true;
 			}else if(strcmp(root->child[2]->type, root->child[0]->type) == 0){
 				// printf("type match\n");
 				strcpy(root->type, root->child[2]->type);
@@ -1733,7 +1737,7 @@ void type_check(node *root, int level){
 				root->child[0]->var_type = vd->var_type;
 				root->var_type = vd->var_type;	
 			}
-			cout << root->child[0]->child[0]->name << ":" << root->child[0]->child[0]->type << ":" << root->child[0]->child[0]->var_type << endl;
+			// cout << root->child[0]->child[0]->name << ":" << root->child[0]->child[0]->type << ":" << root->child[0]->child[0]->var_type << endl;
 			
 		}
 	}

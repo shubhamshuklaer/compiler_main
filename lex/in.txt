@@ -1,4 +1,3 @@
-int $a;
-int $c;
-$a=$a+10;
-print $a;
+function abc(int $d,char $c){
+	$d=10;
+}
