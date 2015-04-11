@@ -1,4 +1,4 @@
-int $a,$b[5];
+int $a,$bd[5];
 $a=5;
 function abc(int $d,char $c){
 	$d=10;
@@ -11,7 +11,7 @@ function efg(int $d,char $c){
 }
 
 
-function b(int $a){
+function db(int $a){
 	$a=10;
 	$a=-s-;
 }

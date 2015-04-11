@@ -1,7 +1,9 @@
 *.swp
 __pycache__
 lex.yy.c
-outlex/parser
+out
+lex/test.s
+lex/parser
 lex/parser.cpp
 lex/parser.output
 lex/parser.hpp
@@ -11,5 +13,4 @@ lex/sym_tab_out.txt
 lex/temp_text.txt
 lex/sym_test
 lex/sym_tab_out.txt
-lex/syntax_graph.gav
 lex/syntax_graph.gv

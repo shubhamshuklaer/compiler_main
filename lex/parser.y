@@ -11,6 +11,7 @@
 	#include <vector>
 	#include <fstream>
 	#include <algorithm>
+	#include <bits/stdc++.h>
 	using namespace std;
     /*#include <graphviz/ingraphs.h>*/
 
@@ -56,7 +57,39 @@
 	sym_table<func_elem,func_def> *gst_obj;
 	ofstream sym_tab_out("sym_tab_out.txt");
 	void get_symbol_table_data();
+	bool syntax_err=false;
+	bool semantic_err=false;
 	// #define YYSTYPE struct node *
+
+	void code_generation_traversal(node *root,int i);
+	void function_call_block_code_generation(node *temp);
+	void expr_code_generation(node *temp);
+	void function_var_block_code_generation(node *temp);
+	void conditional_code_generation(node *temp);
+	void operations_code(node *temp);
+	void conditional_operations_code(node *temp);
+    void code_generation_general_block(node *temp);
+    void code_generation_general_stmt(node *temp);
+    void assignment_block_code_generation(node *temp);
+    void assignment_operations_code_generation(node *temp);
+    void code_generation_if_else(node *temp);
+    void code_generation_loop_block(node *temp);
+    void code_generation_for_loop(node *temp);
+	void code_generation_while_loop(node *temp);
+	void code_generation_do_loop(node *temp);
+	void code_generation_for_intialization(node *temp);
+	void code_generation_for_update(node *temp);
+	void code_generation_ass_var_block(node *temp,string reg,string co);
+	void code_generation_function_def_block(node *temp);
+	void code_generation_function_arg_list(node *temp,string name);
+
+    ofstream fcout("test.s");
+
+	int iflable = 1;
+	int loop = 1;
+	int function_2=0;
+	string function_name_2;
+	vector<string> function_vars;
 %}
 
 %union {
@@ -79,7 +112,7 @@
 %token DEFINE IFDEF IFNDEF
 %token FUNCTION
 %token COMMA 
-%token PRINT SCAN RETURN
+%token PRINT SCAN RETURN CPRINT CSCAN
 
 %right ASSIGN
 %left AND OR
@@ -163,6 +196,8 @@
 %type <entry> PRINT
 %type <entry> SCAN
 %type <entry> RETURN
+%type <entry> CPRINT
+%type <entry> CSCAN
 
 %type <entry> super_block
 %type <entry> start_block
@@ -353,6 +388,7 @@ general_block
 							mk_child($$, $2); 
 						}
 					|   error start_block {
+							syntax_err=true;
 							$$ = mk_node("error");
 							mk_child($$, $2);
 							yyclearin;
@@ -714,30 +750,52 @@ general_stmt
 							mk_child($$, $1); 
 							mk_child($$, $2);
 						}
-					|   PRINT conditional_expr TERMINATOR{
+					|	PRINT conditional_expr TERMINATOR
+						{
 							$$ = mk_node("general_stmt");
 							$1 = mk_node("PRINT");
 							$3 = mk_node("TERMINATOR");
 							mk_child($$, $1);
 							mk_child($$, $2);
 							mk_child($$, $3);
-					}
-					| 	SCAN ass_var_block TERMINATOR{
+						}
+					|	CPRINT conditional_expr TERMINATOR
+						{
+							$$ = mk_node("general_stmt");
+							$1 = mk_node("CPRINT");
+							$3 = mk_node("TERMINATOR");
+							mk_child($$, $1);
+							mk_child($$, $2);
+							mk_child($$, $3);
+						}
+					| 	SCAN ass_var_block TERMINATOR
+						{
 							$$ = mk_node("general_stmt");
 							$1 = mk_node("SCAN");
 							$3 = mk_node("TERMINATOR");
 							mk_child($$, $1);
 							mk_child($$, $2);
-							mk_child($$, $3); 
-					}
-					| RETURN conditional_expr TERMINATOR{
+							mk_child($$, $3);	
+						}
+					| 	CSCAN ass_var_block TERMINATOR
+						{
+							$$ = mk_node("general_stmt");
+							$1 = mk_node("CSCAN");
+							$3 = mk_node("TERMINATOR");
+							mk_child($$, $1);
+							mk_child($$, $2);
+							mk_child($$, $3);	
+						}
+					|   RETURN conditional_expr TERMINATOR
+						{
 							$$ = mk_node("general_stmt");
 							$1 = mk_node("RETURN");
 							$3 = mk_node("TERMINATOR");
 							mk_child($$, $1);
 							mk_child($$, $2);
 							mk_child($$, $3); 
-					}
+						}
+
 					;
 
 
@@ -1298,6 +1356,7 @@ bit_assgn_op
 
 void yyerror(const char *err){
 	printf(" ** %s\n",err);
+	syntax_err=true;
 }
 
 int main(){
@@ -1309,7 +1368,7 @@ int main(){
     creation_id=0;
 	char graph_name[1];
 	graph_name[0]='G';
-    syntax_graph=agopen(graph_name, Agdirected, NULL);
+    // syntax_graph=agopen(graph_name, Agdirected, NULL);
 	root = init_tree();
 	gst_obj=new sym_table<func_elem,func_def>;
 	vector<pair<string,var_def*> > temp_vctr {pair<string,var_def*>("__main__",new var_def(""))};
@@ -1320,12 +1379,23 @@ int main(){
 
 	printf("\n\n-----------------   TREE   ------------------\n\n");
 	printtree(root, 0);
-	type_check(root, 0);
+	if(!syntax_err){
+		type_check(root, 0);
+		gst_obj->print(sym_tab_out);
+			if(!semantic_err){
+				get_symbol_table_data();
+				code_generation_traversal(root,0);
+				fcout<<"jr $ra";
+			}else{
+				cout<<"Semantic error"<<endl;
+			}
+	}else{
+		cout<<"Syntax err"<<endl;
+	}
+
     FILE *fp=fopen("syntax_graph.gv","w+");
-    agwrite(syntax_graph,fp);
+    // agwrite(syntax_graph,fp);
     fclose(fp);
-	gst_obj->print(sym_tab_out);
-	get_symbol_table_data();
 	sym_tab_out.close();
 	return 0;
 }
@@ -1411,89 +1481,99 @@ void printtree(node *root, int level){
 	printf("%s\n", root->name);
 
 	levels[level] = true;
-    Agnode_t *graph_root,*graph_child;
-    graph_root=make_graph_node(root);
+    // Agnode_t *graph_root,*graph_child;
+    // graph_root=make_graph_node(root);
     char buf[50];
-	if(strcmp(root->name,"declaration_block")==0){
-		data_type=string(root->child[0]->child[0]->name);	
-		transform(data_type.begin(),data_type.end(),data_type.begin(),::tolower);
-		struct node *var_list_block=root->child[1];
-		while(var_list_block!=NULL){
-			struct node *var_list_child=var_list_block->child[0];
-			if(strcmp(var_list_child->name,"var_block")==0){
-				struct node *var_block_child=var_list_child->child[0];
-				string var_name=string(var_block_child->child[0]->name);
-				if(strcmp(var_block_child->name,"VAR")==0){
-					insert_var_in_symbol_table(func_name,var_name,data_type);	
-				}else if(strcmp(var_block_child->name,"POINTER")==0){
-					insert_var_in_symbol_table(func_name,var_name,data_type,1);	
-				}
-			}else if(strcmp(var_list_child->name,"array_block")==0){
-				struct node *var_block=var_list_child->child[0];
-				struct node *arr_size_block=var_list_child->child[2];
+	if(!syntax_err){
+		if(strcmp(root->name,"declaration_block")==0){
+			data_type=string(root->child[0]->child[0]->name);	
+			transform(data_type.begin(),data_type.end(),data_type.begin(),::tolower);
+			struct node *var_list_block=root->child[1];
+			while(var_list_block!=NULL){
+				struct node *var_list_child=var_list_block->child[0];
+				if(strcmp(var_list_child->name,"var_block")==0){
+					struct node *var_block_child=var_list_child->child[0];
+					string var_name=string(var_block_child->child[0]->name);
+					if(strcmp(var_block_child->name,"VAR")==0){
+						insert_var_in_symbol_table(func_name,var_name,data_type);	
+					}else if(strcmp(var_block_child->name,"POINTER")==0){
+						insert_var_in_symbol_table(func_name,var_name,data_type,1);	
+					}
+				}else if(strcmp(var_list_child->name,"array_block")==0){
+					struct node *var_block=var_list_child->child[0];
+					struct node *arr_size_block=var_list_child->child[2];
 
-				struct node *var_block_child=var_block->child[0];
-				string var_name=string(var_block_child->child[0]->name);
-				
-				int arr_size=atoi(arr_size_block->child[0]->name);
-				if(strcmp(var_block_child->name,"VAR")==0){
-					insert_var_in_symbol_table(func_name,var_name,data_type,2,arr_size);	
-				}else if(strcmp(var_block_child->name,"POINTER")==0){
-					insert_var_in_symbol_table(func_name,var_name,data_type,3,arr_size);	
+					struct node *var_block_child=var_block->child[0];
+					string var_name=string(var_block_child->child[0]->name);
+					
+					int arr_size=atoi(arr_size_block->child[0]->name);
+					if(strcmp(var_block_child->name,"VAR")==0){
+						insert_var_in_symbol_table(func_name,var_name,data_type,2,arr_size);	
+					}else if(strcmp(var_block_child->name,"POINTER")==0){
+						insert_var_in_symbol_table(func_name,var_name,data_type,3,arr_size);	
+					}
 				}
+				if(var_list_block->cur_childs==3)
+					var_list_block=var_list_block->child[2];
+				else
+					var_list_block=NULL;
 			}
-			if(var_list_block->cur_childs==3)
-				var_list_block=var_list_block->child[2];
-			else
-				var_list_block=NULL;
+		}else if(strcmp(root->name,"function_def_block")==0){
+			struct node *func_name_node=root->child[1];
+			struct node *argument_list_block=root->child[3];
+			string temp_func_name=string(func_name_node->child[0]->name);
+			func_name=temp_func_name;
+			func_terminator_node=root->child[7];//the CCB
+			vector<pair<string,var_def*> > temp_arg_list;
+			//Now finding the argument list
+			while(argument_list_block!=NULL){
+				//Finding the data type
+				struct node *data_type_node=argument_list_block->child[0]->child[0];
+				string tdt;
+				var_def *temp_def;
+				tdt=string(data_type_node->name);	
+				transform(tdt.begin(),tdt.end(),tdt.begin(),::tolower);
+				
+				//Finding the variable name
+				struct node *var_block_child=argument_list_block->child[1]->child[0];
+				string var_name=string(var_block_child->child[0]->name);
+				if(strcmp(var_block_child->name,"VAR")==0){
+					temp_def=new var_def(tdt);
+				}else if(strcmp(var_block_child->name,"POINTER")==0){
+					temp_def=new var_def(tdt,1);
+				}
+				temp_arg_list.push_back(pair<string,var_def*>(var_name,temp_def));
+				////////////////////////////////////
+				if(argument_list_block->cur_childs==4){
+					argument_list_block=argument_list_block->child[3];
+				}
+				else
+					argument_list_block=NULL;
+			}	
+			////////////////////////////////////////
+			int temp_ret_val=gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
+
+			if(temp_ret_val==0){
+				sym_tab_out<<"Everything fine"<<endl;
+			}else if(temp_ret_val==elem_already_exist){
+				semantic_err=true;
+				sym_tab_out<<"function named foo already exist"<<endl;
+			}
+
+			vector<pair<string,var_def*> >::iterator it;
+			for(it=temp_arg_list.begin();it!=temp_arg_list.end();it++){
+				insert_var_in_symbol_table(func_name,it->first,it->second->data_type,it->second->var_type,it->second->arr_size);	
+			}
+		}else if(root==func_terminator_node){
+			func_name=main_func_name;
 		}
-	}else if(strcmp(root->name,"function_def_block")==0){
-		struct node *func_name_node=root->child[1];
-		struct node *argument_list_block=root->child[3];
-		string temp_func_name=string(func_name_node->child[0]->name);
-		func_name=temp_func_name;
-		func_terminator_node=root->child[7];//the CCB
-		vector<pair<string,var_def*> > temp_arg_list;
-		//Now finding the argument list
-		while(argument_list_block!=NULL){
-			//Finding the data type
-			struct node *data_type_node=argument_list_block->child[0]->child[0];
-			string tdt;
-			var_def *temp_def;
-			tdt=string(data_type_node->name);	
-			transform(tdt.begin(),tdt.end(),tdt.begin(),::tolower);
-			
-			//Finding the variable name
-			struct node *var_block_child=argument_list_block->child[1]->child[0];
-			string var_name=string(var_block_child->child[0]->name);
-			if(strcmp(var_block_child->name,"VAR")==0){
-				temp_def=new var_def(tdt);
-			}else if(strcmp(var_block_child->name,"POINTER")==0){
-				temp_def=new var_def(tdt,1);
-			}
-			temp_arg_list.push_back(pair<string,var_def*>(var_name,temp_def));
-			////////////////////////////////////
-			if(argument_list_block->cur_childs==4){
-				argument_list_block=argument_list_block->child[3];
-			}
-			else
-				argument_list_block=NULL;
-		}	
-		////////////////////////////////////////
-		gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
-		vector<pair<string,var_def*> >::iterator it;
-		for(it=temp_arg_list.begin();it!=temp_arg_list.end();it++){
-			insert_var_in_symbol_table(func_name,it->first,it->second->data_type,it->second->var_type,it->second->arr_size);	
-		}
-	}else if(root==func_terminator_node){
-		func_name=main_func_name;
 	}
 
 	for (int i = 0; i < root->cur_childs; ++i){
-        graph_child=make_graph_node(root->child[i]);
-        sprintf(buf,"%d",edge_id);
-        agedge(syntax_graph,graph_root,graph_child,(char *)buf,true);
-        edge_id++;
+        // graph_child=make_graph_node(root->child[i]);
+        // sprintf(buf,"%d",edge_id);
+        // agedge(syntax_graph,graph_root,graph_child,(char *)buf,true);
+        // edge_id++;
         if(root->cur_childs == i+1){
 			levels[level] = false;
 		}
@@ -1656,7 +1736,6 @@ void type_check(node *root, int level){
 			cout << root->child[0]->child[0]->name << ":" << root->child[0]->child[0]->type << ":" << root->child[0]->child[0]->var_type << endl;
 			
 		}
-		
 	}
 	
 }
@@ -1674,18 +1753,825 @@ void insert_var_in_symbol_table(string func_name,string var_name,string data_typ
 	func_elem *fe=gst_obj->lookup(func_name);
 	if(fe==NULL){
 		sym_tab_out<<"func named "<<func_name<<" not found"<<endl;
+		semantic_err=true;
 	}else{
 		ret_val=fe->insert(var_name,new var_def(data_type,var_type,arr_size));
 		if(ret_val==0){
 			sym_tab_out<<"Insertion successfull"<<endl;
 		}else if(ret_val==elem_already_exist){
+			semantic_err=true;
 			sym_tab_out<<"var named "<<var_name<<" already exist"<<endl;	
 		}
 	}
 }
 
 void get_symbol_table_data(){
-	ofstream sym_tab_data("sym_tab_data.txt");
-	gst_obj->print_data(sym_tab_data);
-	sym_tab_data.close();
+	fcout<<".data"<<endl;
+	gst_obj->print_data(fcout);
+	fcout<<".text"<<endl;
+}
+
+
+void operations_code(node *temp)
+{
+	string second = temp->name;
+	 if(second == "arith_binary_op")
+		{	
+		//	cout<<"second"<<endl;
+			std::string operation = temp->child[0]->name;
+				if(operation == "ADD")
+				{
+					fcout<<"lw $t0,0($sp)"<<std::endl<<"addu $a0, $a0, $t0"<<std::endl;
+				} 
+				else if(operation == "SUB")
+				{
+					fcout<<"lw $t0,0($sp)"<<std::endl<<"subu $a0, $a0, $t0"<<std::endl;
+				}
+				else if(operation == "MULT")
+				{
+					fcout<<"lw $t0,0($sp)"<<std::endl<<"mult $a0, $t0"<<std::endl<<"mflo $a0"<<std::endl;
+				}
+				else if(operation == "DIV")
+				{
+					fcout<<"lw $t0,0($sp)"<<std::endl<<"div $a0, $t0"<<std::endl<<"mflo $a0"<<std::endl;	
+				}
+				else if(operation == "MOD")
+				{
+					fcout<<"lw $t0,0($sp)"<<std::endl<<"div $a0, $t0"<<std::endl<<"mfhi $a0"<<std::endl;
+				}
+				else
+				{
+					//after loops.. we will do it.. 
+				}
+		}
+		else
+		{
+			std::string operation = temp->child[0]->name;
+			if(operation == "BIN_AND"){
+				fcout<<"lw $t0,0($sp)"<<endl<<"and $a0,$a0,$t0"<<endl;
+			}
+			else if(operation == "BIN_OR")
+			{
+				fcout<<"lw $t0,0($sp)"<<endl<<"or $a0,$a0,$t0"<<endl;
+			}
+			else if(operation == "BIN_XOR")
+			{
+				fcout<<"lw $t0,0($sp)"<<endl<<"xor $a0,$a0,$t0"<<endl;
+			}
+			else if(operation == "BIN_LEFT")
+			{
+				fcout<<"lw $t0,0($sp)"<<endl<<"sllv $a0,$a0,$t0"<<endl;
+			}
+			else if(operation == "BIN_RIGHT")
+			{
+				fcout<<"lw $t0,0($sp)"<<endl<<"srlv $a0,$a0,$t0"<<endl;
+			}
+		}
+}
+
+
+void code_generation_traversal(node *root,int j)
+{
+	//std::cout<<root->name<<" "<<j<<std::endl;
+	for(int i=0;i<root->cur_childs;++i)
+	{
+		std::string s = root->child[i]->name;
+		//cout<<s<<endl;
+		if(s == "general_block")
+		{
+			fcout<<"main: "<<endl;
+			function_2 = 0;
+			code_generation_general_block(root->child[i]);
+		}
+		else if(s == "function_def_block")
+		{
+			function_2 = 1;
+			function_vars.assign(0,"");
+			code_generation_function_def_block(root->child[i]);
+		}
+		else 
+		{
+			code_generation_traversal(root->child[i],j+1);
+		}
+	}
+}
+void code_generation_function_def_block(node *temp)
+{
+	 string s = temp->child[1]->child[0]->name;
+	 fcout<<temp->child[1]->child[0]->name<<": "<<endl;
+	 function_name_2 = s;
+	 cout<<function_name_2<<endl;
+	 code_generation_function_arg_list(temp->child[3],s);
+	 code_generation_general_block(temp->child[6]);
+	 if(temp->child[3]->cur_childs>=1)
+	 {
+	 	fcout<<"jr $ra"<<endl;
+	 }
+	 else
+	 {
+	 	fcout<<"addi $sp,$sp,4"<<endl;
+	 	fcout<<"jr $ra"<<endl;
+	 }
+}
+void code_generation_function_arg_list(node *temp,string name)
+{
+	if(temp->cur_childs>=1)
+	{
+		if(temp->cur_childs > 2){
+			code_generation_function_arg_list(temp->child[3],name);
+		}
+		string s = temp->child[1]->child[0]->child[0]->name;
+		fcout<<"addi $sp,$sp,4"<<endl<<"lw $a0, 0($sp)"<<endl;
+		function_vars.push_back(name+"_"+s.substr(1,s.length()-1));
+		fcout<<"sw $a0,"<<name<<"_"<<s.substr(1,s.length()-1)<<endl;
+		 
+	}
+}
+void code_generation_general_block(node *temp)
+{
+	if(temp->cur_childs > 0)
+	{
+		std::string s = temp->child[0]->name;
+		if(s=="general_stmt")
+		{
+			code_generation_general_stmt(temp->child[0]);
+		}
+		else if(s=="loop_block")
+		{	
+			code_generation_loop_block(temp->child[0]);
+		}
+		else if(s=="if_else_block")
+		{
+			code_generation_if_else(temp->child[0]);
+		}
+		else
+		{
+
+		}
+		code_generation_general_block(temp->child[1]);
+	}
+}
+void code_generation_loop_block(node *temp)
+{
+	string s = temp->child[0]->name;
+	if(s=="for_loop_block")
+	{
+		code_generation_for_loop(temp->child[0]);
+	}
+	else if(s=="while_loop_block")
+	{
+		code_generation_while_loop(temp->child[0]);
+	}
+	else
+	{
+		code_generation_do_loop(temp->child[0]);
+	}
+}
+void code_generation_for_loop(node *temp)
+{
+	code_generation_for_intialization(temp->child[2]);
+	int store = loop;
+	loop++;
+	loop++;
+	fcout<<"loop"<<store<<": "<<endl;
+	conditional_code_generation(temp->child[3]->child[0]);
+	fcout<<"lui $t0,0x0"<<endl<<"srl $t0,$t0,16"<<endl;
+	fcout<<"beq $a0,$t0,loop"<<(store+1)<<endl;
+	code_generation_general_block(temp->child[8]);
+	code_generation_for_update(temp->child[5]);
+	fcout<<"j loop"<<store<<endl;
+	fcout<<"loop"<<store+1<<": "<<endl;
+}
+void code_generation_for_intialization(node *temp)
+{
+	if(temp->cur_childs!=1)
+	{
+		if((string)temp->child[0]->name == "function_call_block")
+		{
+			function_call_block_code_generation(temp->child[0]);
+		}
+		else
+		{
+			assignment_block_code_generation(temp->child[0]);
+		}
+		if(temp->cur_childs == 3)
+		{
+			code_generation_for_intialization(temp->child[2]);
+		}
+	}
+}
+void code_generation_for_update(node *temp)
+{
+	if(temp->cur_childs!=0)
+	{
+		if((string)temp->child[0]->name == "function_call_block")
+		{
+			function_call_block_code_generation(temp->child[0]);
+		}
+		else
+		{
+			assignment_block_code_generation(temp->child[0]);
+		}
+		if(temp->cur_childs == 3)
+		{
+			code_generation_for_update(temp->child[2]);
+		}
+	}
+}
+void code_generation_while_loop(node *temp)
+{
+	fcout<<"loop"<<loop<<": "<<endl;
+	int l = loop;
+	loop++;
+	loop++;
+	conditional_code_generation(temp->child[2]->child[0]);
+	fcout<<"lui $t0,0x0"<<endl<<"srl $t0,$t0,16"<<endl;
+	fcout<<"beq $a0,$t0,loop"<<(l+1)<<endl;
+	code_generation_general_block(temp->child[5]);
+	fcout<<"j loop"<<l<<endl;
+	fcout<<"loop"<<(l+1)<<": "<<endl;
+}
+void code_generation_do_loop(node *temp)
+{
+	int store = loop;
+	loop++;
+	loop++;
+	loop++;
+	fcout<<"loop"<<store+2<<": "<<endl;
+	code_generation_general_block(temp->child[2]);
+	fcout<<"loop"<<store<<": "<<endl;
+	conditional_code_generation(temp->child[6]->child[0]);
+	fcout<<"lui $t0,0x0"<<endl<<"srl $t0,$t0,16"<<endl;
+	fcout<<"beq $a0,$t0,loop"<<(store+1)<<endl;
+	fcout<<"j loop"<<store+2<<endl;
+	fcout<<"loop"<<store+1<<": "<<endl;
+}
+void code_generation_if_else(node *temp)
+{
+	if(temp->cur_childs == 11)
+	{
+		conditional_code_generation(temp->child[2]->child[0]);
+		fcout<<"lui $t0,0x0"<<endl<<"srl $t0,$t0,16"<<endl;
+		int store = iflable;
+		iflable++;
+		iflable++;
+		fcout<<"beq $a0,$t0, iflable"<<store<<endl;
+		code_generation_general_block(temp->child[5]);
+		fcout<<"j iflable"<<(store+1)<<endl;
+		fcout<<"iflable"<<(store)<<": "<<endl;		
+		code_generation_general_block(temp->child[9]);
+		fcout<<"iflable"<<(store+1)<<": "<<endl;
+	}
+	else if(temp->cur_childs == 9)
+	{
+		conditional_code_generation(temp->child[2]->child[0]);
+		fcout<<"lui $t0,0x0"<<endl<<"srl $t0,$t0,16"<<endl;
+		int store = iflable;
+		iflable++;
+		iflable++;
+		fcout<<"beq $a0,$t0, iflable"<<store<<endl;
+		code_generation_general_block(temp->child[5]);
+		fcout<<"j iflable"<<store+1<<endl;
+		fcout<<"iflable"<<store<<": "<<endl;
+		code_generation_if_else(temp->child[8]);
+		fcout<<"iflable"<<store+1<<": "<<endl;
+	}
+	else 
+	{
+		conditional_code_generation(temp->child[2]->child[0]);
+		fcout<<"lui $t0,0x0"<<endl<<"srl $t0,$t0,16"<<endl;
+		int store = iflable;
+		iflable++;
+		fcout<<"beq $a0,$t0, iflable"<<store<<endl;
+		code_generation_general_block(temp->child[5]);
+		fcout<<"iflable"<<store<<": "<<endl;
+	}
+}
+void code_generation_general_stmt(node *temp)
+{
+	if(temp->cur_childs > 0)
+	{
+		std::string s = temp->child[0]->name;
+		if(s=="declaration_block")
+		{
+			// symbol table one .. so ignore already handled.
+		}
+		else if(s=="assignment_block")
+		{
+			assignment_block_code_generation(temp->child[0]);
+		}
+		else if(s=="conditional_expr")
+		{
+			conditional_code_generation(temp->child[0]);
+		}
+		else if(s == "PRINT")
+		{
+			conditional_code_generation(temp->child[1]);
+			fcout<<"li $v0, 1"<<endl;
+			fcout<<"syscall"<<endl;
+		}
+		else if(s == "CPRINT")
+		{
+			conditional_code_generation(temp->child[1]);
+			fcout<<"li $v0, 11"<<endl;
+			fcout<<"syscall"<<endl;
+		}
+		else if(s== "RETURN")
+		{
+			conditional_code_generation(temp->child[1]);
+			if(function_2 == 1)
+			{
+				if(function_vars.size() == 0)
+				{
+					fcout<<"addi $sp,$sp,4"<<endl;
+				}
+			}
+			fcout<<"jr $ra"<<endl;
+		}
+		else if(s=="SCAN")
+		{
+			code_generation_ass_var_block(temp->child[1],"$t0","sw");
+			fcout<<"sw $a0, 0($sp)"<<endl;
+			fcout<<"lw $t0, 0($sp)"<<endl;
+			fcout<<"li $v0, 5"<<endl;
+			fcout<<"syscall"<<endl;
+			fcout<<"lui $a0 ,0x0"<<endl<<"srl $a0,$a0,16"<<endl;
+			fcout<<"add $a0,$a0,$v0"<<endl;
+			fcout<<"sw $a0, 0($t0)"<<endl;	
+		}
+		else
+		{
+			code_generation_ass_var_block(temp->child[1],"$t0","sw");
+			fcout<<"sw $a0, 0($sp)"<<endl;
+			fcout<<"lw $t0, 0($sp)"<<endl;
+			fcout<<"li $v0, 12"<<endl;
+			fcout<<"syscall"<<endl;
+			fcout<<"lui $a0 ,0x0"<<endl<<"srl $a0,$a0,16"<<endl;
+			fcout<<"add $a0,$a0,$v0"<<endl;
+			fcout<<"sw $a0, 0($t0)"<<endl;
+		}
+	}
+}
+void assignment_block_code_generation(node *temp)
+{
+	string s = temp->child[0]->name;
+
+	if(s=="ass_var_block")
+	{
+
+		string var=temp->child[0]->child[0]->child[0]->child[0]->name;
+		s = temp->child[1]->name;
+		if(s == "ASSIGN")
+		{
+			s = temp->child[2]->name;
+			cout<<s<<endl;
+			if(s=="conditional_expr")
+			{
+				conditional_code_generation(temp->child[2]);
+				
+			}
+			else
+			{
+				assignment_block_code_generation(temp->child[2]);
+			}
+
+		}
+		else if(s == "arith_assgn_op")
+		{
+			s = temp->child[2]->name;
+			cout<<s<<endl;
+			if(s=="conditional_expr")
+			{
+				cout<<"entered"<<endl;
+				conditional_code_generation(temp->child[2]);
+			}
+			else
+			{
+				assignment_block_code_generation(temp->child[2]);
+			}	
+			//fcout<<"lw $t0, "<<var.substr(1,var.length()-1)<<"($0)"<<endl;
+			fcout<<"sw $a0,0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+			code_generation_ass_var_block(temp->child[0],"$t0","lw");
+			fcout<<"addi $sp,$sp,4"<<endl<<"lw $a0,0($sp)"<<endl;
+			assignment_operations_code_generation(temp->child[1]);
+		}
+		else
+		{
+			s = temp->child[2]->name;
+			cout<<s<<endl;
+			if(s=="conditional_expr")
+			{
+				cout<<"entered"<<endl;
+				conditional_code_generation(temp->child[2]);
+			}
+			else
+			{
+				assignment_block_code_generation(temp->child[2]);
+			}
+			//fcout<<"lw $t0, "<<var.substr(1,var.length()-1)<<"($0)"<<endl;
+			fcout<<"sw $a0,0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+			code_generation_ass_var_block(temp->child[0],"$t0","lw");
+			fcout<<"addi $sp,$sp,4"<<endl<<"lw $a0,0($sp)"<<endl;
+			assignment_operations_code_generation(temp->child[1]);
+		}
+		
+		fcout<<"sw $a0,0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+		code_generation_ass_var_block(temp->child[0],"$t0","sw");
+		fcout<<"addi $sp,$sp,4"<<endl<<"lw $t0,0($sp)"<<endl;
+
+		fcout<<"sw $t0, 0"<<"($a0)"<<endl;
+	}
+	else
+	{
+		assignment_block_code_generation(temp->child[0]);
+	}
+}
+void assignment_operations_code_generation(node *temp)
+{
+	string type = temp->name;
+	//cout<<type;
+	if(type == "arith_assgn_op")
+	{
+		string op = temp->child[0]->name;
+		if(op == "ADD_ASSIGN")
+		{
+			fcout<<"addu $a0, $a0, $t0"<<std::endl;
+		}
+		else if(op == "SUB_ASSIGN")
+		{
+			fcout<<"sub $a0, $t0, $a0"<<std::endl;
+		}
+		else if(op == "MULT_ASSIGN")
+		{
+			fcout<<"mult $a0, $t0"<<std::endl;
+			fcout<<"mflo $a0"<<std::endl;
+		}
+		else if(op == "DIV_ASSIGN")
+		{
+			fcout<<"div $t0, $a0"<<std::endl;
+			fcout<<"mflo $a0"<<std::endl;
+		}
+		else if(op == "MOD_ASSIGN")
+		{
+			fcout<<"div $t0, $a0"<<std::endl;
+			fcout<<"mfhi $a0"<<std::endl;
+		}
+		else if(op == "LEFT_ASSIGN")
+		{
+			fcout<<"sllv $a0,$t0,$a0"<<endl;
+		}
+		else 
+		{
+			fcout<<"srlv $a0,$t0,$a0"<<endl;
+		}
+	}
+	else
+	{
+		string op = temp->child[0]->name;
+		if(op == "BIN_AND_ASSIGN")
+		{
+			fcout<<"and $a0,$a0,$t0"<<endl;
+		}
+		else if(op == "BIN_IOR_ASSIGN")
+		{
+			fcout<<"OR $a0,$a0,$t0"<<endl;
+		}
+		else
+		{
+			fcout<<"xor $a0,$a0,$t0"<<endl;
+		}
+	}
+}
+void code_generation_ass_var_block(node *temp,string reg,string co)
+{
+	//fcout<<"lw "<<reg<<", "<<first.substr(1,first.length()-1)<<"($0)"<<std::endl;
+	std::string first = temp->child[0]->name;
+	cout<<first<<endl;
+	first = temp->child[0]->child[0]->child[0]->name;
+	if(temp->cur_childs > 1)
+	{
+		fcout<<"addi $sp,$sp,-4"<<endl;
+		conditional_code_generation(temp->child[2]);	
+		fcout<<"addi $sp,$sp,4"<<endl;
+		if(function_2 == 0)
+		{
+			fcout<<"la $t6, "<<first.substr(1,first.length()-1)<<endl;
+		}
+		else
+		{
+			fcout<<"la $t6, "<<function_name_2<<"_"<<first.substr(1,first.length()-1)<<endl;	
+		}
+		fcout<<"add $a0,$a0,$a0"<<endl<<"add $a0,$a0,$a0"<<endl;
+		fcout<<"add $a0,$t6,$a0"<<endl;
+		if(co=="lw")
+		{
+			fcout<<co<<" "<<reg<<", 0"<<"($a0)"<<std::endl;	
+		}
+		else 
+		{
+
+		}
+	}
+	else 
+	{
+		if(co=="lw")
+		{
+			if(function_2 == 0)
+			{
+				fcout<<co<<" "<<reg<<", "<<first.substr(1,first.length()-1)<<"($0)"<<std::endl;
+			}
+			else
+			{
+				fcout<<co<<" "<<reg<<", "<<function_name_2<<"_"<<first.substr(1,first.length()-1)<<"($0)"<<std::endl;	
+			}			
+		}
+		else 
+		{
+			if(function_2 == 0)
+			{
+				fcout<<"la $a0, "<<first.substr(1,first.length()-1)<<endl;
+			}
+			else
+			{
+				fcout<<"la $a0, "<<function_name_2<<"_"<<first.substr(1,first.length()-1)<<endl;	
+			}
+		}
+	}
+}
+void expr_code_generation(node *temp)
+{
+	if(temp->cur_childs == 3)
+	{
+		
+		std::string temp2 = temp->child[0]->name;
+		if(temp2 == "const_block")
+		{
+			expr_code_generation(temp->child[2]);
+			fcout<<"sw $a0, 0($sp)"<<std::endl;
+			if((string)temp->child[0]->child[0]->name == "CHARACTER")
+			{
+				std::string first = temp->child[0]->child[0]->child[0]->name;
+				first = first.substr(1,first.length()-2);
+				int no = first[0];
+				cout<<no<<endl<<first<<endl;
+				std::stringstream ss;
+				ss <<(std::hex)<< no;
+				cout<<no<<endl<<ss.str()<<endl;
+				std::string res (ss.str());
+				fcout<<"lui $a0, 0x"<<res<<std::endl;
+				fcout<<"srl $a0, $a0, 16"<<std::endl;
+			}
+			else 
+			{
+				std::string first = temp->child[0]->child[0]->child[0]->name;
+				std::stringstream ss(first),yy;
+				int no;
+				ss >> no;
+				yy<< std::hex << no;
+				std::string res (yy.str());
+				fcout<<"lui $a0, 0x"<<res<<std::endl;
+				fcout<<"srl $a0, $a0, 16"<<std::endl;
+			}
+		}
+		else if(temp2 == "ass_var_block")
+		{
+			expr_code_generation(temp->child[2]);
+			fcout<<"sw $a0, 0($sp)"<<std::endl;
+			std::string first = temp->child[0]->child[0]->child[0]->child[0]->name;
+			code_generation_ass_var_block(temp->child[0],"$a0","lw");
+		}
+		else if(temp2 == "OP")
+		{
+			conditional_code_generation(temp->child[1]);
+			return ;
+		}
+		else if(temp2 == "function_call_block")
+		{
+			function_call_block_code_generation(temp->child[0]);
+			fcout<<"sw $a0, 0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+			expr_code_generation(temp->child[2]);
+			
+			fcout<<"addi $sp,$sp,4"<<endl;
+		}
+		operations_code(temp->child[1]);
+	}
+	else if(temp->cur_childs == 2)
+	{
+		std::string temp2 = temp->child[1]->name;
+		if(temp2 == "const_block")
+		{
+			if((string)temp->child[0]->child[0]->name == "CHARACTER")
+			{
+				std::string first = temp->child[0]->child[0]->child[0]->name;
+				first = first.substr(1,first.length()-2);
+				int no = first[0];
+				cout<<no<<endl<<first<<endl;
+				std::stringstream ss;
+				ss <<(std::hex)<< no;
+				cout<<no<<endl<<ss.str()<<endl;
+				std::string res (ss.str());
+				fcout<<"lui $a0, 0x"<<res<<std::endl;
+				fcout<<"srl $a0, $a0, 16"<<std::endl;
+			}
+			else 
+			{
+				std::string first = temp->child[0]->child[0]->child[0]->name;
+				std::stringstream ss(first),yy;
+				int no;
+				ss >> no;
+				yy<< std::hex << no;
+				std::string res (yy.str());
+				fcout<<"lui $a0, 0x"<<res<<std::endl;
+				fcout<<"srl $a0, $a0, 16"<<std::endl;
+			}
+		}
+		else if(temp2 == "ass_var_block")
+		{
+			std::string first = temp->child[1]->child[0]->child[0]->child[0]->name;
+			//fcout<<"lw $a0, "<<first.substr(1,first.length()-1)<<"($0)"<<std::endl;
+			code_generation_ass_var_block(temp->child[1],"$a0","lw");
+		}
+		fcout<<"lui $t0,0"<<endl<<"srl $t0,$t0,16"<<endl;
+		fcout<<"nor $a0,$a0,$t0"<<endl;
+	}
+	else if(temp->cur_childs > 3)
+	{
+		 conditional_code_generation(temp->child[1]);
+		 fcout<<"sw $a0, 0($sp)"<<std::endl<<"addi $sp,$sp,-4"<<endl;
+		 expr_code_generation(temp->child[4]);
+		 fcout<<"addi $sp,$sp,4"<<endl;
+		 operations_code(temp->child[3]);
+	}
+	else
+	{
+		if(temp->cur_childs > 0 )
+		{
+			std::string temp2 = temp->child[0]->name;
+			if(temp2 == "const_block")
+			{
+				if((string)temp->child[0]->child[0]->name == "CHARACTER")
+				{	
+					std::string first = temp->child[0]->child[0]->child[0]->name;
+					first = first.substr(1,first.length()-2);
+					int no = first[0];
+					cout<<no<<endl<<first<<endl;
+					std::stringstream ss;
+					ss <<(std::hex)<< no;
+					cout<<no<<endl<<ss.str()<<endl;
+					std::string res (ss.str());
+					fcout<<"lui $a0, 0x"<<res<<std::endl;
+					fcout<<"srl $a0, $a0, 16"<<std::endl;
+				}
+				else 
+				{
+					std::string first = temp->child[0]->child[0]->child[0]->name;
+					std::stringstream ss(first),yy;
+					int no;
+					ss >> no;
+					yy<< std::hex << no;
+					std::string res (yy.str());
+					fcout<<"lui $a0, 0x"<<res<<std::endl;
+					fcout<<"srl $a0, $a0, 16"<<std::endl;
+				}
+			}
+			else if(temp2 == "ass_var_block")
+			{
+				std::string first = temp->child[0]->child[0]->child[0]->child[0]->name;
+				//fcout<<"lw $a0, "<<first.substr(1,first.length()-1)<<"($0)"<<std::endl;
+				code_generation_ass_var_block(temp->child[0],"$a0","lw");
+			}
+			else if(temp2 == "function_call_block")
+			{
+				function_call_block_code_generation(temp->child[0]);
+			}
+		}
+	}
+}
+void function_call_block_code_generation(node *temp)
+{
+	fcout<<"sw $ra,0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+	if(function_2==1)
+	{
+		for(int i=0;i<function_vars.size();i++)
+		{
+			fcout<<"lw $a0, "<<function_vars[i]<<"($0)"<<endl;
+			fcout<<"sw $a0, 0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+		}
+	}
+	function_var_block_code_generation(temp->child[2]);
+	fcout<<"jal "<<temp->child[0]->child[0]->name<<endl;
+	if(function_2==1)
+	{
+		for(int i=0;i<function_vars.size();i++)
+		{
+			fcout<<"addi $sp,$sp,4"<<endl<<"lw $t0, 0($sp)"<<endl;
+			fcout<<"sw $t0, "<<function_vars[i]<<"($0)"<<endl;
+		}
+	}
+	fcout<<"addi $sp,$sp,4"<<endl<<"lw $ra,0($sp)"<<endl;
+}
+void function_var_block_code_generation(node *temp)
+{
+	if(temp->cur_childs == 3)
+	{
+		conditional_code_generation(temp->child[0]);
+		fcout<<"sw $a0,0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+		function_var_block_code_generation(temp->child[2]);
+	}
+	else
+	{
+		conditional_code_generation(temp->child[0]);
+		fcout<<"sw $a0,0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+	}
+}
+void conditional_code_generation(node *temp)
+{
+	if(temp->cur_childs == 3)
+	{
+		expr_code_generation(temp->child[0]);
+		fcout<<"sw $a0,0($sp)"<<endl<<"addi $sp,$sp,-4"<<endl;
+		conditional_code_generation(temp->child[2]);
+		fcout<<"addi $sp,$sp,4"<<endl;
+		fcout<<"lw $t0,0($sp)"<<endl;
+		conditional_operations_code(temp->child[1]);
+	}
+	else if(temp->cur_childs == 2)
+	{
+		expr_code_generation(temp->child[1]);
+		fcout<<"slti $a0,$a0,0"<<endl;
+	}
+	else
+	{
+		if((string)temp->child[0]->name == "expr")
+		{
+			expr_code_generation(temp->child[0]);
+		}
+		else
+		{
+
+			if((string)temp->child[0]->child[0]->name == "TRUE_1")
+			{
+				fcout<<"lui $a0,0x1"<<endl<<"srl $a0,$a0,16"<<endl;
+			}
+			else 
+			{
+				fcout<<"lui $a0,0x0"<<endl<<"srl $a0,$a0,16"<<endl;
+			}
+		}
+	}
+}
+void conditional_operations_code(node *temp)
+{
+	string type = temp->name;
+	if(type == "arith_condition_op")
+	{
+		string operation = temp->child[0]->name;
+		if(operation == "EQ")
+		{
+			fcout<<"slt $t1,$a0,$t0"<<endl<<"slt $a0, $t0,$a0"<<endl<<"or $a0,$t1,$a0"<<endl<<"lui $t4,0x1"<<endl<<"srl $t4,$t4,16"<<endl<<"sub $a0,$t4,$a0"<<endl;
+		}
+		else if(operation == "NOTEQ")
+		{
+			fcout<<"slt $t1,$a0,$t0"<<endl<<"slt $a0, $t0,$a0"<<endl<<"or $a0,$t1,$a0"<<endl<<"lui $t4,0x1"<<endl<<"srl $t4,$t4,16"<<endl;
+		}
+		else if(operation == "GT")
+		{
+			fcout<<"slt $a0,$a0,$t0"<<endl;
+		}
+		else if(operation == "LT")
+		{
+			fcout<<"slt $a0,$t0,$a0"<<endl;
+		}
+		else if(operation == "GE")
+		{
+			fcout<<"slt $t5,$a0,$t0"<<endl;
+			fcout<<"slt $t1,$a0,$t0"<<endl<<"slt $a0, $t0,$a0"<<endl<<"or $a0,$t1,$a0"<<endl<<"lui $t4,0x1"<<endl<<"srl $t4,$t4,16"<<endl<<"sub $a0,$t4,$a0"<<endl;
+			fcout<<"or $a0,$t5,$a0"<<endl;
+		}
+		else if(operation == "LE")
+		{
+			fcout<<"slt $t5,$t0,$a0"<<endl;
+			fcout<<"slt $t1,$a0,$t0"<<endl<<"slt $a0, $t0,$a0"<<endl<<"or $a0,$t1,$a0"<<endl<<"lui $t4,0x1"<<endl<<"srl $t4,$t4,16"<<endl<<"sub $a0,$t4,$a0"<<endl;
+			fcout<<"or $a0,$t5,$a0"<<endl;
+		}
+		else 
+		{
+			fcout<<"slt $t1, $a0,$t0"<<endl<<"slt $a0, $t0,$a0"<<endl<<"or $a0,$t1,$a0"<<endl<<"lui $t4,0x1"<<endl<<"srl $t4,$t4,16"<<endl;
+		}
+	
+	}
+	else 
+	{
+		string operation = temp->child[0]->name;
+		if(operation == "AND")
+		{
+			fcout<<"lui $t1,0x0"<<endl<<"srl $t1,$t1,16"<<endl;
+			fcout<<"slt $a0,$t1,$a0"<<endl<<"slt $t2,$t1,$t0"<<endl<<"and $a0,$a0,$t2"<<endl;
+		}
+		else if(operation == "OR")
+		{
+			fcout<<"lui $t1,0x0"<<endl<<"srl $t1,$t1,16"<<endl;
+			fcout<<"slt $a0,$t1,$a0"<<endl<<"slt $t2,$t1,$t0"<<endl<<"or $a0,$a0,$t2"<<endl;
+		}
+	}
 }

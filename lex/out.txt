@@ -1,0 +1,462 @@
+<keyword : 'int'> <identifier : '$a'> <operator : ','> <identifier : '$bd'> <keyword : '['> <constant : '5'> <keyword : ']'> <keyword : ';'> 
+<identifier : '$a'> <operator : '='> <constant : '5'> <keyword : ';'> 
+<keyword : 'function'>  ** syntax error
+<fidentifier : 'abc'> <keyword : '('> <keyword : 'int'> <identifier : '$d'> <operator : ','> <keyword : 'char'> <identifier : '$c'> <keyword : ')'> <keyword : '{'> 
+<identifier : '$d'> <operator : '='> <constant : '10'> <keyword : ';'> 
+<keyword : 'char'> <identifier : '$e'> <keyword : '['> <constant : '2'> <keyword : ']'> <operator : ','> <identifier : '$f'> <keyword : '['> <constant : '5'> <keyword : ']'> <keyword : ';'> 
+<keyword : '}'> 
+
+<keyword : 'function'> <fidentifier : 'efg'> <keyword : '('> <keyword : 'int'> <identifier : '$d'> <operator : ','> <keyword : 'char'> <identifier : '$c'> <keyword : ')'> <keyword : '{'> 
+<keyword : 'int'> <identifier : '$e'> <keyword : '['> <constant : '10'> <keyword : ']'> <keyword : ';'> 
+<identifier : '$d'> <operator : '='> <constant : '11'> <keyword : ';'> 
+<keyword : '}'> 
+
+
+<keyword : 'function'> <fidentifier : 'db'> <keyword : '('> <keyword : 'int'> <identifier : '$a'> <keyword : ')'> <keyword : '{'> 
+<identifier : '$a'> <operator : '='> <constant : '10'> <keyword : ';'> 
+<identifier : '$a'> <operator : '='> <keyword : 'character'> <keyword : ';'> 
+<keyword : '}'> 
+
+<keyword : 'int'> <identifier : '$f'> <operator : ','> <identifier : '$e'> <keyword : '['> <constant : '10'> <keyword : ']'> <keyword : ';'> 
+
+
+-----------------   TREE   ------------------
+
+super_block
+|
+\___start_block
+	|
+	\___block
+		|
+		\___general_block
+			|
+			\___general_stmt
+			|   |
+			|   \___declaration_block
+			|   |   |
+			|   |   \___data_type
+			|   |   |   |
+			|   |   |   \___INT
+			|   |   |
+			|   |   \___var_list
+			|   |   	|
+			|   |   	\___var_block
+			|   |   	|   |
+			|   |   	|   \___VAR
+			|   |   	|   	|
+			|   |   	|   	\___$a
+			|   |   	|
+			|   |   	\___COMMA
+			|   |   	|
+			|   |   	\___var_list
+			|   |   		|
+			|   |   		\___array_block
+			|   |   			|
+			|   |   			\___var_block
+			|   |   			|   |
+			|   |   			|   \___VAR
+			|   |   			|   	|
+			|   |   			|   	\___$bd
+			|   |   			|
+			|   |   			\___OB
+			|   |   			|
+			|   |   			\___num
+			|   |   			|   |
+			|   |   			|   \___5
+			|   |   			|
+			|   |   			\___CB
+			|   |
+			|   \___TERMINATOR
+			|
+			\___general_block
+				|
+				\___general_stmt
+				|   |
+				|   \___assignment_block
+				|   |   |
+				|   |   \___ass_var_block
+				|   |   |   |
+				|   |   |   \___var_block
+				|   |   |   	|
+				|   |   |   	\___VAR
+				|   |   |   		|
+				|   |   |   		\___$a
+				|   |   |
+				|   |   \___ASSIGN
+				|   |   |
+				|   |   \___conditional_expr
+				|   |   	|
+				|   |   	\___expr
+				|   |   		|
+				|   |   		\___const_block
+				|   |   			|
+				|   |   			\___NUM
+				|   |   				|
+				|   |   				\___5
+				|   |
+				|   \___TERMINATOR
+				|
+				\___error
+					|
+					\___start_block
+						|
+						\___block
+							|
+							\___function_def_block
+							|   |
+							|   \___FUNCTION
+							|   |
+							|   \___IDENT
+							|   |   |
+							|   |   \___abc
+							|   |
+							|   \___OP
+							|   |
+							|   \___argument_list_block
+							|   |   |
+							|   |   \___data_type
+							|   |   |   |
+							|   |   |   \___INT
+							|   |   |
+							|   |   \___var_block
+							|   |   |   |
+							|   |   |   \___VAR
+							|   |   |   	|
+							|   |   |   	\___$d
+							|   |   |
+							|   |   \___COMMA
+							|   |   |
+							|   |   \___argument_list_block
+							|   |   	|
+							|   |   	\___data_type
+							|   |   	|   |
+							|   |   	|   \___CHAR
+							|   |   	|
+							|   |   	\___var_block
+							|   |   		|
+							|   |   		\___VAR
+							|   |   			|
+							|   |   			\___$c
+							|   |
+							|   \___CP
+							|   |
+							|   \___OCB
+							|   |
+							|   \___general_block
+							|   |   |
+							|   |   \___general_stmt
+							|   |   |   |
+							|   |   |   \___assignment_block
+							|   |   |   |   |
+							|   |   |   |   \___ass_var_block
+							|   |   |   |   |   |
+							|   |   |   |   |   \___var_block
+							|   |   |   |   |   	|
+							|   |   |   |   |   	\___VAR
+							|   |   |   |   |   		|
+							|   |   |   |   |   		\___$d
+							|   |   |   |   |
+							|   |   |   |   \___ASSIGN
+							|   |   |   |   |
+							|   |   |   |   \___conditional_expr
+							|   |   |   |   	|
+							|   |   |   |   	\___expr
+							|   |   |   |   		|
+							|   |   |   |   		\___const_block
+							|   |   |   |   			|
+							|   |   |   |   			\___NUM
+							|   |   |   |   				|
+							|   |   |   |   				\___10
+							|   |   |   |
+							|   |   |   \___TERMINATOR
+							|   |   |
+							|   |   \___general_block
+							|   |   	|
+							|   |   	\___general_stmt
+							|   |   	|   |
+							|   |   	|   \___declaration_block
+							|   |   	|   |   |
+							|   |   	|   |   \___data_type
+							|   |   	|   |   |   |
+							|   |   	|   |   |   \___CHAR
+							|   |   	|   |   |
+							|   |   	|   |   \___var_list
+							|   |   	|   |   	|
+							|   |   	|   |   	\___array_block
+							|   |   	|   |   	|   |
+							|   |   	|   |   	|   \___var_block
+							|   |   	|   |   	|   |   |
+							|   |   	|   |   	|   |   \___VAR
+							|   |   	|   |   	|   |   	|
+							|   |   	|   |   	|   |   	\___$e
+							|   |   	|   |   	|   |
+							|   |   	|   |   	|   \___OB
+							|   |   	|   |   	|   |
+							|   |   	|   |   	|   \___num
+							|   |   	|   |   	|   |   |
+							|   |   	|   |   	|   |   \___2
+							|   |   	|   |   	|   |
+							|   |   	|   |   	|   \___CB
+							|   |   	|   |   	|
+							|   |   	|   |   	\___COMMA
+							|   |   	|   |   	|
+							|   |   	|   |   	\___var_list
+							|   |   	|   |   		|
+							|   |   	|   |   		\___array_block
+							|   |   	|   |   			|
+							|   |   	|   |   			\___var_block
+							|   |   	|   |   			|   |
+							|   |   	|   |   			|   \___VAR
+							|   |   	|   |   			|   	|
+							|   |   	|   |   			|   	\___$f
+							|   |   	|   |   			|
+							|   |   	|   |   			\___OB
+							|   |   	|   |   			|
+							|   |   	|   |   			\___num
+							|   |   	|   |   			|   |
+							|   |   	|   |   			|   \___5
+							|   |   	|   |   			|
+							|   |   	|   |   			\___CB
+							|   |   	|   |
+							|   |   	|   \___TERMINATOR
+							|   |   	|
+							|   |   	\___/general_block
+							|   |
+							|   \___CCB
+							|
+							\___block
+								|
+								\___function_def_block
+								|   |
+								|   \___FUNCTION
+								|   |
+								|   \___IDENT
+								|   |   |
+								|   |   \___efg
+								|   |
+								|   \___OP
+								|   |
+								|   \___argument_list_block
+								|   |   |
+								|   |   \___data_type
+								|   |   |   |
+								|   |   |   \___INT
+								|   |   |
+								|   |   \___var_block
+								|   |   |   |
+								|   |   |   \___VAR
+								|   |   |   	|
+								|   |   |   	\___$d
+								|   |   |
+								|   |   \___COMMA
+								|   |   |
+								|   |   \___argument_list_block
+								|   |   	|
+								|   |   	\___data_type
+								|   |   	|   |
+								|   |   	|   \___CHAR
+								|   |   	|
+								|   |   	\___var_block
+								|   |   		|
+								|   |   		\___VAR
+								|   |   			|
+								|   |   			\___$c
+								|   |
+								|   \___CP
+								|   |
+								|   \___OCB
+								|   |
+								|   \___general_block
+								|   |   |
+								|   |   \___general_stmt
+								|   |   |   |
+								|   |   |   \___declaration_block
+								|   |   |   |   |
+								|   |   |   |   \___data_type
+								|   |   |   |   |   |
+								|   |   |   |   |   \___INT
+								|   |   |   |   |
+								|   |   |   |   \___var_list
+								|   |   |   |   	|
+								|   |   |   |   	\___array_block
+								|   |   |   |   		|
+								|   |   |   |   		\___var_block
+								|   |   |   |   		|   |
+								|   |   |   |   		|   \___VAR
+								|   |   |   |   		|   	|
+								|   |   |   |   		|   	\___$e
+								|   |   |   |   		|
+								|   |   |   |   		\___OB
+								|   |   |   |   		|
+								|   |   |   |   		\___num
+								|   |   |   |   		|   |
+								|   |   |   |   		|   \___10
+								|   |   |   |   		|
+								|   |   |   |   		\___CB
+								|   |   |   |
+								|   |   |   \___TERMINATOR
+								|   |   |
+								|   |   \___general_block
+								|   |   	|
+								|   |   	\___general_stmt
+								|   |   	|   |
+								|   |   	|   \___assignment_block
+								|   |   	|   |   |
+								|   |   	|   |   \___ass_var_block
+								|   |   	|   |   |   |
+								|   |   	|   |   |   \___var_block
+								|   |   	|   |   |   	|
+								|   |   	|   |   |   	\___VAR
+								|   |   	|   |   |   		|
+								|   |   	|   |   |   		\___$d
+								|   |   	|   |   |
+								|   |   	|   |   \___ASSIGN
+								|   |   	|   |   |
+								|   |   	|   |   \___conditional_expr
+								|   |   	|   |   	|
+								|   |   	|   |   	\___expr
+								|   |   	|   |   		|
+								|   |   	|   |   		\___const_block
+								|   |   	|   |   			|
+								|   |   	|   |   			\___NUM
+								|   |   	|   |   				|
+								|   |   	|   |   				\___11
+								|   |   	|   |
+								|   |   	|   \___TERMINATOR
+								|   |   	|
+								|   |   	\___/general_block
+								|   |
+								|   \___CCB
+								|
+								\___block
+									|
+									\___function_def_block
+									|   |
+									|   \___FUNCTION
+									|   |
+									|   \___IDENT
+									|   |   |
+									|   |   \___db
+									|   |
+									|   \___OP
+									|   |
+									|   \___argument_list_block
+									|   |   |
+									|   |   \___data_type
+									|   |   |   |
+									|   |   |   \___INT
+									|   |   |
+									|   |   \___var_block
+									|   |   	|
+									|   |   	\___VAR
+									|   |   		|
+									|   |   		\___$a
+									|   |
+									|   \___CP
+									|   |
+									|   \___OCB
+									|   |
+									|   \___general_block
+									|   |   |
+									|   |   \___general_stmt
+									|   |   |   |
+									|   |   |   \___assignment_block
+									|   |   |   |   |
+									|   |   |   |   \___ass_var_block
+									|   |   |   |   |   |
+									|   |   |   |   |   \___var_block
+									|   |   |   |   |   	|
+									|   |   |   |   |   	\___VAR
+									|   |   |   |   |   		|
+									|   |   |   |   |   		\___$a
+									|   |   |   |   |
+									|   |   |   |   \___ASSIGN
+									|   |   |   |   |
+									|   |   |   |   \___conditional_expr
+									|   |   |   |   	|
+									|   |   |   |   	\___expr
+									|   |   |   |   		|
+									|   |   |   |   		\___const_block
+									|   |   |   |   			|
+									|   |   |   |   			\___NUM
+									|   |   |   |   				|
+									|   |   |   |   				\___10
+									|   |   |   |
+									|   |   |   \___TERMINATOR
+									|   |   |
+									|   |   \___general_block
+									|   |   	|
+									|   |   	\___general_stmt
+									|   |   	|   |
+									|   |   	|   \___assignment_block
+									|   |   	|   |   |
+									|   |   	|   |   \___ass_var_block
+									|   |   	|   |   |   |
+									|   |   	|   |   |   \___var_block
+									|   |   	|   |   |   	|
+									|   |   	|   |   |   	\___VAR
+									|   |   	|   |   |   		|
+									|   |   	|   |   |   		\___$a
+									|   |   	|   |   |
+									|   |   	|   |   \___ASSIGN
+									|   |   	|   |   |
+									|   |   	|   |   \___conditional_expr
+									|   |   	|   |   	|
+									|   |   	|   |   	\___expr
+									|   |   	|   |   		|
+									|   |   	|   |   		\___const_block
+									|   |   	|   |   			|
+									|   |   	|   |   			\___CHARACTER
+									|   |   	|   |   				|
+									|   |   	|   |   				\___-s-
+									|   |   	|   |
+									|   |   	|   \___TERMINATOR
+									|   |   	|
+									|   |   	\___/general_block
+									|   |
+									|   \___CCB
+									|
+									\___block
+										|
+										\___general_block
+											|
+											\___general_stmt
+											|   |
+											|   \___declaration_block
+											|   |   |
+											|   |   \___data_type
+											|   |   |   |
+											|   |   |   \___INT
+											|   |   |
+											|   |   \___var_list
+											|   |   	|
+											|   |   	\___var_block
+											|   |   	|   |
+											|   |   	|   \___VAR
+											|   |   	|   	|
+											|   |   	|   	\___$f
+											|   |   	|
+											|   |   	\___COMMA
+											|   |   	|
+											|   |   	\___var_list
+											|   |   		|
+											|   |   		\___array_block
+											|   |   			|
+											|   |   			\___var_block
+											|   |   			|   |
+											|   |   			|   \___VAR
+											|   |   			|   	|
+											|   |   			|   	\___$e
+											|   |   			|
+											|   |   			\___OB
+											|   |   			|
+											|   |   			\___num
+											|   |   			|   |
+											|   |   			|   \___10
+											|   |   			|
+											|   |   			\___CB
+											|   |
+											|   \___TERMINATOR
+											|
+											\___/general_block
+Syntax err
