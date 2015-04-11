@@ -1,4 +1,11 @@
 *.swp
 __pycache__
 lex.yy.c
-out
+outlex/parser
+lex/parser.cpp
+lex/scanner.cpp
+lex/out.png
+lex/sym_tab_out.txt
+
+lex/syntax_graph.gav
+lex/syntax_graph.gv
