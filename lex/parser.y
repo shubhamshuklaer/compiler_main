@@ -46,6 +46,7 @@
 	string func_name=main_func_name;
 	string garbage_dt="garbage";
 	string data_type=garbage_dt;
+	struct node* func_terminator_node;
 
 	void insert_var_in_symbol_table(string func_name,string var_name,string data_type,int var_type=0,int arr_size=0);
 	sym_table<func_elem,func_def> *gst_obj;
@@ -659,7 +660,6 @@ function_def_block
 							mk_child($$, $6);
 							mk_child($$, $7);
 							mk_child($$, $8);
-							func_name=main_func_name;
 						}
 					;
 
@@ -667,7 +667,6 @@ ident
 				  :    IDENT{
 						$$ = mk_node("IDENT");
 						struct node *temp = mk_node(yylval.terminal_value);
-						func_name=string(yylval.terminal_value);
 						mk_child($$,temp);
 						}
 					;
@@ -726,9 +725,9 @@ general_stmt
 str 				: 	STRING{
 							struct node *temp = mk_node(yylval.terminal_value);
 							$$ = mk_node("str");
-							$1 = mk_node("STRING")
+							$1 = mk_node("STRING");
 							mk_child($$, temp);
-							$$->type = "string"
+							$$->type = "string";
 						}
 					;
 
@@ -1297,7 +1296,7 @@ int main(){
     syntax_graph=agopen(graph_name, Agdirected, NULL);
 	root = init_tree();
 	gst_obj=new sym_table<func_elem,func_def>;
-	vector<pair<string,string> > temp_vctr {pair<string,string>("__main__","__main__")};
+	vector<pair<string,var_def*> > temp_vctr {pair<string,var_def*>("__main__",new var_def(""))};
 	gst_obj->insert(main_func_name,new func_def(temp_vctr,""));
 
 	//yylex();
@@ -1398,35 +1397,71 @@ void printtree(node *root, int level){
 	if(strcmp(root->name,"declaration_block")==0){
 		data_type=string(root->child[0]->child[0]->name);	
 		transform(data_type.begin(),data_type.end(),data_type.begin(),::tolower);
-		struct node *var_list_child=root->child[1]->child[0];
-		if(strcmp(var_list_child->name,"var_block")==0){
-			struct node *var_block_child=var_list_child->child[0];
-			string var_name=string(var_block_child->child[0]->name);
-			if(strcmp(var_block_child->name,"VAR")==0){
-				insert_var_in_symbol_table(func_name,var_name,data_type);	
-			}else if(strcmp(var_block_child->name,"POINTER")==0){
-				insert_var_in_symbol_table(func_name,var_name,data_type,1);	
-			}
-		}else if(strcmp(var_list_child->name,"array_block")==0){
-			struct node *var_block=var_list_child->child[0];
-			struct node *arr_size_block=var_list_child->child[2];
+		struct node *var_list_block=root->child[1];
+		while(var_list_block!=NULL){
+			struct node *var_list_child=var_list_block->child[0];
+			if(strcmp(var_list_child->name,"var_block")==0){
+				struct node *var_block_child=var_list_child->child[0];
+				string var_name=string(var_block_child->child[0]->name);
+				if(strcmp(var_block_child->name,"VAR")==0){
+					insert_var_in_symbol_table(func_name,var_name,data_type);	
+				}else if(strcmp(var_block_child->name,"POINTER")==0){
+					insert_var_in_symbol_table(func_name,var_name,data_type,1);	
+				}
+			}else if(strcmp(var_list_child->name,"array_block")==0){
+				struct node *var_block=var_list_child->child[0];
+				struct node *arr_size_block=var_list_child->child[2];
 
-			struct node *var_block_child=var_block->child[0];
-			string var_name=string(var_block_child->child[0]->name);
-			
-			int arr_size=atoi(arr_size_block->child[0]->name);
-			if(strcmp(var_block_child->name,"VAR")==0){
-				insert_var_in_symbol_table(func_name,var_name,data_type,2,arr_size);	
-			}else if(strcmp(var_block_child->name,"POINTER")==0){
-				insert_var_in_symbol_table(func_name,var_name,data_type,3,arr_size);	
+				struct node *var_block_child=var_block->child[0];
+				string var_name=string(var_block_child->child[0]->name);
+				
+				int arr_size=atoi(arr_size_block->child[0]->name);
+				if(strcmp(var_block_child->name,"VAR")==0){
+					insert_var_in_symbol_table(func_name,var_name,data_type,2,arr_size);	
+				}else if(strcmp(var_block_child->name,"POINTER")==0){
+					insert_var_in_symbol_table(func_name,var_name,data_type,3,arr_size);	
+				}
 			}
+			if(var_list_block->cur_childs==3)
+				var_list_block=var_list_block->child[2];
+			else
+				var_list_block=NULL;
 		}
 	}else if(strcmp(root->name,"function_def_block")==0){
 		struct node *func_name_node=root->child[1];
 		struct node *argument_list_block=root->child[3];
 		string temp_func_name=string(func_name_node->child[0]->name);
-		vector<pair<string,string> > temp_arg_list;
+		func_name=temp_func_name;
+		func_terminator_node=root->child[7];//the CCB
+		vector<pair<string,var_def*> > temp_arg_list;
+		//Now finding the argument list
+		while(argument_list_block!=NULL){
+			//Finding the data type
+			struct node *data_type_node=argument_list_block->child[0];
+			string tdt;
+			var_def *temp_def;
+			tdt=string(data_type_node->name);	
+			transform(tdt.begin(),tdt.end(),tdt.begin(),::tolower);
+			
+			//Finding the variable name
+			struct node *var_block_child=argument_list_block->child[1]->child[0];
+			string var_name=string(var_block_child->child[0]->name);
+			if(strcmp(var_block_child->name,"VAR")==0){
+				temp_def=new var_def(tdt);
+			}else if(strcmp(var_block_child->name,"POINTER")==0){
+				temp_def=new var_def(tdt,1);
+			}
+			temp_arg_list.push_back(pair<string,var_def*>(var_name,temp_def));
+			////////////////////////////////////
+			if(argument_list_block->cur_childs==4)
+				argument_list_block=argument_list_block->child[3];
+			else
+				argument_list_block=NULL;
+		}	
+		////////////////////////////////////////
 		gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
+	}else if(root==func_terminator_node){
+		func_name=main_func_name;
 	}
 
 	for (int i = 0; i < root->cur_childs; ++i){

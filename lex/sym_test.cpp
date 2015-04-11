@@ -33,9 +33,9 @@ void func_insertion_code(){
 	int ret_val;
 	//inserting a func 
 	// double foo(int,float)
-	vector<pair<string,string> > _arg_list;
-	_arg_list.push_back(pair<string,string>("int","$a"));
-	_arg_list.push_back(pair<string,string>("float","$b"));
+	vector<pair<string,var_def *> > _arg_list;
+	_arg_list.push_back(pair<string,var_def*>("$a",new var_def("int")));
+	_arg_list.push_back(pair<string,var_def*>("$b",new var_def("int")));
 	func_def *_fd=new func_def(_arg_list,"double");
 	ret_val=gst_obj->insert("foo",_fd);
 
@@ -52,9 +52,9 @@ void check_func_type_code(){
 	//create a func_def obj with arugments which you wanna check for correctness
 	
 	//take eg of func double foo(int,float)
-	vector<pair<string,string> > _arg_list;
-	_arg_list.push_back(pair<string,string>("int",""));
-	_arg_list.push_back(pair<string,string>("float",""));
+	vector<pair<string,var_def *> > _arg_list;
+	_arg_list.push_back(pair<string,var_def*>("",new var_def("int")));
+	_arg_list.push_back(pair<string,var_def*>("",new var_def("int")));
 	func_def *_fd=new func_def(_arg_list,"double");
 
 	ret_val=gst_obj->check_type("foo",_fd);
