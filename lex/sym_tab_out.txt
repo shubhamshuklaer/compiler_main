@@ -5,6 +5,10 @@ Insertion successfull
 Insertion successfull
 Insertion successfull
 Insertion successfull
+Insertion successfull
+Insertion successfull
+Insertion successfull
+Insertion successfull
 key : __main__
        func Def
                    Arg list : 
@@ -24,7 +28,7 @@ key : __main__
                                       Var Def
                                                   data type int
                                                    var_type 2
-                                                   arr_size 100
+                                                   arr_size 5
                         key : $e
                                       Var Def
                                                   data type int
@@ -45,21 +49,31 @@ key : abc
                                                    arr_size 0
                             $c
                                       Var Def
-                                                  data type data_type
+                                                  data type char
                                                    var_type 0
                                                    arr_size 0
                    Ret type : 
        FST   : 
+                        key : $c
+                                      Var Def
+                                                  data type char
+                                                   var_type 0
+                                                   arr_size 0
+                        key : $d
+                                      Var Def
+                                                  data type int
+                                                   var_type 0
+                                                   arr_size 0
                         key : $e
                                       Var Def
-                                                  data type float
+                                                  data type char
                                                    var_type 2
-                                                   arr_size 10
+                                                   arr_size 2
                         key : $f
                                       Var Def
-                                                  data type float
+                                                  data type char
                                                    var_type 2
-                                                   arr_size 100
+                                                   arr_size 5
 key : efg
        func Def
                    Arg list : 
@@ -70,11 +84,21 @@ key : efg
                                                    arr_size 0
                             $c
                                       Var Def
-                                                  data type data_type
+                                                  data type char
                                                    var_type 0
                                                    arr_size 0
                    Ret type : 
        FST   : 
+                        key : $c
+                                      Var Def
+                                                  data type char
+                                                   var_type 0
+                                                   arr_size 0
+                        key : $d
+                                      Var Def
+                                                  data type int
+                                                   var_type 0
+                                                   arr_size 0
                         key : $e
                                       Var Def
                                                   data type int

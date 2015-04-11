@@ -83,6 +83,7 @@ Grammar
    58 general_stmt: declaration_block TERMINATOR
    59             | assignment_block TERMINATOR
    60             | conditional_expr TERMINATOR
+<<<<<<< HEAD
    61             | PRINT str GT str TERMINATOR
 
    62 str: STRING
@@ -191,6 +192,118 @@ Grammar
   143 bit_assgn_op: BIN_AND_ASSIGN
   144             | BIN_IOR_ASSIGN
   145             | BIN_XOR_ASSIGN
+=======
+   61             | PRINT conditional_expr TERMINATOR
+   62             | SCAN ass_var_block TERMINATOR
+   63             | RETURN conditional_expr TERMINATOR
+
+   64 function_call_block: IDENT OP function_var_list CP
+
+   65 function_var_list: conditional_expr COMMA function_var_list
+   66                  | conditional_expr
+
+   67 declaration_block: data_type var_list
+
+   68 var_list: var_block COMMA var_list
+   69         | var_block
+   70         | array_block COMMA var_list
+   71         | array_block
+
+   72 data_type: INT
+   73          | FLOAT
+   74          | DOUBLE
+   75          | CHAR
+   76          | LONG
+
+   77 var_block: VAR
+   78          | POINTER
+
+   79 array_block: var_block OB num CB
+
+   80 num: NUM
+
+   81 ass_var_block: var_block
+   82              | DREF
+   83              | var_block OB conditional_expr CB
+
+   84 assignment_block: ass_var_block ASSIGN conditional_expr
+   85                 | ass_var_block arith_assgn_op conditional_expr
+   86                 | ass_var_block bit_assgn_op conditional_expr
+   87                 | ass_var_block ASSIGN assignment_block
+   88                 | ass_var_block arith_assgn_op assignment_block
+   89                 | ass_var_block bit_assgn_op assignment_block
+   90                 | OP assignment_block CP
+
+   91 expr: ass_var_block arith_binary_op expr
+   92     | ass_var_block arith_unary_op expr
+   93     | ass_var_block bit_binary_op expr
+   94     | bit_unary_op ass_var_block
+   95     | arith_unary_op ass_var_block expr
+   96     | ass_var_block
+   97     | const_block
+   98     | function_call_block
+   99     | OP conditional_expr CP arith_binary_op expr
+  100     | OP conditional_expr CP bit_binary_op expr
+  101     | OP conditional_expr CP
+  102     | const_block arith_binary_op expr
+  103     | const_block bit_binary_op expr
+  104     | function_call_block arith_binary_op expr
+  105     | function_call_block bit_binary_op expr
+  106     | bit_unary_op const_block
+  107     | %empty
+
+  108 conditional_expr: expr arith_condition_op conditional_expr
+  109                 | expr bit_condition_op conditional_expr
+  110                 | expr
+  111                 | fixed_condition
+  112                 | bit_unary_condition_op expr
+
+  113 arith_condition_op: EQ
+  114                   | NOTEQ
+  115                   | GT
+  116                   | LT
+  117                   | GE
+  118                   | LE
+  119                   | LTGT
+
+  120 bit_condition_op: AND
+  121                 | OR
+
+  122 bit_unary_condition_op: NOT_1
+
+  123 fixed_condition: TRUE_1
+  124                | FALSE_1
+
+  125 arith_binary_op: ADD
+  126                | SUB
+  127                | MULT
+  128                | DIV
+  129                | EXP
+  130                | MOD
+
+  131 arith_unary_op: INC
+  132               | DEC
+
+  133 bit_binary_op: BIN_AND
+  134              | BIN_OR
+  135              | BIN_XOR
+  136              | BIN_LEFT
+  137              | BIN_RIGHT
+
+  138 bit_unary_op: BIN_NOT
+
+  139 arith_assgn_op: ADD_ASSIGN
+  140               | SUB_ASSIGN
+  141               | MULT_ASSIGN
+  142               | DIV_ASSIGN
+  143               | MOD_ASSIGN
+  144               | LEFT_ASSIGN
+  145               | RIGHT_ASSIGN
+
+  146 bit_assgn_op: BIN_AND_ASSIGN
+  147             | BIN_IOR_ASSIGN
+  148             | BIN_XOR_ASSIGN
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 Terminals, with rules where they appear
@@ -202,6 +315,7 @@ ELSE (259) 23 24
 WHILE (260) 29 31
 DO (261) 31
 FOR (262) 33
+<<<<<<< HEAD
 AND (263) 117
 OR (264) 118
 NOT_1 (265) 119
@@ -257,64 +371,134 @@ GT (314) 61 112
 LT (315) 113
 GE (316) 114
 LE (317) 115
+=======
+AND (263) 120
+OR (264) 121
+NOT_1 (265) 122
+TRUE_1 (266) 123
+FALSE_1 (267) 124
+INT (268) 72
+LONG (269) 76
+CHAR (270) 75
+FLOAT (271) 73
+DOUBLE (272) 74
+ADD (273) 125
+SUB (274) 126
+MULT (275) 127
+DIV (276) 128
+EXP (277) 129
+MOD (278) 130
+INC (279) 131
+DEC (280) 132
+BIN_NOT (281) 138
+BIN_AND (282) 133
+BIN_OR (283) 134
+BIN_XOR (284) 135
+BIN_LEFT (285) 136
+BIN_RIGHT (286) 137
+BIN_AND_ASSIGN (287) 146
+BIN_IOR_ASSIGN (288) 147
+BIN_XOR_ASSIGN (289) 148
+ADD_ASSIGN (290) 139
+SUB_ASSIGN (291) 140
+MULT_ASSIGN (292) 141
+DIV_ASSIGN (293) 142
+MOD_ASSIGN (294) 143
+LEFT_ASSIGN (295) 144
+RIGHT_ASSIGN (296) 145
+NUM (297) 11 80
+IDENT (298) 7 8 9 54 64
+VAR (299) 77
+POINTER (300) 78
+DREF (301) 82
+ASSIGN (302) 84 87
+TERMINATOR (303) 31 33 38 39 40 41 42 58 59 60 61 62 63
+STRING (304) 10
+CHARACTER (305) 12
+OP (306) 22 23 24 29 31 33 53 64 90 99 100 101
+CP (307) 22 23 24 29 31 33 53 64 90 99 100 101
+CB (308) 79 83
+OB (309) 79 83
+OCB (310) 8 9 22 23 24 29 31 33 53
+CCB (311) 8 9 22 23 24 29 31 33 53
+EQ (312) 113
+NOTEQ (313) 114
+GT (314) 115
+LT (315) 116
+GE (316) 117
+LE (317) 118
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 COMMENT (318) 5
 MULTI_COMMENT (319) 6
 DEFINE (320) 7
 IFDEF (321) 8
 IFNDEF (322) 9
 FUNCTION (323) 53
-COMMA (324) 34 35 36 37 44 45 46 47 55 64 67 69
+COMMA (324) 34 35 36 37 44 45 46 47 55 65 68 70
 PRINT (325) 61
+<<<<<<< HEAD
 LTGT (326) 116
+=======
+SCAN (326) 62
+RETURN (327) 63
+LTGT (328) 119
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 Nonterminals, with rules where they appear
 
-$accept (72)
+$accept (74)
     on left: 0
-super_block (73)
+super_block (75)
     on left: 1, on right: 0
-start_block (74)
+start_block (76)
     on left: 2 3 4, on right: 1 2 4 8 9 20
-comment_block (75)
+comment_block (77)
     on left: 5 6, on right: 4 15 19
-defination_block (76)
+defination_block (78)
     on left: 7 8 9, on right: 2 4
+<<<<<<< HEAD
 const_block (77)
     on left: 10 11 12, on right: 7 94 99 100 103
 block (78)
+=======
+const_block (79)
+    on left: 10 11 12, on right: 7 97 102 103 106
+block (80)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
     on left: 13 14 15, on right: 3 13 15
-general_block (79)
+general_block (81)
     on left: 16 17 18 19 20 21, on right: 14 16 17 18 19 22 23 24 29
     31 33 53
-if_else_block (80)
+if_else_block (82)
     on left: 22 23 24, on right: 18 24
-if_condition (81)
+if_condition (83)
     on left: 25, on right: 22 23 24
-loop_block (82)
+loop_block (84)
     on left: 26 27 28, on right: 17
-while_loop_block (83)
+while_loop_block (85)
     on left: 29, on right: 27
-while_condition (84)
+while_condition (86)
     on left: 30, on right: 29
-do_while_loop_block (85)
+do_while_loop_block (87)
     on left: 31, on right: 28
-do_while_condition (86)
+do_while_condition (88)
     on left: 32, on right: 31
-for_loop_block (87)
+for_loop_block (89)
     on left: 33, on right: 26
-for_initialization (88)
+for_initialization (90)
     on left: 34 35 36 37 38 39 40 41 42, on right: 33 34 35 36 37
-for_condition (89)
+for_condition (91)
     on left: 43, on right: 33
-for_update (90)
+for_update (92)
     on left: 44 45 46 47 48 49 50 51 52, on right: 33 44 45 46 47
-function_def_block (91)
+function_def_block (93)
     on left: 53, on right: 13 15
-ident (92)
+ident (94)
     on left: 54, on right: 53
-argument_list_block (93)
+argument_list_block (95)
     on left: 55 56 57, on right: 53 55
+<<<<<<< HEAD
 general_stmt (94)
     on left: 58 59 60 61, on right: 16
 str (95)
@@ -367,6 +551,58 @@ arith_assgn_op (116)
     on left: 136 137 138 139 140 141 142, on right: 84 87
 bit_assgn_op (117)
     on left: 143 144 145, on right: 85 88
+=======
+general_stmt (96)
+    on left: 58 59 60 61 62 63, on right: 16
+function_call_block (97)
+    on left: 64, on right: 34 41 44 48 98 104 105
+function_var_list (98)
+    on left: 65 66, on right: 64 65
+declaration_block (99)
+    on left: 67, on right: 58
+var_list (100)
+    on left: 68 69 70 71, on right: 67 68 70
+data_type (101)
+    on left: 72 73 74 75 76, on right: 55 56 67
+var_block (102)
+    on left: 77 78, on right: 55 56 68 69 79 81 83
+array_block (103)
+    on left: 79, on right: 70 71
+num (104)
+    on left: 80, on right: 79
+ass_var_block (105)
+    on left: 81 82 83, on right: 36 37 39 40 46 47 50 51 62 84 85 86
+    87 88 89 91 92 93 94 95 96
+assignment_block (106)
+    on left: 84 85 86 87 88 89 90, on right: 35 38 45 49 59 87 88 89
+    90
+expr (107)
+    on left: 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106
+    107, on right: 91 92 93 95 99 100 102 103 104 105 108 109 110 112
+conditional_expr (108)
+    on left: 108 109 110 111 112, on right: 25 30 32 43 60 61 63 65
+    66 83 84 85 86 99 100 101 108 109
+arith_condition_op (109)
+    on left: 113 114 115 116 117 118 119, on right: 108
+bit_condition_op (110)
+    on left: 120 121, on right: 109
+bit_unary_condition_op (111)
+    on left: 122, on right: 112
+fixed_condition (112)
+    on left: 123 124, on right: 111
+arith_binary_op (113)
+    on left: 125 126 127 128 129 130, on right: 91 99 102 104
+arith_unary_op (114)
+    on left: 131 132, on right: 36 37 39 40 46 47 50 51 92 95
+bit_binary_op (115)
+    on left: 133 134 135 136 137, on right: 93 100 103 105
+bit_unary_op (116)
+    on left: 138, on right: 94 106
+arith_assgn_op (117)
+    on left: 139 140 141 142 143 144 145, on right: 85 88
+bit_assgn_op (118)
+    on left: 146 147 148, on right: 86 89
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 0
@@ -386,6 +622,7 @@ State 0
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -440,6 +677,67 @@ State 0
     bit_unary_condition_op  go to state 52
     fixed_condition         go to state 53
     bit_unary_op            go to state 54
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    DEFINE         shift, and go to state 27
+    IFDEF          shift, and go to state 28
+    IFNDEF         shift, and go to state 29
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    super_block             go to state 34
+    start_block             go to state 35
+    comment_block           go to state 36
+    defination_block        go to state 37
+    const_block             go to state 38
+    block                   go to state 39
+    general_block           go to state 40
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 46
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 1
@@ -459,6 +757,7 @@ State 1
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -513,6 +812,67 @@ State 1
     bit_unary_condition_op  go to state 52
     fixed_condition         go to state 53
     bit_unary_op            go to state 54
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    DEFINE         shift, and go to state 27
+    IFDEF          shift, and go to state 28
+    IFNDEF         shift, and go to state 29
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    start_block             go to state 60
+    comment_block           go to state 36
+    defination_block        go to state 37
+    const_block             go to state 38
+    block                   go to state 39
+    general_block           go to state 40
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 46
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 2
@@ -521,95 +881,152 @@ State 2
    23              | IF . OP if_condition CP OCB general_block CCB ELSE OCB general_block CCB
    24              | IF . OP if_condition CP OCB general_block CCB ELSE if_else_block
 
+<<<<<<< HEAD
     OP  shift, and go to state 56
+=======
+    OP  shift, and go to state 61
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 3
 
    29 while_loop_block: WHILE . OP while_condition CP OCB general_block CCB
 
+<<<<<<< HEAD
     OP  shift, and go to state 57
+=======
+    OP  shift, and go to state 62
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 4
 
    31 do_while_loop_block: DO . OCB general_block CCB WHILE OP do_while_condition CP TERMINATOR
 
+<<<<<<< HEAD
     OCB  shift, and go to state 58
+=======
+    OCB  shift, and go to state 63
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 5
 
    33 for_loop_block: FOR . OP for_initialization for_condition TERMINATOR for_update CP OCB general_block CCB
 
+<<<<<<< HEAD
     OP  shift, and go to state 59
+=======
+    OP  shift, and go to state 64
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 6
 
+<<<<<<< HEAD
   119 bit_unary_condition_op: NOT_1 .
 
     $default  reduce using rule 119 (bit_unary_condition_op)
+=======
+  122 bit_unary_condition_op: NOT_1 .
+
+    $default  reduce using rule 122 (bit_unary_condition_op)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 7
 
+<<<<<<< HEAD
   120 fixed_condition: TRUE_1 .
 
     $default  reduce using rule 120 (fixed_condition)
+=======
+  123 fixed_condition: TRUE_1 .
+
+    $default  reduce using rule 123 (fixed_condition)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 8
 
+<<<<<<< HEAD
   121 fixed_condition: FALSE_1 .
 
     $default  reduce using rule 121 (fixed_condition)
+=======
+  124 fixed_condition: FALSE_1 .
+
+    $default  reduce using rule 124 (fixed_condition)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 9
 
-   71 data_type: INT .
-
-    $default  reduce using rule 71 (data_type)
-
-
-State 10
-
-   75 data_type: LONG .
-
-    $default  reduce using rule 75 (data_type)
-
-
-State 11
-
-   74 data_type: CHAR .
-
-    $default  reduce using rule 74 (data_type)
-
-
-State 12
-
-   72 data_type: FLOAT .
+   72 data_type: INT .
 
     $default  reduce using rule 72 (data_type)
 
 
-State 13
+State 10
 
-   73 data_type: DOUBLE .
+   76 data_type: LONG .
+
+    $default  reduce using rule 76 (data_type)
+
+
+State 11
+
+   75 data_type: CHAR .
+
+    $default  reduce using rule 75 (data_type)
+
+
+State 12
+
+   73 data_type: FLOAT .
 
     $default  reduce using rule 73 (data_type)
 
 
+State 13
+
+   74 data_type: DOUBLE .
+
+    $default  reduce using rule 74 (data_type)
+
+
 State 14
 
+<<<<<<< HEAD
   135 bit_unary_op: BIN_NOT .
 
     $default  reduce using rule 135 (bit_unary_op)
+=======
+  131 arith_unary_op: INC .
+
+    $default  reduce using rule 131 (arith_unary_op)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 15
 
+<<<<<<< HEAD
+=======
+  132 arith_unary_op: DEC .
+
+    $default  reduce using rule 132 (arith_unary_op)
+
+
+State 16
+
+  138 bit_unary_op: BIN_NOT .
+
+    $default  reduce using rule 138 (bit_unary_op)
+
+
+State 17
+
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
    11 const_block: NUM .
 
     $default  reduce using rule 11 (const_block)
@@ -617,30 +1034,34 @@ State 15
 
 State 16
 
-   63 function_call_block: IDENT . OP function_var_list CP
+   64 function_call_block: IDENT . OP function_var_list CP
 
+<<<<<<< HEAD
     OP  shift, and go to state 60
+=======
+    OP  shift, and go to state 65
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 17
 
-   76 var_block: VAR .
-
-    $default  reduce using rule 76 (var_block)
-
-
-State 18
-
-   77 var_block: POINTER .
+   77 var_block: VAR .
 
     $default  reduce using rule 77 (var_block)
 
 
+State 18
+
+   78 var_block: POINTER .
+
+    $default  reduce using rule 78 (var_block)
+
+
 State 19
 
-   81 ass_var_block: DREF .
+   82 ass_var_block: DREF .
 
-    $default  reduce using rule 81 (ass_var_block)
+    $default  reduce using rule 82 (ass_var_block)
 
 
 State 20
@@ -659,14 +1080,22 @@ State 21
 
 State 22
 
+<<<<<<< HEAD
    89 assignment_block: OP . assignment_block CP
    96 expr: OP . conditional_expr CP arith_binary_op expr
    97     | OP . conditional_expr CP bit_binary_op expr
    98     | OP . conditional_expr CP
+=======
+   90 assignment_block: OP . assignment_block CP
+   99 expr: OP . conditional_expr CP arith_binary_op expr
+  100     | OP . conditional_expr CP bit_binary_op expr
+  101     | OP . conditional_expr CP
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -676,6 +1105,33 @@ State 22
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 22
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 24
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 66
+    expr                    go to state 54
+    conditional_expr        go to state 67
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
@@ -709,56 +1165,157 @@ State 25
 
     7 defination_block: DEFINE . IDENT const_block
 
+<<<<<<< HEAD
     IDENT  shift, and go to state 63
+=======
+    IDENT  shift, and go to state 68
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 26
 
     8 defination_block: IFDEF . IDENT OCB start_block CCB
 
+<<<<<<< HEAD
     IDENT  shift, and go to state 64
+=======
+    IDENT  shift, and go to state 69
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 27
 
     9 defination_block: IFNDEF . IDENT OCB start_block CCB
 
+<<<<<<< HEAD
     IDENT  shift, and go to state 65
+=======
+    IDENT  shift, and go to state 70
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 28
 
    53 function_def_block: FUNCTION . ident OP argument_list_block CP OCB general_block CCB
 
+<<<<<<< HEAD
     IDENT  shift, and go to state 66
 
     ident  go to state 67
+=======
+    IDENT  shift, and go to state 71
+
+    ident  go to state 72
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 29
 
-   61 general_stmt: PRINT . str GT str TERMINATOR
+   61 general_stmt: PRINT . conditional_expr TERMINATOR
 
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+<<<<<<< HEAD
     STRING  shift, and go to state 68
 
     str  go to state 69
+=======
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 75
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 30
 
-    0 $accept: super_block . $end
+   62 general_stmt: SCAN . ass_var_block TERMINATOR
 
+    VAR      shift, and go to state 19
+    POINTER  shift, and go to state 20
+    DREF     shift, and go to state 21
+
+<<<<<<< HEAD
     $end  shift, and go to state 70
+=======
+    var_block      go to state 51
+    ass_var_block  go to state 76
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 
 State 31
+
+   63 general_stmt: RETURN . conditional_expr TERMINATOR
+
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 77
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 34
+
+    0 $accept: super_block . $end
+
+    $end  shift, and go to state 78
+
+
+State 35
 
     1 super_block: start_block .
 
     $default  reduce using rule 1 (super_block)
 
 
+<<<<<<< HEAD
 State 32
+=======
+State 36
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     4 start_block: comment_block . defination_block start_block
    15 block: comment_block . function_def_block block
@@ -777,6 +1334,7 @@ State 32
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -832,6 +1390,68 @@ State 32
 
 
 State 33
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    DEFINE         shift, and go to state 27
+    IFDEF          shift, and go to state 28
+    IFNDEF         shift, and go to state 29
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    defination_block        go to state 80
+    const_block             go to state 38
+    general_block           go to state 81
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 82
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 37
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     2 start_block: defination_block . start_block
 
@@ -848,6 +1468,7 @@ State 33
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -929,20 +1550,116 @@ State 34
 
 
 State 35
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    DEFINE         shift, and go to state 27
+    IFDEF          shift, and go to state 28
+    IFNDEF         shift, and go to state 29
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    start_block             go to state 83
+    comment_block           go to state 36
+    defination_block        go to state 37
+    const_block             go to state 38
+    block                   go to state 39
+    general_block           go to state 40
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 46
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 38
+
+   97 expr: const_block .
+  102     | const_block . arith_binary_op expr
+  103     | const_block . bit_binary_op expr
+
+    ADD        shift, and go to state 84
+    SUB        shift, and go to state 85
+    MULT       shift, and go to state 86
+    DIV        shift, and go to state 87
+    EXP        shift, and go to state 88
+    MOD        shift, and go to state 89
+    BIN_AND    shift, and go to state 90
+    BIN_OR     shift, and go to state 91
+    BIN_XOR    shift, and go to state 92
+    BIN_LEFT   shift, and go to state 93
+    BIN_RIGHT  shift, and go to state 94
+
+    $default  reduce using rule 97 (expr)
+
+    arith_binary_op  go to state 95
+    bit_binary_op    go to state 96
+
+
+State 39
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     3 start_block: block .
 
     $default  reduce using rule 3 (start_block)
 
 
+<<<<<<< HEAD
 State 36
+=======
+State 40
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    14 block: general_block .
 
     $default  reduce using rule 14 (block)
 
 
+<<<<<<< HEAD
 State 37
+=======
+State 41
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    18 general_block: if_else_block . general_block
 
@@ -959,6 +1676,7 @@ State 37
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -1008,6 +1726,62 @@ State 37
 
 
 State 38
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 97
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 42
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    17 general_block: loop_block . general_block
 
@@ -1024,6 +1798,7 @@ State 38
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -1073,27 +1848,95 @@ State 38
 
 
 State 39
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 98
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 43
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    27 loop_block: while_loop_block .
 
     $default  reduce using rule 27 (loop_block)
 
 
+<<<<<<< HEAD
 State 40
+=======
+State 44
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    28 loop_block: do_while_loop_block .
 
     $default  reduce using rule 28 (loop_block)
 
 
+<<<<<<< HEAD
 State 41
+=======
+State 45
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    26 loop_block: for_loop_block .
 
     $default  reduce using rule 26 (loop_block)
 
 
+<<<<<<< HEAD
 State 42
+=======
+State 46
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    13 block: function_def_block . block
 
@@ -1110,6 +1953,7 @@ State 42
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -1162,6 +2006,65 @@ State 42
 
 
 State 43
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 99
+    const_block             go to state 38
+    block                   go to state 100
+    general_block           go to state 40
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 46
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 47
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    16 general_block: general_stmt . general_block
 
@@ -1178,6 +2081,7 @@ State 43
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -1258,27 +2162,128 @@ State 45
 
 
 State 46
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
 
-   66 declaration_block: data_type . var_list
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 101
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 48
+
+   98 expr: function_call_block .
+  104     | function_call_block . arith_binary_op expr
+  105     | function_call_block . bit_binary_op expr
+
+    ADD        shift, and go to state 84
+    SUB        shift, and go to state 85
+    MULT       shift, and go to state 86
+    DIV        shift, and go to state 87
+    EXP        shift, and go to state 88
+    MOD        shift, and go to state 89
+    BIN_AND    shift, and go to state 90
+    BIN_OR     shift, and go to state 91
+    BIN_XOR    shift, and go to state 92
+    BIN_LEFT   shift, and go to state 93
+    BIN_RIGHT  shift, and go to state 94
+
+    $default  reduce using rule 98 (expr)
+
+    arith_binary_op  go to state 102
+    bit_binary_op    go to state 103
+
+
+State 49
+
+   58 general_stmt: declaration_block . TERMINATOR
+
+    TERMINATOR  shift, and go to state 104
+
+
+State 50
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   67 declaration_block: data_type . var_list
 
     VAR      shift, and go to state 17
     POINTER  shift, and go to state 18
 
+<<<<<<< HEAD
     var_list     go to state 97
     var_block    go to state 98
     array_block  go to state 99
 
 
 State 47
+=======
+    var_list     go to state 105
+    var_block    go to state 106
+    array_block  go to state 107
 
-   80 ass_var_block: var_block .
-   82              | var_block . OB conditional_expr CB
 
+State 51
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   81 ass_var_block: var_block .
+   83              | var_block . OB conditional_expr CB
+
+<<<<<<< HEAD
     OB  shift, and go to state 100
+=======
+    OB  shift, and go to state 108
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-    $default  reduce using rule 80 (ass_var_block)
+    $default  reduce using rule 81 (ass_var_block)
 
 
+<<<<<<< HEAD
 State 48
 
    83 assignment_block: ass_var_block . ASSIGN conditional_expr
@@ -1359,9 +2364,120 @@ State 51
 
 
 State 52
+=======
+State 52
+
+   84 assignment_block: ass_var_block . ASSIGN conditional_expr
+   85                 | ass_var_block . arith_assgn_op conditional_expr
+   86                 | ass_var_block . bit_assgn_op conditional_expr
+   87                 | ass_var_block . ASSIGN assignment_block
+   88                 | ass_var_block . arith_assgn_op assignment_block
+   89                 | ass_var_block . bit_assgn_op assignment_block
+   91 expr: ass_var_block . arith_binary_op expr
+   92     | ass_var_block . arith_unary_op expr
+   93     | ass_var_block . bit_binary_op expr
+   96     | ass_var_block .
+
+    ADD             shift, and go to state 84
+    SUB             shift, and go to state 85
+    MULT            shift, and go to state 86
+    DIV             shift, and go to state 87
+    EXP             shift, and go to state 88
+    MOD             shift, and go to state 89
+    INC             shift, and go to state 14
+    DEC             shift, and go to state 15
+    BIN_AND         shift, and go to state 90
+    BIN_OR          shift, and go to state 91
+    BIN_XOR         shift, and go to state 92
+    BIN_LEFT        shift, and go to state 93
+    BIN_RIGHT       shift, and go to state 94
+    BIN_AND_ASSIGN  shift, and go to state 109
+    BIN_IOR_ASSIGN  shift, and go to state 110
+    BIN_XOR_ASSIGN  shift, and go to state 111
+    ADD_ASSIGN      shift, and go to state 112
+    SUB_ASSIGN      shift, and go to state 113
+    MULT_ASSIGN     shift, and go to state 114
+    DIV_ASSIGN      shift, and go to state 115
+    MOD_ASSIGN      shift, and go to state 116
+    LEFT_ASSIGN     shift, and go to state 117
+    RIGHT_ASSIGN    shift, and go to state 118
+    ASSIGN          shift, and go to state 119
+
+    $default  reduce using rule 96 (expr)
+
+    arith_binary_op  go to state 120
+    arith_unary_op   go to state 121
+    bit_binary_op    go to state 122
+    arith_assgn_op   go to state 123
+    bit_assgn_op     go to state 124
+
+
+State 53
+
+   59 general_stmt: assignment_block . TERMINATOR
+
+    TERMINATOR  shift, and go to state 125
+
+
+State 54
+
+  108 conditional_expr: expr . arith_condition_op conditional_expr
+  109                 | expr . bit_condition_op conditional_expr
+  110                 | expr .
+
+    AND    shift, and go to state 126
+    OR     shift, and go to state 127
+    EQ     shift, and go to state 128
+    NOTEQ  shift, and go to state 129
+    GT     shift, and go to state 130
+    LT     shift, and go to state 131
+    GE     shift, and go to state 132
+    LE     shift, and go to state 133
+    LTGT   shift, and go to state 134
+
+    $default  reduce using rule 110 (conditional_expr)
+
+    arith_condition_op  go to state 135
+    bit_condition_op    go to state 136
+
+
+State 55
+
+   60 general_stmt: conditional_expr . TERMINATOR
+
+    TERMINATOR  shift, and go to state 137
+
+
+State 56
+
+  112 conditional_expr: bit_unary_condition_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 138
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
   109 conditional_expr: bit_unary_condition_op . expr
 
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -1373,6 +2489,13 @@ State 52
     OP         shift, and go to state 129
 
     $default  reduce using rule 104 (expr)
+=======
+State 57
+
+  111 conditional_expr: fixed_condition .
+
+    $default  reduce using rule 111 (conditional_expr)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     const_block          go to state 34
     function_call_block  go to state 44
@@ -1381,11 +2504,18 @@ State 52
     expr                 go to state 131
     bit_unary_op         go to state 54
 
+<<<<<<< HEAD
 
 State 53
+=======
+State 58
+
+   95 expr: arith_unary_op . ass_var_block expr
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
   108 conditional_expr: fixed_condition .
 
+<<<<<<< HEAD
     $default  reduce using rule 108 (conditional_expr)
 
 
@@ -1393,6 +2523,16 @@ State 54
 
    92 expr: bit_unary_op . ass_var_block
   103     | bit_unary_op . const_block
+=======
+    var_block      go to state 51
+    ass_var_block  go to state 139
+
+
+State 59
+
+   94 expr: bit_unary_op . ass_var_block
+  106     | bit_unary_op . const_block
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     NUM        shift, and go to state 15
     VAR        shift, and go to state 17
@@ -1401,19 +2541,32 @@ State 54
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
 
+<<<<<<< HEAD
     const_block    go to state 132
     var_block      go to state 47
     ass_var_block  go to state 133
 
 
 State 55
+=======
+    const_block    go to state 140
+    var_block      go to state 51
+    ass_var_block  go to state 141
+
+
+State 60
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    20 general_block: error start_block .
 
     $default  reduce using rule 20 (general_block)
 
 
+<<<<<<< HEAD
 State 56
+=======
+State 61
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    22 if_else_block: IF OP . if_condition CP OCB general_block CCB
    23              | IF OP . if_condition CP OCB general_block CCB ELSE OCB general_block CCB
@@ -1422,6 +2575,7 @@ State 56
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -1431,9 +2585,37 @@ State 56
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 129
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    if_condition            go to state 142
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 143
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
+<<<<<<< HEAD
     const_block             go to state 34
     if_condition            go to state 134
     function_call_block     go to state 44
@@ -1447,12 +2629,16 @@ State 56
 
 
 State 57
+=======
+State 62
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    29 while_loop_block: WHILE OP . while_condition CP OCB general_block CCB
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -1462,6 +2648,33 @@ State 57
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 129
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    while_condition         go to state 144
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 145
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
@@ -1476,8 +2689,12 @@ State 57
     fixed_condition         go to state 53
     bit_unary_op            go to state 54
 
+<<<<<<< HEAD
 
 State 58
+=======
+State 63
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    31 do_while_loop_block: DO OCB . general_block CCB WHILE OP do_while_condition CP TERMINATOR
 
@@ -1494,6 +2711,7 @@ State 58
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -1563,12 +2781,89 @@ State 59
 
 
 State 60
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
 
-   63 function_call_block: IDENT OP . function_var_list CP
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 146
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 64
+
+   33 for_loop_block: FOR OP . for_initialization for_condition TERMINATOR for_update CP OCB general_block CCB
+
+    INC         shift, and go to state 14
+    DEC         shift, and go to state 15
+    IDENT       shift, and go to state 18
+    VAR         shift, and go to state 19
+    POINTER     shift, and go to state 20
+    DREF        shift, and go to state 21
+    TERMINATOR  shift, and go to state 147
+    OP          shift, and go to state 148
+
+    for_initialization   go to state 149
+    function_call_block  go to state 150
+    var_block            go to state 51
+    ass_var_block        go to state 151
+    assignment_block     go to state 152
+    arith_unary_op       go to state 153
+
+
+State 65
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   64 function_call_block: IDENT OP . function_var_list CP
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -1578,9 +2873,37 @@ State 60
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 129
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    function_var_list       go to state 154
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 155
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
+<<<<<<< HEAD
     const_block             go to state 34
     function_call_block     go to state 44
     function_var_list       go to state 148
@@ -1594,9 +2917,13 @@ State 60
 
 
 State 61
+=======
+State 66
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   89 assignment_block: OP assignment_block . CP
+   90 assignment_block: OP assignment_block . CP
 
+<<<<<<< HEAD
     CP  shift, and go to state 150
 
 
@@ -1610,6 +2937,21 @@ State 62
 
 
 State 63
+=======
+    CP  shift, and go to state 156
+
+
+State 67
+
+   99 expr: OP conditional_expr . CP arith_binary_op expr
+  100     | OP conditional_expr . CP bit_binary_op expr
+  101     | OP conditional_expr . CP
+
+    CP  shift, and go to state 157
+
+
+State 68
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     7 defination_block: DEFINE IDENT . const_block
 
@@ -1617,6 +2959,7 @@ State 63
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
 
+<<<<<<< HEAD
     const_block  go to state 152
 
 
@@ -1635,12 +2978,33 @@ State 65
 
 
 State 66
+=======
+    const_block  go to state 158
+
+
+State 69
+
+    8 defination_block: IFDEF IDENT . OCB start_block CCB
+
+    OCB  shift, and go to state 159
+
+
+State 70
+
+    9 defination_block: IFNDEF IDENT . OCB start_block CCB
+
+    OCB  shift, and go to state 160
+
+
+State 71
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    54 ident: IDENT .
 
     $default  reduce using rule 54 (ident)
 
 
+<<<<<<< HEAD
 State 67
 
    53 function_def_block: FUNCTION ident . OP argument_list_block CP OCB general_block CCB
@@ -1649,27 +3013,123 @@ State 67
 
 
 State 68
+=======
+State 72
 
-   62 str: STRING .
+   53 function_def_block: FUNCTION ident . OP argument_list_block CP OCB general_block CCB
 
-    $default  reduce using rule 62 (str)
+    OP  shift, and go to state 161
 
 
+State 73
+
+   99 expr: OP . conditional_expr CP arith_binary_op expr
+  100     | OP . conditional_expr CP bit_binary_op expr
+  101     | OP . conditional_expr CP
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+    NOT_1      shift, and go to state 6
+    TRUE_1     shift, and go to state 7
+    FALSE_1    shift, and go to state 8
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 67
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+<<<<<<< HEAD
 State 69
+=======
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   61 general_stmt: PRINT str . GT str TERMINATOR
+State 74
 
+   91 expr: ass_var_block . arith_binary_op expr
+   92     | ass_var_block . arith_unary_op expr
+   93     | ass_var_block . bit_binary_op expr
+   96     | ass_var_block .
+
+    ADD        shift, and go to state 84
+    SUB        shift, and go to state 85
+    MULT       shift, and go to state 86
+    DIV        shift, and go to state 87
+    EXP        shift, and go to state 88
+    MOD        shift, and go to state 89
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_AND    shift, and go to state 90
+    BIN_OR     shift, and go to state 91
+    BIN_XOR    shift, and go to state 92
+    BIN_LEFT   shift, and go to state 93
+    BIN_RIGHT  shift, and go to state 94
+
+<<<<<<< HEAD
     GT  shift, and go to state 156
+=======
+    $default  reduce using rule 96 (expr)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
+    arith_binary_op  go to state 120
+    arith_unary_op   go to state 121
+    bit_binary_op    go to state 122
 
+<<<<<<< HEAD
 State 70
+=======
+
+State 75
+
+   61 general_stmt: PRINT conditional_expr . TERMINATOR
+
+    TERMINATOR  shift, and go to state 162
+
+
+State 76
+
+   62 general_stmt: SCAN ass_var_block . TERMINATOR
+
+    TERMINATOR  shift, and go to state 163
+
+
+State 77
+
+   63 general_stmt: RETURN conditional_expr . TERMINATOR
+
+    TERMINATOR  shift, and go to state 164
+
+
+State 78
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     0 $accept: super_block $end .
 
     $default  accept
 
 
+<<<<<<< HEAD
 State 71
+=======
+State 79
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    19 general_block: comment_block . general_block
 
@@ -1686,6 +3146,7 @@ State 71
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -1735,6 +3196,62 @@ State 71
 
 
 State 72
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 81
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 80
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     4 start_block: comment_block defination_block . start_block
 
@@ -1751,6 +3268,7 @@ State 72
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -1808,13 +3326,81 @@ State 72
 
 
 State 73
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    DEFINE         shift, and go to state 27
+    IFDEF          shift, and go to state 28
+    IFNDEF         shift, and go to state 29
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    start_block             go to state 165
+    comment_block           go to state 36
+    defination_block        go to state 37
+    const_block             go to state 38
+    block                   go to state 39
+    general_block           go to state 40
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 46
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 81
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    19 general_block: comment_block general_block .
 
     $default  reduce using rule 19 (general_block)
 
 
+<<<<<<< HEAD
 State 74
+=======
+State 82
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    15 block: comment_block function_def_block . block
 
@@ -1831,6 +3417,7 @@ State 74
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -1883,12 +3470,72 @@ State 74
 
 
 State 75
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 99
+    const_block             go to state 38
+    block                   go to state 166
+    general_block           go to state 40
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 46
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 83
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     2 start_block: defination_block start_block .
 
     $default  reduce using rule 2 (start_block)
 
 
+<<<<<<< HEAD
 State 76
 
   122 arith_binary_op: ADD .
@@ -1913,60 +3560,120 @@ State 78
 State 79
 
   125 arith_binary_op: DIV .
+=======
+State 84
+
+  125 arith_binary_op: ADD .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 125 (arith_binary_op)
 
 
+<<<<<<< HEAD
 State 80
 
   126 arith_binary_op: EXP .
+=======
+State 85
+
+  126 arith_binary_op: SUB .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 126 (arith_binary_op)
 
 
+<<<<<<< HEAD
 State 81
 
   127 arith_binary_op: MOD .
+=======
+State 86
+
+  127 arith_binary_op: MULT .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 127 (arith_binary_op)
 
 
+<<<<<<< HEAD
 State 82
 
   130 bit_binary_op: BIN_AND .
+=======
+State 87
+
+  128 arith_binary_op: DIV .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 130 (bit_binary_op)
 
 
+<<<<<<< HEAD
 State 83
 
   131 bit_binary_op: BIN_OR .
+=======
+State 88
+
+  129 arith_binary_op: EXP .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 131 (bit_binary_op)
 
 
+<<<<<<< HEAD
 State 84
 
   132 bit_binary_op: BIN_XOR .
+=======
+State 89
 
-    $default  reduce using rule 132 (bit_binary_op)
+  130 arith_binary_op: MOD .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+    $default  reduce using rule 130 (arith_binary_op)
 
 
+<<<<<<< HEAD
 State 85
 
   133 bit_binary_op: BIN_LEFT .
+=======
+State 90
+
+  133 bit_binary_op: BIN_AND .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 133 (bit_binary_op)
 
 
+<<<<<<< HEAD
 State 86
 
   134 bit_binary_op: BIN_RIGHT .
+=======
+State 91
+
+  134 bit_binary_op: BIN_OR .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 134 (bit_binary_op)
 
 
+<<<<<<< HEAD
 State 87
+=======
+State 92
+
+  135 bit_binary_op: BIN_XOR .
+
+    $default  reduce using rule 135 (bit_binary_op)
+
+
+State 93
+
+  136 bit_binary_op: BIN_LEFT .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    99 expr: const_block arith_binary_op . expr
 
@@ -1980,6 +3687,7 @@ State 87
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 129
 
+<<<<<<< HEAD
     $default  reduce using rule 104 (expr)
 
     const_block          go to state 34
@@ -2015,20 +3723,92 @@ State 88
 
 
 State 89
+=======
+State 94
+
+  137 bit_binary_op: BIN_RIGHT .
+
+    $default  reduce using rule 137 (bit_binary_op)
+
+
+State 95
+
+  102 expr: const_block arith_binary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 167
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+
+
+State 96
+
+  103 expr: const_block bit_binary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 168
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+
+
+State 97
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    18 general_block: if_else_block general_block .
 
     $default  reduce using rule 18 (general_block)
 
 
+<<<<<<< HEAD
 State 90
+=======
+State 98
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    17 general_block: loop_block general_block .
 
     $default  reduce using rule 17 (general_block)
 
 
+<<<<<<< HEAD
 State 91
+=======
+State 99
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    15 block: comment_block . function_def_block block
    19 general_block: comment_block . general_block
@@ -2046,6 +3826,7 @@ State 91
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -2097,19 +3878,82 @@ State 91
 
 
 State 92
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    $end        reduce using rule 21 (general_block)
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 81
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 82
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 100
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    13 block: function_def_block block .
 
     $default  reduce using rule 13 (block)
 
 
+<<<<<<< HEAD
 State 93
+=======
+State 101
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    16 general_block: general_stmt general_block .
 
     $default  reduce using rule 16 (general_block)
 
 
+<<<<<<< HEAD
 State 94
 
   101 expr: function_call_block arith_binary_op . expr
@@ -2159,48 +4003,131 @@ State 95
 
 
 State 96
+=======
+State 102
+
+  104 expr: function_call_block arith_binary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 169
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+
+
+State 103
+
+  105 expr: function_call_block bit_binary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 170
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+
+
+State 104
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    58 general_stmt: declaration_block TERMINATOR .
 
     $default  reduce using rule 58 (general_stmt)
 
 
+<<<<<<< HEAD
 State 97
+=======
+State 105
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   66 declaration_block: data_type var_list .
+   67 declaration_block: data_type var_list .
 
-    $default  reduce using rule 66 (declaration_block)
+    $default  reduce using rule 67 (declaration_block)
 
 
+<<<<<<< HEAD
 State 98
+=======
+State 106
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   67 var_list: var_block . COMMA var_list
-   68         | var_block .
-   78 array_block: var_block . OB num CB
+   68 var_list: var_block . COMMA var_list
+   69         | var_block .
+   79 array_block: var_block . OB num CB
 
+<<<<<<< HEAD
     OB     shift, and go to state 163
     COMMA  shift, and go to state 164
+=======
+    OB     shift, and go to state 171
+    COMMA  shift, and go to state 172
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-    $default  reduce using rule 68 (var_list)
+    $default  reduce using rule 69 (var_list)
 
 
+<<<<<<< HEAD
 State 99
+=======
+State 107
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   69 var_list: array_block . COMMA var_list
-   70         | array_block .
+   70 var_list: array_block . COMMA var_list
+   71         | array_block .
 
+<<<<<<< HEAD
     COMMA  shift, and go to state 165
+=======
+    COMMA  shift, and go to state 173
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-    $default  reduce using rule 70 (var_list)
+    $default  reduce using rule 71 (var_list)
 
 
+<<<<<<< HEAD
 State 100
+=======
+State 108
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   82 ass_var_block: var_block OB . conditional_expr CB
+   83 ass_var_block: var_block OB . conditional_expr CB
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -2225,83 +4152,177 @@ State 100
 
 
 State 101
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 174
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
   143 bit_assgn_op: BIN_AND_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 143 (bit_assgn_op)
 
+=======
+State 109
+
+  146 bit_assgn_op: BIN_AND_ASSIGN .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 State 102
 
   144 bit_assgn_op: BIN_IOR_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 144 (bit_assgn_op)
 
+=======
+State 110
+
+  147 bit_assgn_op: BIN_IOR_ASSIGN .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 State 103
 
   145 bit_assgn_op: BIN_XOR_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 145 (bit_assgn_op)
 
 
 State 104
+=======
+State 111
+
+  148 bit_assgn_op: BIN_XOR_ASSIGN .
+
+    $default  reduce using rule 148 (bit_assgn_op)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
   136 arith_assgn_op: ADD_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 136 (arith_assgn_op)
 
+=======
+State 112
+
+  139 arith_assgn_op: ADD_ASSIGN .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 State 105
 
   137 arith_assgn_op: SUB_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 137 (arith_assgn_op)
 
+=======
+State 113
+
+  140 arith_assgn_op: SUB_ASSIGN .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 State 106
 
   138 arith_assgn_op: MULT_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 138 (arith_assgn_op)
 
+=======
+State 114
+
+  141 arith_assgn_op: MULT_ASSIGN .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 State 107
 
   139 arith_assgn_op: DIV_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 139 (arith_assgn_op)
 
+=======
+State 115
+
+  142 arith_assgn_op: DIV_ASSIGN .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 State 108
 
   140 arith_assgn_op: MOD_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 140 (arith_assgn_op)
 
+=======
+State 116
+
+  143 arith_assgn_op: MOD_ASSIGN .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 State 109
 
   141 arith_assgn_op: LEFT_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 141 (arith_assgn_op)
 
+=======
+State 117
+
+  144 arith_assgn_op: LEFT_ASSIGN .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 State 110
 
   142 arith_assgn_op: RIGHT_ASSIGN .
 
+<<<<<<< HEAD
     $default  reduce using rule 142 (arith_assgn_op)
 
 
 State 111
+=======
+State 118
 
-   83 assignment_block: ass_var_block ASSIGN . conditional_expr
-   86                 | ass_var_block ASSIGN . assignment_block
+  145 arith_assgn_op: RIGHT_ASSIGN .
+
+    $default  reduce using rule 145 (arith_assgn_op)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+
+State 119
+
+   84 assignment_block: ass_var_block ASSIGN . conditional_expr
+   87                 | ass_var_block ASSIGN . assignment_block
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -2311,9 +4332,37 @@ State 111
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 22
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 24
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 175
+    expr                    go to state 54
+    conditional_expr        go to state 176
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
+<<<<<<< HEAD
     const_block             go to state 34
     function_call_block     go to state 44
     var_block               go to state 47
@@ -2375,13 +4424,98 @@ State 113
 
 
 State 114
+=======
+State 120
 
-   84 assignment_block: ass_var_block arith_assgn_op . conditional_expr
-   87                 | ass_var_block arith_assgn_op . assignment_block
+   91 expr: ass_var_block arith_binary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 177
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+
+
+State 121
+
+   92 expr: ass_var_block arith_unary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 178
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+
+
+State 122
+
+   93 expr: ass_var_block bit_binary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 179
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+
+
+State 123
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   85 assignment_block: ass_var_block arith_assgn_op . conditional_expr
+   88                 | ass_var_block arith_assgn_op . assignment_block
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -2393,6 +4527,33 @@ State 114
     OP         shift, and go to state 22
 
     $default  reduce using rule 104 (expr)
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 24
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 180
+    expr                    go to state 54
+    conditional_expr        go to state 181
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     const_block             go to state 34
     function_call_block     go to state 44
@@ -2405,15 +4566,20 @@ State 114
     fixed_condition         go to state 53
     bit_unary_op            go to state 54
 
+<<<<<<< HEAD
 
 State 115
+=======
+State 124
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   85 assignment_block: ass_var_block bit_assgn_op . conditional_expr
-   88                 | ass_var_block bit_assgn_op . assignment_block
+   86 assignment_block: ass_var_block bit_assgn_op . conditional_expr
+   89                 | ass_var_block bit_assgn_op . assignment_block
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -2423,9 +4589,37 @@ State 115
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 22
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 24
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 182
+    expr                    go to state 54
+    conditional_expr        go to state 183
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
+<<<<<<< HEAD
     const_block             go to state 34
     function_call_block     go to state 44
     var_block               go to state 47
@@ -2439,12 +4633,16 @@ State 115
 
 
 State 116
+=======
+State 125
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    59 general_stmt: assignment_block TERMINATOR .
 
     $default  reduce using rule 59 (general_stmt)
 
 
+<<<<<<< HEAD
 State 117
 
   117 bit_condition_op: AND .
@@ -2455,10 +4653,16 @@ State 117
 State 118
 
   118 bit_condition_op: OR .
+=======
+State 126
+
+  120 bit_condition_op: AND .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 118 (bit_condition_op)
 
 
+<<<<<<< HEAD
 State 119
 
   110 arith_condition_op: EQ .
@@ -2469,45 +4673,88 @@ State 119
 State 120
 
   111 arith_condition_op: NOTEQ .
+=======
+State 127
+
+  121 bit_condition_op: OR .
+
+    $default  reduce using rule 121 (bit_condition_op)
+
+
+State 128
+
+  113 arith_condition_op: EQ .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 111 (arith_condition_op)
 
 
+<<<<<<< HEAD
 State 121
 
   112 arith_condition_op: GT .
+=======
+State 129
+
+  114 arith_condition_op: NOTEQ .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 112 (arith_condition_op)
 
 
+<<<<<<< HEAD
 State 122
 
   113 arith_condition_op: LT .
+=======
+State 130
+
+  115 arith_condition_op: GT .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 113 (arith_condition_op)
 
 
+<<<<<<< HEAD
 State 123
 
   114 arith_condition_op: GE .
+=======
+State 131
+
+  116 arith_condition_op: LT .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 114 (arith_condition_op)
 
 
+<<<<<<< HEAD
 State 124
 
   115 arith_condition_op: LE .
+=======
+State 132
+
+  117 arith_condition_op: GE .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 115 (arith_condition_op)
 
 
+<<<<<<< HEAD
 State 125
 
   116 arith_condition_op: LTGT .
+=======
+State 133
+
+  118 arith_condition_op: LE .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 116 (arith_condition_op)
 
 
+<<<<<<< HEAD
 State 126
 
   105 conditional_expr: expr arith_condition_op . conditional_expr
@@ -2524,9 +4771,17 @@ State 126
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 129
+=======
+State 134
+
+  119 arith_condition_op: LTGT .
+
+    $default  reduce using rule 119 (arith_condition_op)
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
+<<<<<<< HEAD
     const_block             go to state 34
     function_call_block     go to state 44
     var_block               go to state 47
@@ -2541,10 +4796,16 @@ State 126
 State 127
 
   106 conditional_expr: expr bit_condition_op . conditional_expr
+=======
+State 135
+
+  108 conditional_expr: expr arith_condition_op . conditional_expr
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -2580,10 +4841,42 @@ State 129
    96 expr: OP . conditional_expr CP arith_binary_op expr
    97     | OP . conditional_expr CP bit_binary_op expr
    98     | OP . conditional_expr CP
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 184
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 136
+
+  109 conditional_expr: expr bit_condition_op . conditional_expr
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -2653,21 +4946,113 @@ State 133
 
 
 State 134
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 185
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 137
+
+   60 general_stmt: conditional_expr TERMINATOR .
+
+    $default  reduce using rule 60 (general_stmt)
+
+
+State 138
+
+  112 conditional_expr: bit_unary_condition_op expr .
+
+    $default  reduce using rule 112 (conditional_expr)
+
+
+State 139
+
+   95 expr: arith_unary_op ass_var_block . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 186
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+
+
+State 140
+
+  106 expr: bit_unary_op const_block .
+
+    $default  reduce using rule 106 (expr)
+
+
+State 141
+
+   94 expr: bit_unary_op ass_var_block .
+
+    $default  reduce using rule 94 (expr)
+
+
+State 142
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    22 if_else_block: IF OP if_condition . CP OCB general_block CCB
    23              | IF OP if_condition . CP OCB general_block CCB ELSE OCB general_block CCB
    24              | IF OP if_condition . CP OCB general_block CCB ELSE if_else_block
 
+<<<<<<< HEAD
     CP  shift, and go to state 177
 
 
 State 135
+=======
+    CP  shift, and go to state 187
+
+
+State 143
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    25 if_condition: conditional_expr .
 
     $default  reduce using rule 25 (if_condition)
 
 
+<<<<<<< HEAD
 State 136
 
    29 while_loop_block: WHILE OP while_condition . CP OCB general_block CCB
@@ -2676,12 +5061,23 @@ State 136
 
 
 State 137
+=======
+State 144
+
+   29 while_loop_block: WHILE OP while_condition . CP OCB general_block CCB
+
+    CP  shift, and go to state 188
+
+
+State 145
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    30 while_condition: conditional_expr .
 
     $default  reduce using rule 30 (while_condition)
 
 
+<<<<<<< HEAD
 State 138
 
    31 do_while_loop_block: DO OCB general_block . CCB WHILE OP do_while_condition CP TERMINATOR
@@ -2704,16 +5100,31 @@ State 140
 
 
 State 141
+=======
+State 146
+
+   31 do_while_loop_block: DO OCB general_block . CCB WHILE OP do_while_condition CP TERMINATOR
+
+    CCB  shift, and go to state 189
+
+
+State 147
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    42 for_initialization: TERMINATOR .
 
     $default  reduce using rule 42 (for_initialization)
 
 
+<<<<<<< HEAD
 State 142
+=======
+State 148
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   89 assignment_block: OP . assignment_block CP
+   90 assignment_block: OP . assignment_block CP
 
+<<<<<<< HEAD
     VAR      shift, and go to state 17
     POINTER  shift, and go to state 18
     DREF     shift, and go to state 19
@@ -2725,12 +5136,26 @@ State 142
 
 
 State 143
+=======
+    VAR      shift, and go to state 19
+    POINTER  shift, and go to state 20
+    DREF     shift, and go to state 21
+    OP       shift, and go to state 148
+
+    var_block         go to state 51
+    ass_var_block     go to state 190
+    assignment_block  go to state 66
+
+
+State 149
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    33 for_loop_block: FOR OP for_initialization . for_condition TERMINATOR for_update CP OCB general_block CCB
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -2742,6 +5167,33 @@ State 143
     OP         shift, and go to state 129
 
     $default  reduce using rule 104 (expr)
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    for_condition           go to state 191
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 192
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     const_block             go to state 34
     for_condition           go to state 181
@@ -2754,27 +5206,40 @@ State 143
     fixed_condition         go to state 53
     bit_unary_op            go to state 54
 
+<<<<<<< HEAD
 
 State 144
+=======
+State 150
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    34 for_initialization: function_call_block . COMMA for_initialization
    41                   | function_call_block . TERMINATOR
 
+<<<<<<< HEAD
     TERMINATOR  shift, and go to state 183
     COMMA       shift, and go to state 184
 
 
 State 145
+=======
+    TERMINATOR  shift, and go to state 193
+    COMMA       shift, and go to state 194
+
+
+State 151
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    36 for_initialization: ass_var_block . arith_unary_op COMMA for_initialization
    39                   | ass_var_block . arith_unary_op TERMINATOR
-   83 assignment_block: ass_var_block . ASSIGN conditional_expr
-   84                 | ass_var_block . arith_assgn_op conditional_expr
-   85                 | ass_var_block . bit_assgn_op conditional_expr
-   86                 | ass_var_block . ASSIGN assignment_block
-   87                 | ass_var_block . arith_assgn_op assignment_block
-   88                 | ass_var_block . bit_assgn_op assignment_block
+   84 assignment_block: ass_var_block . ASSIGN conditional_expr
+   85                 | ass_var_block . arith_assgn_op conditional_expr
+   86                 | ass_var_block . bit_assgn_op conditional_expr
+   87                 | ass_var_block . ASSIGN assignment_block
+   88                 | ass_var_block . arith_assgn_op assignment_block
+   89                 | ass_var_block . bit_assgn_op assignment_block
 
+<<<<<<< HEAD
     INC             shift, and go to state 139
     DEC             shift, and go to state 140
     BIN_AND_ASSIGN  shift, and go to state 101
@@ -2795,15 +5260,45 @@ State 145
 
 
 State 146
+=======
+    INC             shift, and go to state 14
+    DEC             shift, and go to state 15
+    BIN_AND_ASSIGN  shift, and go to state 109
+    BIN_IOR_ASSIGN  shift, and go to state 110
+    BIN_XOR_ASSIGN  shift, and go to state 111
+    ADD_ASSIGN      shift, and go to state 112
+    SUB_ASSIGN      shift, and go to state 113
+    MULT_ASSIGN     shift, and go to state 114
+    DIV_ASSIGN      shift, and go to state 115
+    MOD_ASSIGN      shift, and go to state 116
+    LEFT_ASSIGN     shift, and go to state 117
+    RIGHT_ASSIGN    shift, and go to state 118
+    ASSIGN          shift, and go to state 119
+
+    arith_unary_op  go to state 195
+    arith_assgn_op  go to state 123
+    bit_assgn_op    go to state 124
+
+
+State 152
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    35 for_initialization: assignment_block . COMMA for_initialization
    38                   | assignment_block . TERMINATOR
 
+<<<<<<< HEAD
     TERMINATOR  shift, and go to state 186
     COMMA       shift, and go to state 187
 
 
 State 147
+=======
+    TERMINATOR  shift, and go to state 196
+    COMMA       shift, and go to state 197
+
+
+State 153
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    37 for_initialization: arith_unary_op . ass_var_block COMMA for_initialization
    40                   | arith_unary_op . ass_var_block TERMINATOR
@@ -2812,34 +5307,58 @@ State 147
     POINTER  shift, and go to state 18
     DREF     shift, and go to state 19
 
+<<<<<<< HEAD
     var_block      go to state 47
     ass_var_block  go to state 188
 
 
 State 148
+=======
+    var_block      go to state 51
+    ass_var_block  go to state 198
 
-   63 function_call_block: IDENT OP function_var_list . CP
 
+State 154
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   64 function_call_block: IDENT OP function_var_list . CP
+
+<<<<<<< HEAD
     CP  shift, and go to state 189
 
 
 State 149
+=======
+    CP  shift, and go to state 199
 
-   64 function_var_list: conditional_expr . COMMA function_var_list
-   65                  | conditional_expr .
 
+State 155
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   65 function_var_list: conditional_expr . COMMA function_var_list
+   66                  | conditional_expr .
+
+<<<<<<< HEAD
     COMMA  shift, and go to state 190
+=======
+    COMMA  shift, and go to state 200
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-    $default  reduce using rule 65 (function_var_list)
+    $default  reduce using rule 66 (function_var_list)
 
 
+<<<<<<< HEAD
 State 150
+=======
+State 156
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   89 assignment_block: OP assignment_block CP .
+   90 assignment_block: OP assignment_block CP .
 
-    $default  reduce using rule 89 (assignment_block)
+    $default  reduce using rule 90 (assignment_block)
 
 
+<<<<<<< HEAD
 State 151
 
    96 expr: OP conditional_expr CP . arith_binary_op expr
@@ -2865,13 +5384,44 @@ State 151
 
 
 State 152
+=======
+State 157
+
+   99 expr: OP conditional_expr CP . arith_binary_op expr
+  100     | OP conditional_expr CP . bit_binary_op expr
+  101     | OP conditional_expr CP .
+
+    ADD        shift, and go to state 84
+    SUB        shift, and go to state 85
+    MULT       shift, and go to state 86
+    DIV        shift, and go to state 87
+    EXP        shift, and go to state 88
+    MOD        shift, and go to state 89
+    BIN_AND    shift, and go to state 90
+    BIN_OR     shift, and go to state 91
+    BIN_XOR    shift, and go to state 92
+    BIN_LEFT   shift, and go to state 93
+    BIN_RIGHT  shift, and go to state 94
+
+    $default  reduce using rule 101 (expr)
+
+    arith_binary_op  go to state 201
+    bit_binary_op    go to state 202
+
+
+State 158
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     7 defination_block: DEFINE IDENT const_block .
 
     $default  reduce using rule 7 (defination_block)
 
 
+<<<<<<< HEAD
 State 153
+=======
+State 159
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     8 defination_block: IFDEF IDENT OCB . start_block CCB
 
@@ -2888,6 +5438,7 @@ State 153
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -2944,6 +5495,69 @@ State 153
 
 
 State 154
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    DEFINE         shift, and go to state 27
+    IFDEF          shift, and go to state 28
+    IFNDEF         shift, and go to state 29
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    start_block             go to state 203
+    comment_block           go to state 36
+    defination_block        go to state 37
+    const_block             go to state 38
+    block                   go to state 39
+    general_block           go to state 40
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 46
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 160
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     9 defination_block: IFNDEF IDENT OCB . start_block CCB
 
@@ -2960,6 +5574,7 @@ State 154
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -3016,6 +5631,69 @@ State 154
 
 
 State 155
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    DEFINE         shift, and go to state 27
+    IFDEF          shift, and go to state 28
+    IFNDEF         shift, and go to state 29
+    FUNCTION       shift, and go to state 30
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    start_block             go to state 204
+    comment_block           go to state 36
+    defination_block        go to state 37
+    const_block             go to state 38
+    block                   go to state 39
+    general_block           go to state 40
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    function_def_block      go to state 46
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 161
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    53 function_def_block: FUNCTION ident OP . argument_list_block CP OCB general_block CCB
 
@@ -3027,33 +5705,68 @@ State 155
 
     $default  reduce using rule 57 (argument_list_block)
 
+<<<<<<< HEAD
     argument_list_block  go to state 195
     data_type            go to state 196
 
 
 State 156
+=======
+    argument_list_block  go to state 205
+    data_type            go to state 206
 
-   61 general_stmt: PRINT str GT . str TERMINATOR
 
+State 162
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   61 general_stmt: PRINT conditional_expr TERMINATOR .
+
+<<<<<<< HEAD
     STRING  shift, and go to state 68
 
     str  go to state 197
+=======
+    $default  reduce using rule 61 (general_stmt)
+
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+State 163
+
+   62 general_stmt: SCAN ass_var_block TERMINATOR .
+
+    $default  reduce using rule 62 (general_stmt)
 
 
+State 164
+
+   63 general_stmt: RETURN conditional_expr TERMINATOR .
+
+    $default  reduce using rule 63 (general_stmt)
+
+<<<<<<< HEAD
 State 157
+=======
+
+State 165
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     4 start_block: comment_block defination_block start_block .
 
     $default  reduce using rule 4 (start_block)
 
 
+<<<<<<< HEAD
 State 158
+=======
+State 166
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    15 block: comment_block function_def_block block .
 
     $default  reduce using rule 15 (block)
 
 
+<<<<<<< HEAD
 State 159
 
    99 expr: const_block arith_binary_op expr .
@@ -3083,101 +5796,204 @@ State 162
 
 
 State 163
+=======
+State 167
 
-   78 array_block: var_block OB . num CB
+  102 expr: const_block arith_binary_op expr .
 
+    $default  reduce using rule 102 (expr)
+
+
+State 168
+
+  103 expr: const_block bit_binary_op expr .
+
+    $default  reduce using rule 103 (expr)
+
+
+State 169
+
+  104 expr: function_call_block arith_binary_op expr .
+
+    $default  reduce using rule 104 (expr)
+
+
+State 170
+
+  105 expr: function_call_block bit_binary_op expr .
+
+    $default  reduce using rule 105 (expr)
+
+
+State 171
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   79 array_block: var_block OB . num CB
+
+<<<<<<< HEAD
     NUM  shift, and go to state 198
 
     num  go to state 199
 
 
 State 164
+=======
+    NUM  shift, and go to state 207
 
-   67 var_list: var_block COMMA . var_list
+    num  go to state 208
+
+
+State 172
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   68 var_list: var_block COMMA . var_list
 
     VAR      shift, and go to state 17
     POINTER  shift, and go to state 18
 
+<<<<<<< HEAD
     var_list     go to state 200
     var_block    go to state 98
     array_block  go to state 99
 
 
 State 165
+=======
+    var_list     go to state 209
+    var_block    go to state 106
+    array_block  go to state 107
 
-   69 var_list: array_block COMMA . var_list
+
+State 173
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   70 var_list: array_block COMMA . var_list
 
     VAR      shift, and go to state 17
     POINTER  shift, and go to state 18
 
+<<<<<<< HEAD
     var_list     go to state 201
     var_block    go to state 98
     array_block  go to state 99
 
 
 State 166
+=======
+    var_list     go to state 210
+    var_block    go to state 106
+    array_block  go to state 107
 
-   82 ass_var_block: var_block OB conditional_expr . CB
 
+State 174
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   83 ass_var_block: var_block OB conditional_expr . CB
+
+<<<<<<< HEAD
     CB  shift, and go to state 202
 
 
 State 167
-
-   86 assignment_block: ass_var_block ASSIGN assignment_block .
-
-    $default  reduce using rule 86 (assignment_block)
+=======
+    CB  shift, and go to state 211
 
 
-State 168
+State 175
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   83 assignment_block: ass_var_block ASSIGN conditional_expr .
-
-    $default  reduce using rule 83 (assignment_block)
-
-
-State 169
-
-   90 expr: ass_var_block arith_binary_op expr .
-
-    $default  reduce using rule 90 (expr)
-
-
-State 170
-
-   91 expr: ass_var_block bit_binary_op expr .
-
-    $default  reduce using rule 91 (expr)
-
-
-State 171
-
-   87 assignment_block: ass_var_block arith_assgn_op assignment_block .
+   87 assignment_block: ass_var_block ASSIGN assignment_block .
 
     $default  reduce using rule 87 (assignment_block)
 
 
-State 172
+<<<<<<< HEAD
+State 168
+=======
+State 176
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   84 assignment_block: ass_var_block arith_assgn_op conditional_expr .
+   84 assignment_block: ass_var_block ASSIGN conditional_expr .
 
     $default  reduce using rule 84 (assignment_block)
 
 
-State 173
+<<<<<<< HEAD
+State 169
+=======
+State 177
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   88 assignment_block: ass_var_block bit_assgn_op assignment_block .
+   91 expr: ass_var_block arith_binary_op expr .
+
+    $default  reduce using rule 91 (expr)
+
+
+<<<<<<< HEAD
+State 170
+
+   91 expr: ass_var_block bit_binary_op expr .
+=======
+State 178
+
+   92 expr: ass_var_block arith_unary_op expr .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+    $default  reduce using rule 92 (expr)
+
+
+<<<<<<< HEAD
+State 171
+=======
+State 179
+
+   93 expr: ass_var_block bit_binary_op expr .
+
+    $default  reduce using rule 93 (expr)
+
+
+State 180
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   88 assignment_block: ass_var_block arith_assgn_op assignment_block .
 
     $default  reduce using rule 88 (assignment_block)
 
 
-State 174
+<<<<<<< HEAD
+State 172
+=======
+State 181
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   85 assignment_block: ass_var_block bit_assgn_op conditional_expr .
+   85 assignment_block: ass_var_block arith_assgn_op conditional_expr .
 
     $default  reduce using rule 85 (assignment_block)
 
 
+<<<<<<< HEAD
+State 173
+=======
+State 182
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   89 assignment_block: ass_var_block bit_assgn_op assignment_block .
+
+    $default  reduce using rule 89 (assignment_block)
+
+
+<<<<<<< HEAD
+State 174
+=======
+State 183
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   86 assignment_block: ass_var_block bit_assgn_op conditional_expr .
+
+    $default  reduce using rule 86 (assignment_block)
+
+
+<<<<<<< HEAD
 State 175
 
   105 conditional_expr: expr arith_condition_op conditional_expr .
@@ -3193,11 +6009,36 @@ State 176
 
 
 State 177
+=======
+State 184
+
+  108 conditional_expr: expr arith_condition_op conditional_expr .
+
+    $default  reduce using rule 108 (conditional_expr)
+
+
+State 185
+
+  109 conditional_expr: expr bit_condition_op conditional_expr .
+
+    $default  reduce using rule 109 (conditional_expr)
+
+
+State 186
+
+   95 expr: arith_unary_op ass_var_block expr .
+
+    $default  reduce using rule 95 (expr)
+
+
+State 187
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    22 if_else_block: IF OP if_condition CP . OCB general_block CCB
    23              | IF OP if_condition CP . OCB general_block CCB ELSE OCB general_block CCB
    24              | IF OP if_condition CP . OCB general_block CCB ELSE if_else_block
 
+<<<<<<< HEAD
     OCB  shift, and go to state 203
 
 
@@ -3248,19 +6089,76 @@ State 181
 
 
 State 182
+=======
+    OCB  shift, and go to state 212
+
+
+State 188
+
+   29 while_loop_block: WHILE OP while_condition CP . OCB general_block CCB
+
+    OCB  shift, and go to state 213
+
+
+State 189
+
+   31 do_while_loop_block: DO OCB general_block CCB . WHILE OP do_while_condition CP TERMINATOR
+
+    WHILE  shift, and go to state 214
+
+
+State 190
+
+   84 assignment_block: ass_var_block . ASSIGN conditional_expr
+   85                 | ass_var_block . arith_assgn_op conditional_expr
+   86                 | ass_var_block . bit_assgn_op conditional_expr
+   87                 | ass_var_block . ASSIGN assignment_block
+   88                 | ass_var_block . arith_assgn_op assignment_block
+   89                 | ass_var_block . bit_assgn_op assignment_block
+
+    BIN_AND_ASSIGN  shift, and go to state 109
+    BIN_IOR_ASSIGN  shift, and go to state 110
+    BIN_XOR_ASSIGN  shift, and go to state 111
+    ADD_ASSIGN      shift, and go to state 112
+    SUB_ASSIGN      shift, and go to state 113
+    MULT_ASSIGN     shift, and go to state 114
+    DIV_ASSIGN      shift, and go to state 115
+    MOD_ASSIGN      shift, and go to state 116
+    LEFT_ASSIGN     shift, and go to state 117
+    RIGHT_ASSIGN    shift, and go to state 118
+    ASSIGN          shift, and go to state 119
+
+    arith_assgn_op  go to state 123
+    bit_assgn_op    go to state 124
+
+
+State 191
+
+   33 for_loop_block: FOR OP for_initialization for_condition . TERMINATOR for_update CP OCB general_block CCB
+
+    TERMINATOR  shift, and go to state 215
+
+
+State 192
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    43 for_condition: conditional_expr .
 
     $default  reduce using rule 43 (for_condition)
 
 
+<<<<<<< HEAD
 State 183
+=======
+State 193
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    41 for_initialization: function_call_block TERMINATOR .
 
     $default  reduce using rule 41 (for_initialization)
 
 
+<<<<<<< HEAD
 State 184
 
    34 for_initialization: function_call_block COMMA . for_initialization
@@ -3283,21 +6181,54 @@ State 184
 
 
 State 185
+=======
+State 194
+
+   34 for_initialization: function_call_block COMMA . for_initialization
+
+    INC         shift, and go to state 14
+    DEC         shift, and go to state 15
+    IDENT       shift, and go to state 18
+    VAR         shift, and go to state 19
+    POINTER     shift, and go to state 20
+    DREF        shift, and go to state 21
+    TERMINATOR  shift, and go to state 147
+    OP          shift, and go to state 148
+
+    for_initialization   go to state 216
+    function_call_block  go to state 150
+    var_block            go to state 51
+    ass_var_block        go to state 151
+    assignment_block     go to state 152
+    arith_unary_op       go to state 153
+
+
+State 195
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    36 for_initialization: ass_var_block arith_unary_op . COMMA for_initialization
    39                   | ass_var_block arith_unary_op . TERMINATOR
 
+<<<<<<< HEAD
     TERMINATOR  shift, and go to state 208
     COMMA       shift, and go to state 209
 
 
 State 186
+=======
+    TERMINATOR  shift, and go to state 217
+    COMMA       shift, and go to state 218
+
+
+State 196
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    38 for_initialization: assignment_block TERMINATOR .
 
     $default  reduce using rule 38 (for_initialization)
 
 
+<<<<<<< HEAD
 State 187
 
    35 for_initialization: assignment_block COMMA . for_initialization
@@ -3320,28 +6251,65 @@ State 187
 
 
 State 188
+=======
+State 197
+
+   35 for_initialization: assignment_block COMMA . for_initialization
+
+    INC         shift, and go to state 14
+    DEC         shift, and go to state 15
+    IDENT       shift, and go to state 18
+    VAR         shift, and go to state 19
+    POINTER     shift, and go to state 20
+    DREF        shift, and go to state 21
+    TERMINATOR  shift, and go to state 147
+    OP          shift, and go to state 148
+
+    for_initialization   go to state 219
+    function_call_block  go to state 150
+    var_block            go to state 51
+    ass_var_block        go to state 151
+    assignment_block     go to state 152
+    arith_unary_op       go to state 153
+
+
+State 198
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    37 for_initialization: arith_unary_op ass_var_block . COMMA for_initialization
    40                   | arith_unary_op ass_var_block . TERMINATOR
 
+<<<<<<< HEAD
     TERMINATOR  shift, and go to state 211
     COMMA       shift, and go to state 212
 
 
 State 189
+=======
+    TERMINATOR  shift, and go to state 220
+    COMMA       shift, and go to state 221
 
-   63 function_call_block: IDENT OP function_var_list CP .
 
-    $default  reduce using rule 63 (function_call_block)
+State 199
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   64 function_call_block: IDENT OP function_var_list CP .
+
+    $default  reduce using rule 64 (function_call_block)
 
 
+<<<<<<< HEAD
 State 190
+=======
+State 200
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   64 function_var_list: conditional_expr COMMA . function_var_list
+   65 function_var_list: conditional_expr COMMA . function_var_list
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -3351,9 +6319,37 @@ State 190
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 129
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    function_call_block     go to state 48
+    function_var_list       go to state 222
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 155
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
+<<<<<<< HEAD
     const_block             go to state 34
     function_call_block     go to state 44
     function_var_list       go to state 213
@@ -3379,9 +6375,37 @@ State 191
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 129
+=======
+State 201
+
+   99 expr: OP conditional_expr CP arith_binary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 223
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
+<<<<<<< HEAD
     const_block          go to state 34
     function_call_block  go to state 44
     var_block            go to state 47
@@ -3405,6 +6429,33 @@ State 192
     OP         shift, and go to state 129
 
     $default  reduce using rule 104 (expr)
+=======
+State 202
+
+  100 expr: OP conditional_expr CP bit_binary_op . expr
+
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block          go to state 38
+    function_call_block  go to state 48
+    var_block            go to state 51
+    ass_var_block        go to state 74
+    expr                 go to state 224
+    arith_unary_op       go to state 58
+    bit_unary_op         go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     const_block          go to state 34
     function_call_block  go to state 44
@@ -3413,6 +6464,7 @@ State 192
     expr                 go to state 215
     bit_unary_op         go to state 54
 
+<<<<<<< HEAD
 
 State 193
 
@@ -3436,6 +6488,30 @@ State 195
 
 
 State 196
+=======
+State 203
+
+    8 defination_block: IFDEF IDENT OCB start_block . CCB
+
+    CCB  shift, and go to state 225
+
+
+State 204
+
+    9 defination_block: IFNDEF IDENT OCB start_block . CCB
+
+    CCB  shift, and go to state 226
+
+
+State 205
+
+   53 function_def_block: FUNCTION ident OP argument_list_block . CP OCB general_block CCB
+
+    CP  shift, and go to state 227
+
+
+State 206
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    55 argument_list_block: data_type . var_block COMMA argument_list_block
    56                    | data_type . var_block
@@ -3443,6 +6519,7 @@ State 196
     VAR      shift, and go to state 17
     POINTER  shift, and go to state 18
 
+<<<<<<< HEAD
     var_block  go to state 219
 
 
@@ -3451,44 +6528,76 @@ State 197
    61 general_stmt: PRINT str GT str . TERMINATOR
 
     TERMINATOR  shift, and go to state 220
+=======
+    var_block  go to state 228
 
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
+State 207
+
+<<<<<<< HEAD
 State 198
 
    79 num: NUM .
+=======
+   80 num: NUM .
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-    $default  reduce using rule 79 (num)
+    $default  reduce using rule 80 (num)
 
 
+<<<<<<< HEAD
 State 199
+=======
+State 208
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   78 array_block: var_block OB num . CB
+   79 array_block: var_block OB num . CB
 
+<<<<<<< HEAD
     CB  shift, and go to state 221
 
 
 State 200
-
-   67 var_list: var_block COMMA var_list .
-
-    $default  reduce using rule 67 (var_list)
+=======
+    CB  shift, and go to state 229
 
 
+State 209
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   68 var_list: var_block COMMA var_list .
+
+    $default  reduce using rule 68 (var_list)
+
+
+<<<<<<< HEAD
 State 201
+=======
+State 210
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   69 var_list: array_block COMMA var_list .
+   70 var_list: array_block COMMA var_list .
 
-    $default  reduce using rule 69 (var_list)
+    $default  reduce using rule 70 (var_list)
 
 
+<<<<<<< HEAD
 State 202
+=======
+State 211
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   82 ass_var_block: var_block OB conditional_expr CB .
+   83 ass_var_block: var_block OB conditional_expr CB .
 
-    $default  reduce using rule 82 (ass_var_block)
+    $default  reduce using rule 83 (ass_var_block)
 
 
+<<<<<<< HEAD
 State 203
+=======
+State 212
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    22 if_else_block: IF OP if_condition CP OCB . general_block CCB
    23              | IF OP if_condition CP OCB . general_block CCB ELSE OCB general_block CCB
@@ -3507,6 +6616,7 @@ State 203
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -3555,6 +6665,61 @@ State 203
 
 
 State 204
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 230
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 213
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    29 while_loop_block: WHILE OP while_condition CP OCB . general_block CCB
 
@@ -3571,6 +6736,7 @@ State 204
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -3648,19 +6814,108 @@ State 206
 
 
 State 207
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 231
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 214
+
+   31 do_while_loop_block: DO OCB general_block CCB WHILE . OP do_while_condition CP TERMINATOR
+
+    OP  shift, and go to state 232
+
+
+State 215
+
+   33 for_loop_block: FOR OP for_initialization for_condition TERMINATOR . for_update CP OCB general_block CCB
+
+    INC      shift, and go to state 14
+    DEC      shift, and go to state 15
+    IDENT    shift, and go to state 18
+    VAR      shift, and go to state 19
+    POINTER  shift, and go to state 20
+    DREF     shift, and go to state 21
+    OP       shift, and go to state 148
+
+    $default  reduce using rule 52 (for_update)
+
+    for_update           go to state 233
+    function_call_block  go to state 234
+    var_block            go to state 51
+    ass_var_block        go to state 235
+    assignment_block     go to state 236
+    arith_unary_op       go to state 237
+
+
+State 216
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    34 for_initialization: function_call_block COMMA for_initialization .
 
     $default  reduce using rule 34 (for_initialization)
 
 
+<<<<<<< HEAD
 State 208
+=======
+State 217
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    39 for_initialization: ass_var_block arith_unary_op TERMINATOR .
 
     $default  reduce using rule 39 (for_initialization)
 
 
+<<<<<<< HEAD
 State 209
 
    36 for_initialization: ass_var_block arith_unary_op COMMA . for_initialization
@@ -3683,19 +6938,48 @@ State 209
 
 
 State 210
+=======
+State 218
+
+   36 for_initialization: ass_var_block arith_unary_op COMMA . for_initialization
+
+    INC         shift, and go to state 14
+    DEC         shift, and go to state 15
+    IDENT       shift, and go to state 18
+    VAR         shift, and go to state 19
+    POINTER     shift, and go to state 20
+    DREF        shift, and go to state 21
+    TERMINATOR  shift, and go to state 147
+    OP          shift, and go to state 148
+
+    for_initialization   go to state 238
+    function_call_block  go to state 150
+    var_block            go to state 51
+    ass_var_block        go to state 151
+    assignment_block     go to state 152
+    arith_unary_op       go to state 153
+
+
+State 219
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    35 for_initialization: assignment_block COMMA for_initialization .
 
     $default  reduce using rule 35 (for_initialization)
 
 
+<<<<<<< HEAD
 State 211
+=======
+State 220
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    40 for_initialization: arith_unary_op ass_var_block TERMINATOR .
 
     $default  reduce using rule 40 (for_initialization)
 
 
+<<<<<<< HEAD
 State 212
 
    37 for_initialization: arith_unary_op ass_var_block COMMA . for_initialization
@@ -3718,12 +7002,37 @@ State 212
 
 
 State 213
+=======
+State 221
 
-   64 function_var_list: conditional_expr COMMA function_var_list .
+   37 for_initialization: arith_unary_op ass_var_block COMMA . for_initialization
 
-    $default  reduce using rule 64 (function_var_list)
+    INC         shift, and go to state 14
+    DEC         shift, and go to state 15
+    IDENT       shift, and go to state 18
+    VAR         shift, and go to state 19
+    POINTER     shift, and go to state 20
+    DREF        shift, and go to state 21
+    TERMINATOR  shift, and go to state 147
+    OP          shift, and go to state 148
+
+    for_initialization   go to state 239
+    function_call_block  go to state 150
+    var_block            go to state 51
+    ass_var_block        go to state 151
+    assignment_block     go to state 152
+    arith_unary_op       go to state 153
 
 
+State 222
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
+
+   65 function_var_list: conditional_expr COMMA function_var_list .
+
+    $default  reduce using rule 65 (function_var_list)
+
+
+<<<<<<< HEAD
 State 214
 
    96 expr: OP conditional_expr CP arith_binary_op expr .
@@ -3739,19 +7048,41 @@ State 215
 
 
 State 216
+=======
+State 223
+
+   99 expr: OP conditional_expr CP arith_binary_op expr .
+
+    $default  reduce using rule 99 (expr)
+
+
+State 224
+
+  100 expr: OP conditional_expr CP bit_binary_op expr .
+
+    $default  reduce using rule 100 (expr)
+
+
+State 225
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     8 defination_block: IFDEF IDENT OCB start_block CCB .
 
     $default  reduce using rule 8 (defination_block)
 
 
+<<<<<<< HEAD
 State 217
+=======
+State 226
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     9 defination_block: IFNDEF IDENT OCB start_block CCB .
 
     $default  reduce using rule 9 (defination_block)
 
 
+<<<<<<< HEAD
 State 218
 
    53 function_def_block: FUNCTION ident OP argument_list_block CP . OCB general_block CCB
@@ -3760,15 +7091,30 @@ State 218
 
 
 State 219
+=======
+State 227
+
+   53 function_def_block: FUNCTION ident OP argument_list_block CP . OCB general_block CCB
+
+    OCB  shift, and go to state 240
+
+
+State 228
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    55 argument_list_block: data_type var_block . COMMA argument_list_block
    56                    | data_type var_block .
 
+<<<<<<< HEAD
     COMMA  shift, and go to state 233
+=======
+    COMMA  shift, and go to state 241
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 56 (argument_list_block)
 
 
+<<<<<<< HEAD
 State 220
 
    61 general_stmt: PRINT str GT str TERMINATOR .
@@ -3777,18 +7123,26 @@ State 220
 
 
 State 221
+=======
+State 229
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
-   78 array_block: var_block OB num CB .
+   79 array_block: var_block OB num CB .
 
-    $default  reduce using rule 78 (array_block)
+    $default  reduce using rule 79 (array_block)
 
 
+<<<<<<< HEAD
 State 222
+=======
+State 230
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    22 if_else_block: IF OP if_condition CP OCB general_block . CCB
    23              | IF OP if_condition CP OCB general_block . CCB ELSE OCB general_block CCB
    24              | IF OP if_condition CP OCB general_block . CCB ELSE if_else_block
 
+<<<<<<< HEAD
     CCB  shift, and go to state 234
 
 
@@ -3800,12 +7154,26 @@ State 223
 
 
 State 224
+=======
+    CCB  shift, and go to state 242
+
+
+State 231
+
+   29 while_loop_block: WHILE OP while_condition CP OCB general_block . CCB
+
+    CCB  shift, and go to state 243
+
+
+State 232
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    31 do_while_loop_block: DO OCB general_block CCB WHILE OP . do_while_condition CP TERMINATOR
 
     NOT_1      shift, and go to state 6
     TRUE_1     shift, and go to state 7
     FALSE_1    shift, and go to state 8
+<<<<<<< HEAD
     BIN_NOT    shift, and go to state 14
     NUM        shift, and go to state 15
     IDENT      shift, and go to state 16
@@ -3815,9 +7183,37 @@ State 224
     STRING     shift, and go to state 20
     CHARACTER  shift, and go to state 21
     OP         shift, and go to state 129
+=======
+    INC        shift, and go to state 14
+    DEC        shift, and go to state 15
+    BIN_NOT    shift, and go to state 16
+    NUM        shift, and go to state 17
+    IDENT      shift, and go to state 18
+    VAR        shift, and go to state 19
+    POINTER    shift, and go to state 20
+    DREF       shift, and go to state 21
+    STRING     shift, and go to state 22
+    CHARACTER  shift, and go to state 23
+    OP         shift, and go to state 73
+
+    $default  reduce using rule 107 (expr)
+
+    const_block             go to state 38
+    do_while_condition      go to state 244
+    function_call_block     go to state 48
+    var_block               go to state 51
+    ass_var_block           go to state 74
+    expr                    go to state 54
+    conditional_expr        go to state 245
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 104 (expr)
 
+<<<<<<< HEAD
     const_block             go to state 34
     do_while_condition      go to state 236
     function_call_block     go to state 44
@@ -3838,26 +7234,45 @@ State 225
 
 
 State 226
+=======
+State 233
+
+   33 for_loop_block: FOR OP for_initialization for_condition TERMINATOR for_update . CP OCB general_block CCB
+
+    CP  shift, and go to state 246
+
+
+State 234
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    44 for_update: function_call_block . COMMA for_update
    48           | function_call_block .
 
+<<<<<<< HEAD
     COMMA  shift, and go to state 239
+=======
+    COMMA  shift, and go to state 247
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 48 (for_update)
 
 
+<<<<<<< HEAD
 State 227
+=======
+State 235
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    46 for_update: ass_var_block . arith_unary_op COMMA for_update
    50           | ass_var_block . arith_unary_op
-   83 assignment_block: ass_var_block . ASSIGN conditional_expr
-   84                 | ass_var_block . arith_assgn_op conditional_expr
-   85                 | ass_var_block . bit_assgn_op conditional_expr
-   86                 | ass_var_block . ASSIGN assignment_block
-   87                 | ass_var_block . arith_assgn_op assignment_block
-   88                 | ass_var_block . bit_assgn_op assignment_block
+   84 assignment_block: ass_var_block . ASSIGN conditional_expr
+   85                 | ass_var_block . arith_assgn_op conditional_expr
+   86                 | ass_var_block . bit_assgn_op conditional_expr
+   87                 | ass_var_block . ASSIGN assignment_block
+   88                 | ass_var_block . arith_assgn_op assignment_block
+   89                 | ass_var_block . bit_assgn_op assignment_block
 
+<<<<<<< HEAD
     INC             shift, and go to state 139
     DEC             shift, and go to state 140
     BIN_AND_ASSIGN  shift, and go to state 101
@@ -3878,16 +7293,46 @@ State 227
 
 
 State 228
+=======
+    INC             shift, and go to state 14
+    DEC             shift, and go to state 15
+    BIN_AND_ASSIGN  shift, and go to state 109
+    BIN_IOR_ASSIGN  shift, and go to state 110
+    BIN_XOR_ASSIGN  shift, and go to state 111
+    ADD_ASSIGN      shift, and go to state 112
+    SUB_ASSIGN      shift, and go to state 113
+    MULT_ASSIGN     shift, and go to state 114
+    DIV_ASSIGN      shift, and go to state 115
+    MOD_ASSIGN      shift, and go to state 116
+    LEFT_ASSIGN     shift, and go to state 117
+    RIGHT_ASSIGN    shift, and go to state 118
+    ASSIGN          shift, and go to state 119
+
+    arith_unary_op  go to state 248
+    arith_assgn_op  go to state 123
+    bit_assgn_op    go to state 124
+
+
+State 236
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    45 for_update: assignment_block . COMMA for_update
    49           | assignment_block .
 
+<<<<<<< HEAD
     COMMA  shift, and go to state 241
+=======
+    COMMA  shift, and go to state 249
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 49 (for_update)
 
 
+<<<<<<< HEAD
 State 229
+=======
+State 237
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    47 for_update: arith_unary_op . ass_var_block COMMA for_update
    51           | arith_unary_op . ass_var_block
@@ -3896,25 +7341,41 @@ State 229
     POINTER  shift, and go to state 18
     DREF     shift, and go to state 19
 
+<<<<<<< HEAD
     var_block      go to state 47
     ass_var_block  go to state 242
 
 
 State 230
+=======
+    var_block      go to state 51
+    ass_var_block  go to state 250
+
+
+State 238
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    36 for_initialization: ass_var_block arith_unary_op COMMA for_initialization .
 
     $default  reduce using rule 36 (for_initialization)
 
 
+<<<<<<< HEAD
 State 231
+=======
+State 239
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    37 for_initialization: arith_unary_op ass_var_block COMMA for_initialization .
 
     $default  reduce using rule 37 (for_initialization)
 
 
+<<<<<<< HEAD
 State 232
+=======
+State 240
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    53 function_def_block: FUNCTION ident OP argument_list_block CP OCB . general_block CCB
 
@@ -3931,6 +7392,7 @@ State 232
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -3979,6 +7441,61 @@ State 232
 
 
 State 233
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 251
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 241
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    55 argument_list_block: data_type var_block COMMA . argument_list_block
 
@@ -3990,28 +7507,45 @@ State 233
 
     $default  reduce using rule 57 (argument_list_block)
 
+<<<<<<< HEAD
     argument_list_block  go to state 244
     data_type            go to state 196
 
 
 State 234
+=======
+    argument_list_block  go to state 252
+    data_type            go to state 206
+
+
+State 242
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    22 if_else_block: IF OP if_condition CP OCB general_block CCB .
    23              | IF OP if_condition CP OCB general_block CCB . ELSE OCB general_block CCB
    24              | IF OP if_condition CP OCB general_block CCB . ELSE if_else_block
 
+<<<<<<< HEAD
     ELSE  shift, and go to state 245
+=======
+    ELSE  shift, and go to state 253
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 22 (if_else_block)
 
 
+<<<<<<< HEAD
 State 235
+=======
+State 243
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    29 while_loop_block: WHILE OP while_condition CP OCB general_block CCB .
 
     $default  reduce using rule 29 (while_loop_block)
 
 
+<<<<<<< HEAD
 State 236
 
    31 do_while_loop_block: DO OCB general_block CCB WHILE OP do_while_condition . CP TERMINATOR
@@ -4020,12 +7554,23 @@ State 236
 
 
 State 237
+=======
+State 244
+
+   31 do_while_loop_block: DO OCB general_block CCB WHILE OP do_while_condition . CP TERMINATOR
+
+    CP  shift, and go to state 254
+
+
+State 245
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    32 do_while_condition: conditional_expr .
 
     $default  reduce using rule 32 (do_while_condition)
 
 
+<<<<<<< HEAD
 State 238
 
    33 for_loop_block: FOR OP for_initialization for_condition TERMINATOR for_update CP . OCB general_block CCB
@@ -4056,15 +7601,52 @@ State 239
 
 
 State 240
+=======
+State 246
+
+   33 for_loop_block: FOR OP for_initialization for_condition TERMINATOR for_update CP . OCB general_block CCB
+
+    OCB  shift, and go to state 255
+
+
+State 247
+
+   44 for_update: function_call_block COMMA . for_update
+
+    INC      shift, and go to state 14
+    DEC      shift, and go to state 15
+    IDENT    shift, and go to state 18
+    VAR      shift, and go to state 19
+    POINTER  shift, and go to state 20
+    DREF     shift, and go to state 21
+    OP       shift, and go to state 148
+
+    $default  reduce using rule 52 (for_update)
+
+    for_update           go to state 256
+    function_call_block  go to state 234
+    var_block            go to state 51
+    ass_var_block        go to state 235
+    assignment_block     go to state 236
+    arith_unary_op       go to state 237
+
+
+State 248
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    46 for_update: ass_var_block arith_unary_op . COMMA for_update
    50           | ass_var_block arith_unary_op .
 
+<<<<<<< HEAD
     COMMA  shift, and go to state 249
+=======
+    COMMA  shift, and go to state 257
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 50 (for_update)
 
 
+<<<<<<< HEAD
 State 241
 
    45 for_update: assignment_block COMMA . for_update
@@ -4088,15 +7670,45 @@ State 241
 
 
 State 242
+=======
+State 249
+
+   45 for_update: assignment_block COMMA . for_update
+
+    INC      shift, and go to state 14
+    DEC      shift, and go to state 15
+    IDENT    shift, and go to state 18
+    VAR      shift, and go to state 19
+    POINTER  shift, and go to state 20
+    DREF     shift, and go to state 21
+    OP       shift, and go to state 148
+
+    $default  reduce using rule 52 (for_update)
+
+    for_update           go to state 258
+    function_call_block  go to state 234
+    var_block            go to state 51
+    ass_var_block        go to state 235
+    assignment_block     go to state 236
+    arith_unary_op       go to state 237
+
+
+State 250
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    47 for_update: arith_unary_op ass_var_block . COMMA for_update
    51           | arith_unary_op ass_var_block .
 
+<<<<<<< HEAD
     COMMA  shift, and go to state 251
+=======
+    COMMA  shift, and go to state 259
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
     $default  reduce using rule 51 (for_update)
 
 
+<<<<<<< HEAD
 State 243
 
    53 function_def_block: FUNCTION ident OP argument_list_block CP OCB general_block . CCB
@@ -4105,18 +7717,33 @@ State 243
 
 
 State 244
+=======
+State 251
+
+   53 function_def_block: FUNCTION ident OP argument_list_block CP OCB general_block . CCB
+
+    CCB  shift, and go to state 260
+
+
+State 252
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    55 argument_list_block: data_type var_block COMMA argument_list_block .
 
     $default  reduce using rule 55 (argument_list_block)
 
 
+<<<<<<< HEAD
 State 245
+=======
+State 253
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    23 if_else_block: IF OP if_condition CP OCB general_block CCB ELSE . OCB general_block CCB
    24              | IF OP if_condition CP OCB general_block CCB ELSE . if_else_block
 
     IF   shift, and go to state 2
+<<<<<<< HEAD
     OCB  shift, and go to state 253
 
     if_else_block  go to state 254
@@ -4130,6 +7757,21 @@ State 246
 
 
 State 247
+=======
+    OCB  shift, and go to state 261
+
+    if_else_block  go to state 262
+
+
+State 254
+
+   31 do_while_loop_block: DO OCB general_block CCB WHILE OP do_while_condition CP . TERMINATOR
+
+    TERMINATOR  shift, and go to state 263
+
+
+State 255
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    33 for_loop_block: FOR OP for_initialization for_condition TERMINATOR for_update CP OCB . general_block CCB
 
@@ -4146,6 +7788,7 @@ State 247
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -4194,12 +7837,68 @@ State 247
 
 
 State 248
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 264
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 256
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    44 for_update: function_call_block COMMA for_update .
 
     $default  reduce using rule 44 (for_update)
 
 
+<<<<<<< HEAD
 State 249
 
    46 for_update: ass_var_block arith_unary_op COMMA . for_update
@@ -4223,12 +7922,38 @@ State 249
 
 
 State 250
+=======
+State 257
+
+   46 for_update: ass_var_block arith_unary_op COMMA . for_update
+
+    INC      shift, and go to state 14
+    DEC      shift, and go to state 15
+    IDENT    shift, and go to state 18
+    VAR      shift, and go to state 19
+    POINTER  shift, and go to state 20
+    DREF     shift, and go to state 21
+    OP       shift, and go to state 148
+
+    $default  reduce using rule 52 (for_update)
+
+    for_update           go to state 265
+    function_call_block  go to state 234
+    var_block            go to state 51
+    ass_var_block        go to state 235
+    assignment_block     go to state 236
+    arith_unary_op       go to state 237
+
+
+State 258
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    45 for_update: assignment_block COMMA for_update .
 
     $default  reduce using rule 45 (for_update)
 
 
+<<<<<<< HEAD
 State 251
 
    47 for_update: arith_unary_op ass_var_block COMMA . for_update
@@ -4252,13 +7977,42 @@ State 251
 
 
 State 252
+=======
+State 259
+
+   47 for_update: arith_unary_op ass_var_block COMMA . for_update
+
+    INC      shift, and go to state 14
+    DEC      shift, and go to state 15
+    IDENT    shift, and go to state 18
+    VAR      shift, and go to state 19
+    POINTER  shift, and go to state 20
+    DREF     shift, and go to state 21
+    OP       shift, and go to state 148
+
+    $default  reduce using rule 52 (for_update)
+
+    for_update           go to state 266
+    function_call_block  go to state 234
+    var_block            go to state 51
+    ass_var_block        go to state 235
+    assignment_block     go to state 236
+    arith_unary_op       go to state 237
+
+
+State 260
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    53 function_def_block: FUNCTION ident OP argument_list_block CP OCB general_block CCB .
 
     $default  reduce using rule 53 (function_def_block)
 
 
+<<<<<<< HEAD
 State 253
+=======
+State 261
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    23 if_else_block: IF OP if_condition CP OCB general_block CCB ELSE OCB . general_block CCB
 
@@ -4275,6 +8029,7 @@ State 253
     CHAR           shift, and go to state 11
     FLOAT          shift, and go to state 12
     DOUBLE         shift, and go to state 13
+<<<<<<< HEAD
     BIN_NOT        shift, and go to state 14
     NUM            shift, and go to state 15
     IDENT          shift, and go to state 16
@@ -4323,19 +8078,79 @@ State 253
 
 
 State 254
+=======
+    INC            shift, and go to state 14
+    DEC            shift, and go to state 15
+    BIN_NOT        shift, and go to state 16
+    NUM            shift, and go to state 17
+    IDENT          shift, and go to state 18
+    VAR            shift, and go to state 19
+    POINTER        shift, and go to state 20
+    DREF           shift, and go to state 21
+    STRING         shift, and go to state 22
+    CHARACTER      shift, and go to state 23
+    OP             shift, and go to state 24
+    COMMENT        shift, and go to state 25
+    MULTI_COMMENT  shift, and go to state 26
+    PRINT          shift, and go to state 31
+    SCAN           shift, and go to state 32
+    RETURN         shift, and go to state 33
+
+    AND         reduce using rule 107 (expr)
+    OR          reduce using rule 107 (expr)
+    TERMINATOR  reduce using rule 107 (expr)
+    CCB         reduce using rule 21 (general_block)
+    EQ          reduce using rule 107 (expr)
+    NOTEQ       reduce using rule 107 (expr)
+    GT          reduce using rule 107 (expr)
+    LT          reduce using rule 107 (expr)
+    GE          reduce using rule 107 (expr)
+    LE          reduce using rule 107 (expr)
+    LTGT        reduce using rule 107 (expr)
+
+    comment_block           go to state 79
+    const_block             go to state 38
+    general_block           go to state 267
+    if_else_block           go to state 41
+    loop_block              go to state 42
+    while_loop_block        go to state 43
+    do_while_loop_block     go to state 44
+    for_loop_block          go to state 45
+    general_stmt            go to state 47
+    function_call_block     go to state 48
+    declaration_block       go to state 49
+    data_type               go to state 50
+    var_block               go to state 51
+    ass_var_block           go to state 52
+    assignment_block        go to state 53
+    expr                    go to state 54
+    conditional_expr        go to state 55
+    bit_unary_condition_op  go to state 56
+    fixed_condition         go to state 57
+    arith_unary_op          go to state 58
+    bit_unary_op            go to state 59
+
+
+State 262
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    24 if_else_block: IF OP if_condition CP OCB general_block CCB ELSE if_else_block .
 
     $default  reduce using rule 24 (if_else_block)
 
 
+<<<<<<< HEAD
 State 255
+=======
+State 263
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    31 do_while_loop_block: DO OCB general_block CCB WHILE OP do_while_condition CP TERMINATOR .
 
     $default  reduce using rule 31 (do_while_loop_block)
 
 
+<<<<<<< HEAD
 State 256
 
    33 for_loop_block: FOR OP for_initialization for_condition TERMINATOR for_update CP OCB general_block . CCB
@@ -4344,19 +8159,34 @@ State 256
 
 
 State 257
+=======
+State 264
+
+   33 for_loop_block: FOR OP for_initialization for_condition TERMINATOR for_update CP OCB general_block . CCB
+
+    CCB  shift, and go to state 268
+
+
+State 265
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    46 for_update: ass_var_block arith_unary_op COMMA for_update .
 
     $default  reduce using rule 46 (for_update)
 
 
+<<<<<<< HEAD
 State 258
+=======
+State 266
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    47 for_update: arith_unary_op ass_var_block COMMA for_update .
 
     $default  reduce using rule 47 (for_update)
 
 
+<<<<<<< HEAD
 State 259
 
    23 if_else_block: IF OP if_condition CP OCB general_block CCB ELSE OCB general_block . CCB
@@ -4365,13 +8195,27 @@ State 259
 
 
 State 260
+=======
+State 267
+
+   23 if_else_block: IF OP if_condition CP OCB general_block CCB ELSE OCB general_block . CCB
+
+    CCB  shift, and go to state 269
+
+
+State 268
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    33 for_loop_block: FOR OP for_initialization for_condition TERMINATOR for_update CP OCB general_block CCB .
 
     $default  reduce using rule 33 (for_loop_block)
 
 
+<<<<<<< HEAD
 State 261
+=======
+State 269
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
    23 if_else_block: IF OP if_condition CP OCB general_block CCB ELSE OCB general_block CCB .
 

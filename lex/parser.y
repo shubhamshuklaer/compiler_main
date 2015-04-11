@@ -54,6 +54,7 @@
 	void insert_var_in_symbol_table(string func_name,string var_name,string data_type,int var_type=0,int arr_size=0);
 	sym_table<func_elem,func_def> *gst_obj;
 	ofstream sym_tab_out("sym_tab_out.txt");
+	void get_symbol_table_data();
 	// #define YYSTYPE struct node *
 %}
 
@@ -77,7 +78,7 @@
 %token DEFINE IFDEF IFNDEF
 %token FUNCTION
 %token COMMA 
-%token PRINT
+%token PRINT SCAN RETURN
 
 %right ASSIGN
 %left AND OR
@@ -159,6 +160,8 @@
 %type <entry> COMMA 
 
 %type <entry> PRINT
+%type <entry> SCAN
+%type <entry> RETURN
 
 %type <entry> super_block
 %type <entry> start_block
@@ -201,7 +204,6 @@
 %type <entry> bit_unary_op
 %type <entry> arith_assgn_op
 %type <entry> bit_assgn_op
-%type <entry> str
 %type <entry> function_var_list
 %type <entry> ident
 %type <entry> num
@@ -677,7 +679,7 @@ argument_list_block
 					:	data_type var_block COMMA argument_list_block{
 							$$ = mk_node("argument_list_block");			
 							$3 = mk_node("COMMA");
-							$1 = mk_node("INT");												
+
 							mk_child($$, $1); 
 							mk_child($$, $2);
 							mk_child($$, $3);
@@ -711,20 +713,33 @@ general_stmt
 							mk_child($$, $1); 
 							mk_child($$, $2);
 						}
-					|	PRINT str GT str TERMINATOR
-						{
+					|   PRINT conditional_expr TERMINATOR{
 							$$ = mk_node("general_stmt");
 							$1 = mk_node("PRINT");
-							$3 = mk_node("GT");
-							$5 = mk_node("TERMINATOR");
+							$3 = mk_node("TERMINATOR");
 							mk_child($$, $1);
 							mk_child($$, $2);
 							mk_child($$, $3);
-							mk_child($$, $4);
-							mk_child($$, $5);
-						}
+					}
+					| 	SCAN ass_var_block TERMINATOR{
+							$$ = mk_node("general_stmt");
+							$1 = mk_node("SCAN");
+							$3 = mk_node("TERMINATOR");
+							mk_child($$, $1);
+							mk_child($$, $2);
+							mk_child($$, $3); 
+					}
+					| RETURN conditional_expr TERMINATOR{
+							$$ = mk_node("general_stmt");
+							$1 = mk_node("RETURN");
+							$3 = mk_node("TERMINATOR");
+							mk_child($$, $1);
+							mk_child($$, $2);
+							mk_child($$, $3); 
+					}
 					;
 
+<<<<<<< HEAD
 str 				: 	STRING{
 							struct node *temp = mk_node(yylval.terminal_value);
 							$$ = mk_node("str");
@@ -733,6 +748,8 @@ str 				: 	STRING{
 							
 						}
 					;
+=======
+>>>>>>> 7b2809b18a1c8bc0b1b97f52e359d30b6c0d295e
 
 function_call_block
 					:	IDENT OP function_var_list CP {
@@ -1318,6 +1335,7 @@ int main(){
     agwrite(syntax_graph,fp);
     fclose(fp);
 	gst_obj->print(sym_tab_out);
+	get_symbol_table_data();
 	sym_tab_out.close();
 	return 0;
 }
@@ -1449,7 +1467,7 @@ void printtree(node *root, int level){
 		//Now finding the argument list
 		while(argument_list_block!=NULL){
 			//Finding the data type
-			struct node *data_type_node=argument_list_block->child[0];
+			struct node *data_type_node=argument_list_block->child[0]->child[0];
 			string tdt;
 			var_def *temp_def;
 			tdt=string(data_type_node->name);	
@@ -1465,13 +1483,18 @@ void printtree(node *root, int level){
 			}
 			temp_arg_list.push_back(pair<string,var_def*>(var_name,temp_def));
 			////////////////////////////////////
-			if(argument_list_block->cur_childs==4)
+			if(argument_list_block->cur_childs==4){
 				argument_list_block=argument_list_block->child[3];
+			}
 			else
 				argument_list_block=NULL;
 		}	
 		////////////////////////////////////////
 		gst_obj->insert(temp_func_name,new func_def(temp_arg_list,""));
+		vector<pair<string,var_def*> >::iterator it;
+		for(it=temp_arg_list.begin();it!=temp_arg_list.end();it++){
+			insert_var_in_symbol_table(func_name,it->first,it->second->data_type,it->second->var_type,it->second->arr_size);	
+		}
 	}else if(root==func_terminator_node){
 		func_name=main_func_name;
 	}else if(strcmp(root->name,"assignment_block")==0){
@@ -1617,4 +1640,10 @@ void insert_var_in_symbol_table(string func_name,string var_name,string data_typ
 			sym_tab_out<<"var named "<<var_name<<" already exist"<<endl;	
 		}
 	}
+}
+
+void get_symbol_table_data(){
+	ofstream sym_tab_data("sym_tab_data.txt");
+	gst_obj->print_data(sym_tab_data);
+	sym_tab_data.close();
 }

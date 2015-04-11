@@ -17,6 +17,8 @@ const int var_wrong_type=-6;
 
 const int step_width=15;
 
+string dummy_func_name="__main__";
+
 template <typename T,typename R>
 class sym_table;
 
@@ -53,6 +55,36 @@ class var_def{
 			out_stream<<setw(width)<<"var_type "<<var_type<<endl;
 			out_stream<<setw(width)<<"arr_size "<<arr_size<<endl;
 		}
+
+		void print_data(ofstream &data_stream,string prefix){
+			data_stream<<prefix;
+			if(var_type==0){
+				if(data_type=="char")
+					data_stream<<" .byte \'0\'"<<endl;
+				else if(data_type=="int")
+					data_stream<<" .word 0"<<endl;
+			}else if(var_type==2){
+				if(data_type=="char"){
+					data_stream<<" .byte ";
+					for(int i=0;i<arr_size;i++){
+						if(i==0)
+							data_stream<<"0";
+						else
+							data_stream<<",0";
+					}
+					data_stream<<endl;
+				}else if(data_type=="int"){
+					data_stream<<" .word ";
+					for(int i=0;i<arr_size;i++){
+						if(i==0)
+							data_stream<<"\'0\'";
+						else
+							data_stream<<",\'0\'";
+					}
+					data_stream<<endl;
+				}
+			}
+		}	
 };
 
 class func_def{
@@ -108,6 +140,7 @@ class func_def{
 			}
 			out_stream<<setw(width)<<"Ret type : "<<ret_type<<endl;
 		}
+
 };
 
 
@@ -130,6 +163,14 @@ class var_elem{
 		void print(ofstream &out_stream,int width=0){
 			vd->print(out_stream,width);
 		}
+
+		void print_data(ofstream &data_stream,string prefix){
+			vd->print_data(data_stream,prefix);
+		}
+
+		var_def *get_type(){
+			return vd;
+		}
 };
 
 
@@ -145,9 +186,11 @@ class func_elem{
 		int check_type(func_def* _fd);
 
 		int check_type(string,var_def*);
+		var_def *get_type(string);
 		int insert(string,var_def*);
 		var_elem *lookup(string);
 		void print(ofstream &,int);
+		void print_data(ofstream &,string prefix);
 };
 
 
@@ -195,6 +238,7 @@ class sym_table{
 
 		}
 
+
 		sym_table(){
 			st_map=new map<string,T*>;
 		}
@@ -209,6 +253,25 @@ class sym_table{
 			for(it=st_map->begin();it!=st_map->end();it++){
 				out_stream<<setw(width)<<"key : "<<it->first<<endl;
 				it->second->print(out_stream,width+step_width);
+			}
+		}
+
+		void print_data(ofstream &data_stream,string prefix="",bool func=true){
+			typename map<string,T*>::iterator it;
+
+			for(it=st_map->begin();it!=st_map->end();it++){
+				if(func){
+					if(it->first==dummy_func_name)
+						it->second->print_data(data_stream,prefix);
+					else
+						it->second->print_data(data_stream,prefix+it->first+"_");
+				}else{
+					string temp_name=it->first;
+					if(temp_name[0]=='$'){
+						temp_name.erase(0,1);
+					}
+					it->second->print_data(data_stream,prefix+temp_name+" : ");
+				}
 			}
 		}
 };
@@ -248,5 +311,14 @@ void func_elem::print(ofstream &out_stream,int width=0){
 	width+=step_width;
 	fst->print(out_stream,width);
 
+}
+
+void func_elem::print_data(ofstream &data_stream,string prefix=""){
+	fst->print_data(data_stream,prefix,false);	
+}
+
+var_def *func_elem::get_type(string key){
+	var_elem *ve=fst->lookup(key);	
+	return ve->get_type();
 }
 #endif

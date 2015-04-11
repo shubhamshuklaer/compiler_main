@@ -1,13 +1,18 @@
-int $a,$b[100];
+int $a,$b[5];
 $a=5;
-function abc(int $d,float $c){
+function abc(int $d,char $c){
 	$d=10;
-	float $e[10],$f[100];
+	char $e[2],$f[5];
 }
 
-function efg(int $d,float $c){
+function efg(int $d,char $c){
 	int $e[10];
 	$d=11;
+}
+
+
+function b(int $a){
+	$a=10;
 }
 
 int $f,$e[10];

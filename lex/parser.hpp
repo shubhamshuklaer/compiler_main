@@ -113,7 +113,9 @@ extern int yydebug;
     FUNCTION = 323,
     COMMA = 324,
     PRINT = 325,
-    LTGT = 326
+    SCAN = 326,
+    RETURN = 327,
+    LTGT = 328
   };
 #endif
 
@@ -127,7 +129,7 @@ union YYSTYPE
 	struct node *entry;
 	char *terminal_value;
 
-#line 131 "parser.hpp" /* yacc.c:1909  */
+#line 133 "parser.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
