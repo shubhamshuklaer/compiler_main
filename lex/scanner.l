@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.hpp"
+#include <iostream>
+using namespace std;
 #define TOKEN(t) (yylval.token=t)
+void yyerror(const char *);
 %}
 
 ALPHA	[a-zA-Z]
@@ -84,6 +87,7 @@ DIG		[0-9]
 [ac-zA-Z]|({ALPHA})({ALPHA}|{DIG})+				{ printf("<fidentifier : \'%s\'> ",strdup(yytext));  yylval.terminal_value = strdup(yytext); return IDENT; }
 $([ac-zA-Z]|({ALPHA})({ALPHA}|{DIG})+)				{ printf("<identifier : \'%s\'> ",strdup(yytext)); yylval.terminal_value = strdup(yytext); return VAR; }
 {DIG}+(\.{DIG}+)?							{printf("<constant : \'%d\'> ",atoi(yytext)); yylval.terminal_value = strdup(yytext); return NUM;}
+.											{string temp_err="invalid char "+string(yytext);yyerror(temp_err.c_str());}
 %%
 
 /*

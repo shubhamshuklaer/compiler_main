@@ -1,5 +1,7 @@
 <keyword : 'int'> <identifier : '$a'> <keyword : ';'> 
-<keyword : 'int'> $<identifier : '$c'> <keyword : ';'> 
+<keyword : 'int'> <identifier : '$c'> <keyword : ';'> 
+ ** invalid char @
+<keyword : ';'> 
 <identifier : '$a'> <operator : '='> <identifier : '$a'> <operator : '+'> <constant : '10'> <keyword : ';'> 
 <keyword : 'print'> <identifier : '$a'> <keyword : ';'> 
 
@@ -56,41 +58,9 @@ super_block
 					|
 					\___general_stmt
 					|   |
-					|   \___assignment_block
+					|   \___conditional_expr
 					|   |   |
-					|   |   \___ass_var_block
-					|   |   |   |
-					|   |   |   \___var_block
-					|   |   |   	|
-					|   |   |   	\___VAR
-					|   |   |   		|
-					|   |   |   		\___$a
-					|   |   |
-					|   |   \___ASSIGN
-					|   |   |
-					|   |   \___conditional_expr
-					|   |   	|
-					|   |   	\___expr
-					|   |   		|
-					|   |   		\___ass_var_block
-					|   |   		|   |
-					|   |   		|   \___var_block
-					|   |   		|   	|
-					|   |   		|   	\___VAR
-					|   |   		|   		|
-					|   |   		|   		\___$a
-					|   |   		|
-					|   |   		\___arith_binary_op
-					|   |   		|   |
-					|   |   		|   \___ADD
-					|   |   		|
-					|   |   		\___expr
-					|   |   			|
-					|   |   			\___const_block
-					|   |   				|
-					|   |   				\___NUM
-					|   |   					|
-					|   |   					\___10
+					|   |   \___expr
 					|   |
 					|   \___TERMINATOR
 					|
@@ -98,30 +68,63 @@ super_block
 						|
 						\___general_stmt
 						|   |
-						|   \___PRINT
-						|   |
-						|   \___conditional_expr
+						|   \___assignment_block
 						|   |   |
-						|   |   \___expr
+						|   |   \___ass_var_block
+						|   |   |   |
+						|   |   |   \___var_block
+						|   |   |   	|
+						|   |   |   	\___VAR
+						|   |   |   		|
+						|   |   |   		\___$a
+						|   |   |
+						|   |   \___ASSIGN
+						|   |   |
+						|   |   \___conditional_expr
 						|   |   	|
-						|   |   	\___ass_var_block
+						|   |   	\___expr
 						|   |   		|
-						|   |   		\___var_block
+						|   |   		\___ass_var_block
+						|   |   		|   |
+						|   |   		|   \___var_block
+						|   |   		|   	|
+						|   |   		|   	\___VAR
+						|   |   		|   		|
+						|   |   		|   		\___$a
+						|   |   		|
+						|   |   		\___arith_binary_op
+						|   |   		|   |
+						|   |   		|   \___ADD
+						|   |   		|
+						|   |   		\___expr
 						|   |   			|
-						|   |   			\___VAR
+						|   |   			\___const_block
 						|   |   				|
-						|   |   				\___$a
+						|   |   				\___NUM
+						|   |   					|
+						|   |   					\___10
 						|   |
 						|   \___TERMINATOR
 						|
-						\___/general_block
-expr of type integer expected
-expr of type integer expected
-expr of type integer expected
-expr of type boolean expected
-expr of type integer expected
-expr of type boolean expected
-conditional_expr
-var_block
-var_block
-var_block
+						\___general_block
+							|
+							\___general_stmt
+							|   |
+							|   \___PRINT
+							|   |
+							|   \___conditional_expr
+							|   |   |
+							|   |   \___expr
+							|   |   	|
+							|   |   	\___ass_var_block
+							|   |   		|
+							|   |   		\___var_block
+							|   |   			|
+							|   |   			\___VAR
+							|   |   				|
+							|   |   				\___$a
+							|   |
+							|   \___TERMINATOR
+							|
+							\___/general_block
+Syntax err
