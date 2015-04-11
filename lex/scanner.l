@@ -78,11 +78,11 @@ DIG		[0-9]
 "#ifndef "									{printf("<preprocess : \'#ifndef\'> "); return IFNDEF;}
 "# ".*"\n"									{printf("<plainText : \'#\'> ");return COMMENT;}
 "function "									{printf("<keyword : \'function\'> "); return FUNCTION;}
-"print "									{printf("<keyword : \'print\'> "); return PRINT;}
-(_|{ALPHA})(_|{ALPHA}|{DIG})*				{ printf("<fidentifier : \'%s\'> ",strdup(yytext));  yylval.terminal_value = strdup(yytext); return IDENT; }
-$(_|{ALPHA})(_|{ALPHA}|{DIG})*				{ printf("<identifier : \'%s\'> ",strdup(yytext)); yylval.terminal_value = strdup(yytext); return VAR; }
-@(_|{ALPHA})(_|{ALPHA}|{DIG})*				{ printf("<pointer : \'%s\'> ",strdup(yytext)); yylval.terminal_value = strdup(yytext); return POINTER; }
-"*"(_|{ALPHA})(_|{ALPHA}|{DIG})*			{ printf("<dref : \'%s\'> ",strdup(yytext));  yylval.terminal_value = strdup(yytext); return DREF; }
+"return "									{printf("<keyword : \'return\'>"); return RETURN;}
+"print " 									{printf("<keyword : \'print\'> "); return PRINT;}
+"scan " 									{printf("<keyword : \'scan\'>"); return SCAN;}
+({ALPHA})({ALPHA}|{DIG})*				{ printf("<fidentifier : \'%s\'> ",strdup(yytext));  yylval.terminal_value = strdup(yytext); return IDENT; }
+$({ALPHA})({ALPHA}|{DIG})*				{ printf("<identifier : \'%s\'> ",strdup(yytext)); yylval.terminal_value = strdup(yytext); return VAR; }
 {DIG}+(\.{DIG}+)?							{printf("<constant : \'%d\'> ",atoi(yytext)); yylval.terminal_value = strdup(yytext); return NUM;}
 %%
 
