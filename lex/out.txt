@@ -1,0 +1,127 @@
+<keyword : 'int'> <identifier : '$a'> <keyword : ';'> 
+<keyword : 'int'> $<identifier : '$c'> <keyword : ';'> 
+<identifier : '$a'> <operator : '='> <identifier : '$a'> <operator : '+'> <constant : '10'> <keyword : ';'> 
+<keyword : 'print'> <identifier : '$a'> <keyword : ';'> 
+
+
+-----------------   TREE   ------------------
+
+super_block
+|
+\___start_block
+	|
+	\___block
+		|
+		\___general_block
+			|
+			\___general_stmt
+			|   |
+			|   \___declaration_block
+			|   |   |
+			|   |   \___data_type
+			|   |   |   |
+			|   |   |   \___INT
+			|   |   |
+			|   |   \___var_list
+			|   |   	|
+			|   |   	\___var_block
+			|   |   		|
+			|   |   		\___VAR
+			|   |   			|
+			|   |   			\___$a
+			|   |
+			|   \___TERMINATOR
+			|
+			\___general_block
+				|
+				\___general_stmt
+				|   |
+				|   \___declaration_block
+				|   |   |
+				|   |   \___data_type
+				|   |   |   |
+				|   |   |   \___INT
+				|   |   |
+				|   |   \___var_list
+				|   |   	|
+				|   |   	\___var_block
+				|   |   		|
+				|   |   		\___VAR
+				|   |   			|
+				|   |   			\___$c
+				|   |
+				|   \___TERMINATOR
+				|
+				\___general_block
+					|
+					\___general_stmt
+					|   |
+					|   \___assignment_block
+					|   |   |
+					|   |   \___ass_var_block
+					|   |   |   |
+					|   |   |   \___var_block
+					|   |   |   	|
+					|   |   |   	\___VAR
+					|   |   |   		|
+					|   |   |   		\___$a
+					|   |   |
+					|   |   \___ASSIGN
+					|   |   |
+					|   |   \___conditional_expr
+					|   |   	|
+					|   |   	\___expr
+					|   |   		|
+					|   |   		\___ass_var_block
+					|   |   		|   |
+					|   |   		|   \___var_block
+					|   |   		|   	|
+					|   |   		|   	\___VAR
+					|   |   		|   		|
+					|   |   		|   		\___$a
+					|   |   		|
+					|   |   		\___arith_binary_op
+					|   |   		|   |
+					|   |   		|   \___ADD
+					|   |   		|
+					|   |   		\___expr
+					|   |   			|
+					|   |   			\___const_block
+					|   |   				|
+					|   |   				\___NUM
+					|   |   					|
+					|   |   					\___10
+					|   |
+					|   \___TERMINATOR
+					|
+					\___general_block
+						|
+						\___general_stmt
+						|   |
+						|   \___PRINT
+						|   |
+						|   \___conditional_expr
+						|   |   |
+						|   |   \___expr
+						|   |   	|
+						|   |   	\___ass_var_block
+						|   |   		|
+						|   |   		\___var_block
+						|   |   			|
+						|   |   			\___VAR
+						|   |   				|
+						|   |   				\___$a
+						|   |
+						|   \___TERMINATOR
+						|
+						\___/general_block
+expr of type integer expected
+expr of type integer expected
+expr of type integer expected
+expr of type boolean expected
+expr of type integer expected
+expr of type boolean expected
+conditional_expr
+var_block
+var_block
+var_block
