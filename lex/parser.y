@@ -202,7 +202,6 @@
 %type <entry> super_block
 %type <entry> start_block
 %type <entry> comment_block
-%type <entry> defination_block
 %type <entry> const_block
 %type <entry> block
 %type <entry> general_block
@@ -235,7 +234,7 @@
 %type <entry> bit_unary_condition_op
 %type <entry> fixed_condition
 %type <entry> arith_binary_op
-%type <entry> arith_unary_op
+
 %type <entry> bit_binary_op
 %type <entry> bit_unary_op
 %type <entry> arith_assgn_op
@@ -253,20 +252,9 @@ super_block
 					;
 
 start_block 							
-					:	defination_block start_block{
-							$$ = mk_node("start_block");
-							mk_child($$, $1); 
-							mk_child($$, $2); 
-						}
-					|	block{
+					:	block{
 							$$ = mk_node("start_block");
 							mk_child($$, $1);
-						}
-					|	comment_block defination_block start_block{
-							$$ = mk_node("start_block");
-							mk_child($$, $1);
-							mk_child($$, $2);
-							mk_child($$, $3);
 						}
 					;
 
@@ -283,43 +271,7 @@ comment_block
 						}
 					;
 
-defination_block 						
-					:	DEFINE IDENT const_block{
-							$$ = mk_node("defination_block");	
-							$1 = mk_node("DEFINE");			
-							$2 = mk_node("IDENT");		
-							mk_child($$, $1); 
-							mk_child($$, $2); 
-							mk_child($$, $3); 
-							
-						}
-					| IFDEF IDENT OCB start_block CCB 
-						{
-							$$ = mk_node("defination_block");
-							$1 = mk_node("IFDEF");
-							$2 = mk_node("IDENT");
-							$3 = mk_node("OCB");
-							$5 = mk_node("CCB");
-							mk_child($$, $1); 
-							mk_child($$, $2); 
-							mk_child($$, $3); 
-							mk_child($$, $4); 
-							mk_child($$, $5); 
-						}
-					| IFNDEF IDENT OCB start_block CCB
-						{
-							$$ = mk_node("defination_block");
-							$1 = mk_node("IFNDEF");
-							$2 = mk_node("IDENT");
-							$3 = mk_node("OCB");
-							$5 = mk_node("CCB");
-							mk_child($$, $1); 
-							mk_child($$, $2); 
-							mk_child($$, $3); 
-							mk_child($$, $4); 
-							mk_child($$, $5); 
-						}
-					;
+
 
 const_block 							
 					:	STRING{
@@ -577,41 +529,11 @@ for_initialization
 							mk_child($$, $2);
 							mk_child($$, $3);
 						}
-					|	ass_var_block arith_unary_op COMMA for_initialization{
-							$$ = mk_node("for_initialization");				
-							$3 = mk_node("COMMA");											
-							mk_child($$, $1); 
-							mk_child($$, $2);
-							mk_child($$, $3);
-							mk_child($$, $4);
-						}
-					|	arith_unary_op ass_var_block COMMA for_initialization{
-							$$ = mk_node("for_initialization");					
-							$3 = mk_node("COMMA");										
-							mk_child($$, $1); 
-							mk_child($$, $2);
-							mk_child($$, $3);
-							mk_child($$, $4);
-						}
 					|	assignment_block TERMINATOR{
 							$$ = mk_node("for_initialization");				
 							$2 = mk_node("TERMINATOR");											
 							mk_child($$, $1); 
 							mk_child($$, $2);
-						}
-					|	ass_var_block arith_unary_op TERMINATOR{
-							$$ = mk_node("for_initialization");					
-							$3 = mk_node("TERMINATOR");										
-							mk_child($$, $1); 
-							mk_child($$, $2);
-							mk_child($$, $3);
-						}
-					|	arith_unary_op ass_var_block TERMINATOR{
-							$$ = mk_node("for_initialization");					
-							$3 = mk_node("TERMINATOR");											
-							mk_child($$, $1); 
-							mk_child($$, $2);
-							mk_child($$, $3);
 						}
 					|	function_call_block TERMINATOR{
 							$$ = mk_node("for_initialization");				
@@ -648,22 +570,6 @@ for_update
 							mk_child($$, $2);
 							mk_child($$, $3);
 						}
-					|	ass_var_block arith_unary_op COMMA for_update{
-							$$ = mk_node("for_update");						
-							$3 = mk_node("COMMA");										
-							mk_child($$, $1); 
-							mk_child($$, $2);
-							mk_child($$, $3);
-							mk_child($$, $4);
-						}
-					|	arith_unary_op ass_var_block COMMA for_update{
-							$$ = mk_node("for_update");						
-							$3 = mk_node("COMMA");										
-							mk_child($$, $1); 
-							mk_child($$, $2);
-							mk_child($$, $3);
-							mk_child($$, $4);
-						}
 					|	function_call_block{
 							$$ = mk_node("for_update");												
 							mk_child($$, $1); 
@@ -672,17 +578,8 @@ for_update
 							$$ = mk_node("for_update");												
 							mk_child($$, $1); 
 						}
-					|	ass_var_block arith_unary_op{
-							$$ = mk_node("for_update");												
-							mk_child($$, $1); 
-							mk_child($$, $2);
-						}
-					|	arith_unary_op ass_var_block{
-							$$ = mk_node("for_update");												
-							mk_child($$, $1); 
-							mk_child($$, $2);
-						}
 					|	{
+							$$ = mk_node("Nothing");
 						}
 					; 
 
@@ -728,6 +625,7 @@ argument_list_block
 							mk_child($$, $2);
 						}
 					|	{
+							$$ = mk_node("vhi");
 						}
 					;
 
@@ -800,9 +698,8 @@ general_stmt
 
 
 function_call_block
-					:	IDENT OP function_var_list CP {
+					:	ident OP function_var_list CP {
 							$$ = mk_node("function_call_block");		
-							$1 = mk_node("IDENT");						
 							$2 = mk_node("OP");						
 							$4 = mk_node("CP");													
 							mk_child($$, $1); 
@@ -866,24 +763,9 @@ data_type
 							$1 = mk_node("INT");									
 							mk_child($$, $1); 
 						}
-					|	FLOAT{
-							$$ = mk_node("data_type");			
-							$1 = mk_node("FLOAT");												
-							mk_child($$, $1); 
-						}
-					|	DOUBLE{
-							$$ = mk_node("data_type");		
-							$1 = mk_node("DOUBLE");													
-							mk_child($$, $1); 
-						}
 					|	CHAR{
 							$$ = mk_node("data_type");			
 							$1 = mk_node("CHAR");												
-							mk_child($$, $1); 
-						}
-					|	LONG{
-							$$ = mk_node("data_type");			
-							$1 = mk_node("LONG");												
 							mk_child($$, $1); 
 						}
 					;
@@ -907,8 +789,7 @@ var_block
 						}
 					;
 
-array_block 
-					:	var_block OB num CB {//check for expr to return positive value. Run time check for negeative value.
+array_block  		: var_block OB num CB {//check for expr to return positive value.
 							$$ = mk_node("array_block");	
 							$2 = mk_node("OB");	
 							$4 = mk_node("CB");												
@@ -1114,12 +995,14 @@ conditional_expr
 							$$ = mk_node("conditional_expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
+							mk_child($$, $3);
 							
 						}
 					|	expr bit_condition_op conditional_expr{
 							$$ = mk_node("conditional_expr");												
 							mk_child($$, $1); 
 							mk_child($$, $2); 
+							mk_child($$, $3);
 							
 						}
 					|	expr{
@@ -1246,18 +1129,6 @@ arith_binary_op
 						}
 					;
 
-arith_unary_op
-					:	INC{
-							$$ = mk_node("arith_unary_op");
-							$1 = mk_node("INC");														
-							mk_child($$, $1); 
-						}
-					|	DEC{
-							$$ = mk_node("arith_unary_op");
-							$1 = mk_node("DEC");														
-							mk_child($$, $1); 
-						}
-					;
 
 bit_binary_op 	
 					:	BIN_AND {

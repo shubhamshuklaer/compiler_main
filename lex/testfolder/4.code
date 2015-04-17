@@ -1,0 +1,19 @@
+# print a given number is even or not
+
+int $a;
+
+scan $a;
+
+if(($a%2) == 0)
+{
+	cprint -e-;
+	cprint -v-;
+	cprint -e-;
+	cprint -n-;
+}
+else
+{
+	cprint -o-;
+	cprint -d-;
+	cprint -d-;	
+}

@@ -1,0 +1,26 @@
+# print a character is vowel or not
+
+char $a;
+
+cscan $a;
+
+if(($a==-a-) || ($a==-e-) || ($a==-i-) || ($a==-o-) || ($a==-u-))
+{
+	cprint -v-;
+	cprint -o-;
+	cprint -w-;
+	cprint -e-;
+	cprint -l-;
+}
+else
+{
+	cprint -c-;
+	cprint -o-;
+	cprint -n-;
+	cprint -s-;
+	cprint -o-;
+	cprint -n-;
+	cprint -a-;
+	cprint -n-;
+	cprint -t-;
+}

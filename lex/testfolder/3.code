@@ -1,0 +1,33 @@
+# program for prime numbers till 200
+int $a[201];
+int $i;
+int $ja;
+
+$a[1] = 0;
+
+for($i=2;$i<=200;$i=$i+1)
+{
+	$a[$i]=1;
+}
+
+for($i=2;($i*$i)<=200;$i=$i+1)
+{
+ 	if($a[$i]==1)
+ 	{
+ 		for($ja=2;($ja*$i)<=200;$ja=$ja+1)
+ 		{
+ 			$a[$ja*$i] = 0;
+ 		}
+ 	}
+}
+
+for($i=2;$i<=200;$i=$i+1)
+{
+	if($a[$i]==1)
+	{
+		print $i;
+		cprint - -;
+	}
+}
+
+

@@ -1,0 +1,15 @@
+# program for fibonacci numbers.
+function fibo(int $a)
+{
+	if( ($a == 1) || ($a == 0))
+	{
+		return 1;
+	}
+	else 
+	{
+		return fibo($a-1)+fibo($a-2);
+	}
+}
+
+print fibo(5);
+
