@@ -547,7 +547,7 @@ for_loop_block
 							$5 = mk_node("TERMINATOR");			
 							$7 = mk_node("CP");			
 							$8 = mk_node("OCB");			
-							$9 = mk_node("CCB");			
+							$10 = mk_node("CCB");			
 							mk_child($$, $1); 
 							mk_child($$, $2);
 							mk_child($$, $3);
@@ -557,7 +557,7 @@ for_loop_block
 							mk_child($$, $7);
 							mk_child($$, $8);
 							mk_child($$, $9);
-							
+							mk_child($$, $10);
 						}
 					;
 
